@@ -1,0 +1,12 @@
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\obj\Debug\net8.0\BusDelivery.Contract.csproj.AssemblyReference.cache
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\obj\Debug\net8.0\BusDelivery.Contract.GeneratedMSBuildEditorConfig.editorconfig
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\obj\Debug\net8.0\BusDelivery.Contract.AssemblyInfoInputs.cache
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\obj\Debug\net8.0\BusDelivery.Contract.AssemblyInfo.cs
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\obj\Debug\net8.0\BusDelivery.Contract.csproj.CoreCompileInputs.cache
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\bin\Debug\net8.0\BusDelivery.Contract.deps.json
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\bin\Debug\net8.0\BusDelivery.Contract.dll
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\bin\Debug\net8.0\BusDelivery.Contract.pdb
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\obj\Debug\net8.0\BusDelivery.Contract.dll
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\obj\Debug\net8.0\refint\BusDelivery.Contract.dll
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\obj\Debug\net8.0\BusDelivery.Contract.pdb
+D:\Desktop\Project\BusDelivery\BusDelivery\Src\BusDelivery.Bus.Contract\obj\Debug\net8.0\ref\BusDelivery.Contract.dll
