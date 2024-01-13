@@ -27,20 +27,14 @@ public class OfficeConfiguration : IEntityTypeConfiguration<Office>
             .HasForeignKey(r => r.officeId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        //Each Office can have many Routes
-        builder.HasMany(x => x.routes)
+        //Each Office can have many Stations
+        builder.HasMany(x => x.stations)
             .WithOne()
             .HasForeignKey(r => r.officeId)
             .OnDelete(DeleteBehavior.Cascade);
 
         //Each Office can have many Users
         builder.HasMany(x => x.users)
-            .WithOne()
-            .HasForeignKey(r => r.officeId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        //Each Office can have many Users
-        builder.HasMany(x => x.officePackages)
             .WithOne()
             .HasForeignKey(r => r.officeId)
             .OnDelete(DeleteBehavior.Cascade);

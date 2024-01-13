@@ -12,6 +12,6 @@ public class Bus : DomainEntity<int>
     public string operateTime { get; set; }
     public bool status { get; set; }
 
-    public virtual ICollection<Route> routes { get; set; }
+    public virtual ICollection<Package> packages { get; set; }
     public virtual ICollection<BusRoute> busRoutes { get; set; }
 }

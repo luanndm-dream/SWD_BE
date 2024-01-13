@@ -13,7 +13,7 @@ public class Office : DomainEntity<int>
     public bool status { get; set; }
 
     public virtual ICollection<Weather> weathers { get; set; }
-    public virtual ICollection<Route> routes { get; set; }
+    public virtual ICollection<Station> stations { get; set; }
     public virtual ICollection<User> users { get; set; }
-    public virtual ICollection<OfficePackage> officePackages { get; set; }
+    public virtual ICollection<Package> packages { get; set; }
 }

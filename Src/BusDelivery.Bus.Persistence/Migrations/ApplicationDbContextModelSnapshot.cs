@@ -88,6 +88,33 @@ namespace BusDelivery.Persistence.Migrations
                     b.ToTable("BusRoutes", (string)null);
                 });
 
+            modelBuilder.Entity("BusDelivery.Domain.Entities.Coordinate", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<double>("lat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("lng")
+                        .HasColumnType("float");
+
+                    b.Property<int>("routeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("stt")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("routeId");
+
+                    b.ToTable("Coordinates", (string)null);
+                });
+
             modelBuilder.Entity("BusDelivery.Domain.Entities.Office", b =>
                 {
                     b.Property<int>("id")
@@ -135,19 +162,38 @@ namespace BusDelivery.Persistence.Migrations
                     b.ToTable("Offices", (string)null);
                 });
 
-            modelBuilder.Entity("BusDelivery.Domain.Entities.OfficePackage", b =>
+            modelBuilder.Entity("BusDelivery.Domain.Entities.Order", b =>
                 {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("contact")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("note")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("packageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("officeId")
-                        .HasColumnType("int");
+                    b.Property<float>("price")
+                        .HasColumnType("real");
 
-                    b.HasKey("packageId", "officeId");
+                    b.Property<float>("weight")
+                        .HasColumnType("real");
 
-                    b.HasIndex("officeId");
+                    b.HasKey("id");
 
-                    b.ToTable("OfficePackages", (string)null);
+                    b.HasIndex("packageId");
+
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Package", b =>
@@ -156,10 +202,13 @@ namespace BusDelivery.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("busId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("createTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 10, 16, 14, 24, 504, DateTimeKind.Local).AddTicks(9137));
+                        .HasDefaultValue(new DateTime(2024, 1, 13, 0, 44, 51, 622, DateTimeKind.Local).AddTicks(4776));
 
                     b.Property<int>("image")
                         .HasColumnType("int");
@@ -171,10 +220,10 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<int>("officeId")
                         .HasColumnType("int");
 
-                    b.Property<float>("price")
-                        .HasColumnType("real");
-
                     b.Property<int>("quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("stationId")
                         .HasColumnType("int");
 
                     b.Property<string>("status")
@@ -183,42 +232,24 @@ namespace BusDelivery.Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("True");
 
+                    b.Property<float>("totalPrice")
+                        .HasColumnType("real");
+
+                    b.Property<float>("totalWeight")
+                        .HasColumnType("real");
+
                     b.Property<Guid>("userId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float>("weight")
-                        .HasColumnType("real");
-
                     b.HasKey("id");
+
+                    b.HasIndex("busId");
+
+                    b.HasIndex("officeId");
+
+                    b.HasIndex("stationId");
 
                     b.ToTable("Packages", (string)null);
-                });
-
-            modelBuilder.Entity("BusDelivery.Domain.Entities.Path", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<double>("ln")
-                        .HasColumnType("float");
-
-                    b.Property<double>("lt")
-                        .HasColumnType("float");
-
-                    b.Property<int>("routeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("stt")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("routeId");
-
-                    b.ToTable("Paths", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.RefreshToken", b =>
@@ -279,10 +310,14 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<DateTime>("createTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 10, 16, 14, 24, 506, DateTimeKind.Local).AddTicks(1232));
+                        .HasDefaultValue(new DateTime(2024, 1, 13, 0, 44, 51, 623, DateTimeKind.Local).AddTicks(1325));
 
                     b.Property<int>("targetId")
                         .HasColumnType("int");
+
+                    b.Property<string>("type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
@@ -318,9 +353,6 @@ namespace BusDelivery.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<int>("busId")
-                        .HasColumnType("int");
-
                     b.Property<string>("description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -332,9 +364,6 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("officeId")
-                        .HasColumnType("int");
 
                     b.Property<string>("operateTime")
                         .IsRequired()
@@ -351,11 +380,52 @@ namespace BusDelivery.Persistence.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("busId");
+                    b.ToTable("Routes", (string)null);
+                });
+
+            modelBuilder.Entity("BusDelivery.Domain.Entities.Station", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("lat")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("lng")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("officeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
 
                     b.HasIndex("officeId");
 
-                    b.ToTable("Routes", (string)null);
+                    b.ToTable("Stations", (string)null);
+                });
+
+            modelBuilder.Entity("BusDelivery.Domain.Entities.StationRoute", b =>
+                {
+                    b.Property<int>("routeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("stationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("routeId", "stationId");
+
+                    b.HasIndex("stationId");
+
+                    b.ToTable("StationRoutes", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.User", b =>
@@ -469,31 +539,46 @@ namespace BusDelivery.Persistence.Migrations
                     b.HasOne("BusDelivery.Domain.Entities.Route", null)
                         .WithMany("busRoutes")
                         .HasForeignKey("routeId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BusDelivery.Domain.Entities.OfficePackage", b =>
+            modelBuilder.Entity("BusDelivery.Domain.Entities.Coordinate", b =>
                 {
-                    b.HasOne("BusDelivery.Domain.Entities.Office", null)
-                        .WithMany("officePackages")
-                        .HasForeignKey("officeId")
+                    b.HasOne("BusDelivery.Domain.Entities.Route", null)
+                        .WithMany("coordinates")
+                        .HasForeignKey("routeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
+            modelBuilder.Entity("BusDelivery.Domain.Entities.Order", b =>
+                {
                     b.HasOne("BusDelivery.Domain.Entities.Package", null)
-                        .WithMany("officePackages")
+                        .WithMany("orders")
                         .HasForeignKey("packageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BusDelivery.Domain.Entities.Path", b =>
+            modelBuilder.Entity("BusDelivery.Domain.Entities.Package", b =>
                 {
-                    b.HasOne("BusDelivery.Domain.Entities.Route", null)
-                        .WithMany("paths")
-                        .HasForeignKey("routeId")
+                    b.HasOne("BusDelivery.Domain.Entities.Bus", null)
+                        .WithMany("packages")
+                        .HasForeignKey("busId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BusDelivery.Domain.Entities.Office", null)
+                        .WithMany("packages")
+                        .HasForeignKey("officeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BusDelivery.Domain.Entities.Station", null)
+                        .WithMany("packages")
+                        .HasForeignKey("stationId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -515,18 +600,27 @@ namespace BusDelivery.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BusDelivery.Domain.Entities.Route", b =>
+            modelBuilder.Entity("BusDelivery.Domain.Entities.Station", b =>
                 {
-                    b.HasOne("BusDelivery.Domain.Entities.Bus", null)
-                        .WithMany("routes")
-                        .HasForeignKey("busId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BusDelivery.Domain.Entities.Office", null)
-                        .WithMany("routes")
+                        .WithMany("stations")
                         .HasForeignKey("officeId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BusDelivery.Domain.Entities.StationRoute", b =>
+                {
+                    b.HasOne("BusDelivery.Domain.Entities.Route", null)
+                        .WithMany("stationRoutes")
+                        .HasForeignKey("routeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("BusDelivery.Domain.Entities.Station", null)
+                        .WithMany("stationRoutes")
+                        .HasForeignKey("stationId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -573,14 +667,14 @@ namespace BusDelivery.Persistence.Migrations
                 {
                     b.Navigation("busRoutes");
 
-                    b.Navigation("routes");
+                    b.Navigation("packages");
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Office", b =>
                 {
-                    b.Navigation("officePackages");
+                    b.Navigation("packages");
 
-                    b.Navigation("routes");
+                    b.Navigation("stations");
 
                     b.Navigation("users");
 
@@ -589,7 +683,7 @@ namespace BusDelivery.Persistence.Migrations
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Package", b =>
                 {
-                    b.Navigation("officePackages");
+                    b.Navigation("orders");
 
                     b.Navigation("userPackages");
                 });
@@ -603,7 +697,16 @@ namespace BusDelivery.Persistence.Migrations
                 {
                     b.Navigation("busRoutes");
 
-                    b.Navigation("paths");
+                    b.Navigation("coordinates");
+
+                    b.Navigation("stationRoutes");
+                });
+
+            modelBuilder.Entity("BusDelivery.Domain.Entities.Station", b =>
+                {
+                    b.Navigation("packages");
+
+                    b.Navigation("stationRoutes");
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.User", b =>

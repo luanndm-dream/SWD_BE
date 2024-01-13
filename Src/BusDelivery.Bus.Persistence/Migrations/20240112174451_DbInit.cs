@@ -51,26 +51,6 @@ public partial class DbInit : Migration
             });
 
         migrationBuilder.CreateTable(
-            name: "Packages",
-            columns: table => new
-            {
-                id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                userId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                quantity = table.Column<int>(type: "int", nullable: false),
-                officeId = table.Column<int>(type: "int", nullable: false),
-                weight = table.Column<float>(type: "real", nullable: false),
-                price = table.Column<float>(type: "real", nullable: false),
-                image = table.Column<int>(type: "int", nullable: false),
-                note = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                status = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "True"),
-                createTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 1, 10, 16, 14, 24, 504, DateTimeKind.Local).AddTicks(9137))
-            },
-            constraints: table =>
-            {
-                table.PrimaryKey("PK_Packages", x => x.id);
-            });
-
-        migrationBuilder.CreateTable(
             name: "Roles",
             columns: table => new
             {
@@ -91,8 +71,6 @@ public partial class DbInit : Migration
                     .Annotation("SqlServer:Identity", "1, 1"),
                 name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                officeId = table.Column<int>(type: "int", nullable: false),
-                busId = table.Column<int>(type: "int", nullable: false),
                 status = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                 startPoint = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 endPoint = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -101,14 +79,24 @@ public partial class DbInit : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_Routes", x => x.id);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "Stations",
+            columns: table => new
+            {
+                id = table.Column<int>(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
+                officeId = table.Column<int>(type: "int", nullable: false),
+                name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                lat = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                lng = table.Column<string>(type: "nvarchar(max)", nullable: false)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_Stations", x => x.id);
                 table.ForeignKey(
-                    name: "FK_Routes_Bus_busId",
-                    column: x => x.busId,
-                    principalTable: "Bus",
-                    principalColumn: "id",
-                    onDelete: ReferentialAction.Cascade);
-                table.ForeignKey(
-                    name: "FK_Routes_Offices_officeId",
+                    name: "FK_Stations_Offices_officeId",
                     column: x => x.officeId,
                     principalTable: "Offices",
                     principalColumn: "id",
@@ -134,30 +122,6 @@ public partial class DbInit : Migration
                     name: "FK_Weathers_Offices_officeId",
                     column: x => x.officeId,
                     principalTable: "Offices",
-                    principalColumn: "id",
-                    onDelete: ReferentialAction.Cascade);
-            });
-
-        migrationBuilder.CreateTable(
-            name: "OfficePackages",
-            columns: table => new
-            {
-                officeId = table.Column<int>(type: "int", nullable: false),
-                packageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-            },
-            constraints: table =>
-            {
-                table.PrimaryKey("PK_OfficePackages", x => new { x.packageId, x.officeId });
-                table.ForeignKey(
-                    name: "FK_OfficePackages_Offices_officeId",
-                    column: x => x.officeId,
-                    principalTable: "Offices",
-                    principalColumn: "id",
-                    onDelete: ReferentialAction.Cascade);
-                table.ForeignKey(
-                    name: "FK_OfficePackages_Packages_packageId",
-                    column: x => x.packageId,
-                    principalTable: "Packages",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Cascade);
             });
@@ -214,29 +178,91 @@ public partial class DbInit : Migration
                     name: "FK_BusRoutes_Routes_routeId",
                     column: x => x.routeId,
                     principalTable: "Routes",
-                    principalColumn: "id");
+                    principalColumn: "id",
+                    onDelete: ReferentialAction.Cascade);
             });
 
         migrationBuilder.CreateTable(
-            name: "Paths",
+            name: "Coordinates",
             columns: table => new
             {
                 id = table.Column<int>(type: "int", nullable: false)
                     .Annotation("SqlServer:Identity", "1, 1"),
-                lt = table.Column<double>(type: "float", nullable: false),
-                ln = table.Column<double>(type: "float", nullable: false),
+                lat = table.Column<double>(type: "float", nullable: false),
+                lng = table.Column<double>(type: "float", nullable: false),
                 stt = table.Column<int>(type: "int", nullable: false),
                 routeId = table.Column<int>(type: "int", nullable: false)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_Paths", x => x.id);
+                table.PrimaryKey("PK_Coordinates", x => x.id);
                 table.ForeignKey(
-                    name: "FK_Paths_Routes_routeId",
+                    name: "FK_Coordinates_Routes_routeId",
                     column: x => x.routeId,
                     principalTable: "Routes",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Cascade);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "Packages",
+            columns: table => new
+            {
+                id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                userId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                officeId = table.Column<int>(type: "int", nullable: false),
+                busId = table.Column<int>(type: "int", nullable: false),
+                stationId = table.Column<int>(type: "int", nullable: false),
+                quantity = table.Column<int>(type: "int", nullable: false),
+                totalWeight = table.Column<float>(type: "real", nullable: false),
+                totalPrice = table.Column<float>(type: "real", nullable: false),
+                image = table.Column<int>(type: "int", nullable: false),
+                note = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                status = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "True"),
+                createTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 1, 13, 0, 44, 51, 622, DateTimeKind.Local).AddTicks(4776))
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_Packages", x => x.id);
+                table.ForeignKey(
+                    name: "FK_Packages_Bus_busId",
+                    column: x => x.busId,
+                    principalTable: "Bus",
+                    principalColumn: "id",
+                    onDelete: ReferentialAction.Cascade);
+                table.ForeignKey(
+                    name: "FK_Packages_Offices_officeId",
+                    column: x => x.officeId,
+                    principalTable: "Offices",
+                    principalColumn: "id",
+                    onDelete: ReferentialAction.Cascade);
+                table.ForeignKey(
+                    name: "FK_Packages_Stations_stationId",
+                    column: x => x.stationId,
+                    principalTable: "Stations",
+                    principalColumn: "id");
+            });
+
+        migrationBuilder.CreateTable(
+            name: "StationRoutes",
+            columns: table => new
+            {
+                stationId = table.Column<int>(type: "int", nullable: false),
+                routeId = table.Column<int>(type: "int", nullable: false)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_StationRoutes", x => new { x.routeId, x.stationId });
+                table.ForeignKey(
+                    name: "FK_StationRoutes_Routes_routeId",
+                    column: x => x.routeId,
+                    principalTable: "Routes",
+                    principalColumn: "id");
+                table.ForeignKey(
+                    name: "FK_StationRoutes_Stations_stationId",
+                    column: x => x.stationId,
+                    principalTable: "Stations",
+                    principalColumn: "id");
             });
 
         migrationBuilder.CreateTable(
@@ -269,9 +295,10 @@ public partial class DbInit : Migration
                 id = table.Column<int>(type: "int", nullable: false)
                     .Annotation("SqlServer:Identity", "1, 1"),
                 content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                createTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 1, 10, 16, 14, 24, 506, DateTimeKind.Local).AddTicks(1232)),
+                createTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 1, 13, 0, 44, 51, 623, DateTimeKind.Local).AddTicks(1325)),
                 createBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                targetId = table.Column<int>(type: "int", nullable: false)
+                targetId = table.Column<int>(type: "int", nullable: false),
+                type = table.Column<string>(type: "nvarchar(max)", nullable: false)
             },
             constraints: table =>
             {
@@ -280,6 +307,29 @@ public partial class DbInit : Migration
                     name: "FK_Reports_Users_createBy",
                     column: x => x.createBy,
                     principalTable: "Users",
+                    principalColumn: "id",
+                    onDelete: ReferentialAction.Cascade);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "Orders",
+            columns: table => new
+            {
+                id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                packageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                weight = table.Column<float>(type: "real", nullable: false),
+                price = table.Column<float>(type: "real", nullable: false),
+                note = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                contact = table.Column<string>(type: "nvarchar(max)", nullable: false)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_Orders", x => x.id);
+                table.ForeignKey(
+                    name: "FK_Orders_Packages_packageId",
+                    column: x => x.packageId,
+                    principalTable: "Packages",
                     principalColumn: "id",
                     onDelete: ReferentialAction.Cascade);
             });
@@ -313,14 +363,29 @@ public partial class DbInit : Migration
             column: "busId");
 
         migrationBuilder.CreateIndex(
-            name: "IX_OfficePackages_officeId",
-            table: "OfficePackages",
+            name: "IX_Coordinates_routeId",
+            table: "Coordinates",
+            column: "routeId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Orders_packageId",
+            table: "Orders",
+            column: "packageId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Packages_busId",
+            table: "Packages",
+            column: "busId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Packages_officeId",
+            table: "Packages",
             column: "officeId");
 
         migrationBuilder.CreateIndex(
-            name: "IX_Paths_routeId",
-            table: "Paths",
-            column: "routeId");
+            name: "IX_Packages_stationId",
+            table: "Packages",
+            column: "stationId");
 
         migrationBuilder.CreateIndex(
             name: "IX_RefreshTokens_clientId_deviceId",
@@ -345,13 +410,13 @@ public partial class DbInit : Migration
             column: "createBy");
 
         migrationBuilder.CreateIndex(
-            name: "IX_Routes_busId",
-            table: "Routes",
-            column: "busId");
+            name: "IX_StationRoutes_stationId",
+            table: "StationRoutes",
+            column: "stationId");
 
         migrationBuilder.CreateIndex(
-            name: "IX_Routes_officeId",
-            table: "Routes",
+            name: "IX_Stations_officeId",
+            table: "Stations",
             column: "officeId");
 
         migrationBuilder.CreateIndex(
@@ -382,16 +447,19 @@ public partial class DbInit : Migration
             name: "BusRoutes");
 
         migrationBuilder.DropTable(
-            name: "OfficePackages");
+            name: "Coordinates");
 
         migrationBuilder.DropTable(
-            name: "Paths");
+            name: "Orders");
 
         migrationBuilder.DropTable(
             name: "RefreshTokens");
 
         migrationBuilder.DropTable(
             name: "Reports");
+
+        migrationBuilder.DropTable(
+            name: "StationRoutes");
 
         migrationBuilder.DropTable(
             name: "UserPackages");
@@ -412,9 +480,12 @@ public partial class DbInit : Migration
             name: "Bus");
 
         migrationBuilder.DropTable(
-            name: "Offices");
+            name: "Stations");
 
         migrationBuilder.DropTable(
             name: "Roles");
+
+        migrationBuilder.DropTable(
+            name: "Offices");
     }
 }

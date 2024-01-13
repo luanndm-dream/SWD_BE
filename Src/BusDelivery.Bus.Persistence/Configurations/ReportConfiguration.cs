@@ -15,5 +15,6 @@ public class ReportConfiguration : IEntityTypeConfiguration<Report>
         builder.Property(x => x.createBy).IsRequired();
         builder.Property(x => x.targetId).IsRequired();
         builder.Property(x => x.createTime).HasDefaultValue(DateTime.Now);
+        builder.Property(x => x.type).IsRequired();
     }
 }
