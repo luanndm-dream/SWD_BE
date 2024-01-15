@@ -1,4 +1,5 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure;
+using Azure.Storage.Blobs;
 using BusDelivery.Infrastructure.BlobStorage.DependencyInjection.Options;
 using BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
@@ -14,38 +15,68 @@ public class BlobStorageRepository : IBlobStorageRepository
         this.blobStorageOptions = blobStorageOptions.Value;
     }
 
-    public string SaveImageOnBlobStorage(IFormFile image, string name)
+    public async Task<string> SaveImageOnBlobStorage(IFormFile image, string name, string type)
     {
 
-        BlobContainerClient container = new BlobContainerClient(blobStorageOptions.resourceGroup, blobStorageOptions.container);
-        string path = $"{name}-{DateTimeOffset.Now.ToUnixTimeSeconds()}";
+        BlobContainerClient container = new BlobContainerClient(blobStorageOptions.blobUrl, blobStorageOptions.container);
+        string path = $"{type}/{name}-{DateTimeOffset.Now.ToUnixTimeSeconds()}";
         BlobClient blob = container.GetBlobClient(path);
 
         // Open the file and upload its data
         using (Stream stream = image.OpenReadStream())
         {
-            blob.Upload(stream);
+            await blob.UploadAsync(stream);
         }
 
         var uri = blob.Uri.AbsoluteUri;
         return uri;
     }
 
-    public void DeleteImageFromBlobStorage(string imageUrl)
+    public async Task DeleteImageFromBlobStorage(string imageUrl)
     {
         // Parse the Blob Storage URI to get container name and blob path
         Uri uri = new Uri(imageUrl);
         string containerName = uri.Segments[1];  // Assuming the container name is the second segment in the URI
-        string blobPath = uri.PathAndQuery.TrimStart('/');
 
-        BlobContainerClient container = new BlobContainerClient(blobStorageOptions.resourceGroup, containerName);
+        // Get blobPath
+        int startIndex = containerName.Length + 1;
+        int length = uri.PathAndQuery.Length - containerName.Length - 1;
+        string blobPath = uri.PathAndQuery.Substring(startIndex, length);
+
+        BlobContainerClient container = new BlobContainerClient(blobStorageOptions.blobUrl, containerName);
         BlobClient blob = container.GetBlobClient(blobPath);
 
         // Check if the blob exists before attempting to delete
-        if (blob.Exists())
+        if (await blob.ExistsAsync())
         {
-            // Delete the blob
-            blob.Delete();
+            await blob.DeleteAsync();
+        }
+    }
+
+    public async Task RestoreContainer(string imageUrl)
+    {
+        BlobContainerClient container = new BlobContainerClient(blobStorageOptions.blobUrl, blobStorageOptions.container);
+        Uri uri = new Uri(imageUrl);
+        string containerName = uri.Segments[1];  // Assuming the container name is the second segment in the URI
+
+        // Get blobPath
+        int startIndex = containerName.Length + 1;
+        int length = uri.PathAndQuery.Length - containerName.Length - 1;
+        string blobPath = uri.PathAndQuery.Substring(startIndex, length);
+
+        // Kiểm tra xem blob có tồn tại trong container và đã bị xóa không
+        try
+        {
+            var blobClient = container.GetBlobClient(blobPath);
+            await blobClient.UndeleteAsync();
+        }
+        catch (RequestFailedException ex) when (ex.Status == 404)
+        {
+            Console.WriteLine($"Blob '{blobPath}' was not found in container.");
+        }
+        catch (RequestFailedException ex)
+        {
+            Console.WriteLine($"Lỗi khi kiểm tra trạng thái blob: {ex.Message}");
         }
     }
 }

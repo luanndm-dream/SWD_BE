@@ -4,7 +4,6 @@ using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Enumerations;
 using BusDelivery.Contract.Services.V1.Office;
-using BusDelivery.Domain.Exceptions;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Office.Queries;
@@ -33,10 +32,7 @@ public sealed class GetOfficeQueryHandler : IQueryHandler<Query.GetOfficeQuery, 
 
         var Events = await PagedResult<Domain.Entities.Office>.CreateAsync(EventsQuery,
             request.pageIndex,
-            request.pageIndex);
-        if (Events.Items.Count <= 0)
-            throw new OfficeException.OfficeBadRequestException($"PageIndex {request.pageIndex} do not have any items");
-
+            request.pageSize);
 
         var result = mapper.Map<PagedResult<Responses.OfficeReponses>>(Events);
         return Result.Success(result);

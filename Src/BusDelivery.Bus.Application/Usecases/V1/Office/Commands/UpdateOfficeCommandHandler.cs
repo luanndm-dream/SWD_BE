@@ -25,35 +25,33 @@ public class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateOfficeCo
             ?? throw new OfficeException.OfficeIdNotFoundException(request.id);
 
         // Delete oldImage and Upload newImage
+        var oldimageUrl = existOffice.images;
         blobStorageRepository.DeleteImageFromBlobStorage(existOffice.images);
-        var imageUrl = blobStorageRepository.SaveImageOnBlobStorage(request.image, request.name)
+        var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, request.name, "offices")
             ?? throw new Exception("Upload File fail");
 
-        var updateOffice = new Domain.Entities.Office
-        {
-            id = request.id,
-            routeId = request.routeId,
-            name = request.name,
-            address = request.address,
-            lat = request.lat,
-            lng = request.lng,
-            contact = request.contact,
-            images = imageUrl,
-            status = request.status,
-        };
+        existOffice.Update(
+            request.id,
+            request.routeId,
+            request.name,
+            request.address,
+            request.lat,
+            request.lng,
+            request.contact,
+            imageUrl,
+            request.status);
 
         try
         {
-            officeRepository.Update(updateOffice);
-
+            officeRepository.Update(existOffice);
+            var officeResponse = mapper.Map<Responses.OfficeReponses>(existOffice);
+            return Result.Success(officeResponse, 202);
         }
         catch (Exception)
         {
-            blobStorageRepository.DeleteImageFromBlobStorage(imageUrl);
+            await blobStorageRepository.RestoreContainer(oldimageUrl);
+            await blobStorageRepository.DeleteImageFromBlobStorage(imageUrl);
             throw new Exception("Update Office Error");
         }
-
-        var officeResponse = mapper.Map<Responses.OfficeReponses>(updateOffice);
-        return Result.Success(officeResponse, 202);
     }
 }
