@@ -3,37 +3,37 @@
 namespace BusDelivery.Contract.Abstractions.Shared;
 public class PagedResult<T>
 {
-    public const int UpperPageSize = 100;
-    public const int DefaultPageIndex = 1;
-    public const int DefaultPageSize = 10;
+    public const int upperPageSize = 100;
+    public const int defaultPageIndex = 1;
+    public const int defaultPageSize = 10;
 
-    private PagedResult(List<T> Items, int PageIndex, int PageSize, int TotalCount)
+    private PagedResult(List<T> items, int pageIndex, int pageSize, int totalCount)
     {
-        this.Items = Items;
-        this.PageIndex = PageIndex;
-        this.PageSize = PageSize;
-        this.TotalCount = TotalCount;
+        this.items = items;
+        this.pageIndex = pageIndex;
+        this.pageSize = pageSize;
+        this.totalCount = totalCount;
     }
 
-    public List<T> Items { get; }
-    public int PageIndex { get; }
-    public int PageSize { get; }
-    public int TotalCount { get; }
-    public bool HasNextPage => PageIndex * PageSize <= TotalCount;
-    public bool HasPreviousPage => PageIndex > 1;
+    public List<T> items { get; }
+    public int pageIndex { get; }
+    public int pageSize { get; }
+    public int totalCount { get; }
+    public bool HasNextPage => pageIndex * pageSize < totalCount;
+    public bool HasPreviousPage => pageIndex > 1;
 
-    public static async Task<PagedResult<T>> CreateAsync(IQueryable<T> query, int PageIndex, int PageSize)
+    public static async Task<PagedResult<T>> CreateAsync(IQueryable<T> query, int pageIndex, int pageSize)
     {
-        PageIndex = PageIndex <= 0 ? DefaultPageIndex : PageIndex;
-        PageSize = PageSize > 0
-            ? PageSize > UpperPageSize
-            ? UpperPageSize : PageSize : DefaultPageSize;
+        pageIndex = pageIndex <= 0 ? defaultPageIndex : pageIndex;
+        pageSize = pageSize > 0
+            ? pageSize > upperPageSize
+            ? upperPageSize : pageSize : defaultPageSize;
 
         var totalCount = await query.CountAsync();
-        var items = await query.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToListAsync();
-        return new(items, PageIndex, PageSize, totalCount);
+        var items = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+        return new(items, pageIndex, pageSize, totalCount);
     }
 
-    public static PagedResult<T> Create(List<T> items, int PageIndex, int PageSize, int totalCount)
-        => new(items, PageIndex, PageSize, totalCount);
+    public static PagedResult<T> Create(List<T> items, int pageIndex, int pageSize, int totalCount)
+        => new(items, pageIndex, pageSize, totalCount);
 }

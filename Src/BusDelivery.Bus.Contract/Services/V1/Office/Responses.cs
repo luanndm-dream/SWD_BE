@@ -2,7 +2,7 @@
 public static class Responses
 {
     public record OfficeReponses(
-        int offictId,
+        int id,
         int routeId,
         string name,
         string address,
@@ -12,7 +12,7 @@ public static class Responses
         string images,
         bool status);
     //{
-    //    public int officeId { get; set; }
+    //    public int id { get; set; }
     //    public int routeId { get; set; }
     //    public string name { get; set; }
     //    public string address { get; set; }

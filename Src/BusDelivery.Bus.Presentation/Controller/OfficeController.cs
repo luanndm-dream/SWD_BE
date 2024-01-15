@@ -1,4 +1,5 @@
-﻿using BusDelivery.Contract.Abstractions.Shared;
+﻿using Asp.Versioning;
+using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Extensions;
 using BusDelivery.Contract.Services.V1.Office;
 using BusDelivery.Presentation.Abstractions;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusDelivery.Presentation.Controller;
+
+[ApiVersion(1)]
 public class OfficeController : ApiController
 {
     public OfficeController(ISender sender) : base(sender)
@@ -15,7 +18,7 @@ public class OfficeController : ApiController
 
     [HttpGet("GetOffices")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeReponses>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeReponses>>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Offices(
         string? searchTerm = null,
         string? sortColumn = null,
@@ -46,7 +49,7 @@ public class OfficeController : ApiController
     [HttpPost("CreateOffice")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Offices(Command.CreateOfficeCommand request)
+    public async Task<IActionResult> Offices([FromForm] Command.CreateOfficeCommand request)
     {
         var result = await sender.Send(request);
         return Ok(result);
@@ -56,7 +59,7 @@ public class OfficeController : ApiController
     [HttpPut("{officeId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Offices(int officeId, Command.UpdateOfficeCommand request)
+    public async Task<IActionResult> Offices(int officeId, [FromForm] Command.UpdateOfficeCommand request)
     {
         var updateOffice = new Command.UpdateOfficeCommand
         (

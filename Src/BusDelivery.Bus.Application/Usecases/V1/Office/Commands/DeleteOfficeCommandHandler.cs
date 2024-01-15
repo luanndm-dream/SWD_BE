@@ -23,14 +23,13 @@ public class DeleteOfficeCommandHandler : ICommandHandler<Command.DeleteOfficeCo
         try
         {
             officeRepository.Remove(existOffice);
-
+            // Delete oldImage and Upload newImage
+            await blobStorageRepository.DeleteImageFromBlobStorage(imageUrl);
+            return Result.Success(202);
         }
         catch (Exception)
         {
             throw new Exception("Delete Office Error");
         }
-        // Delete oldImage and Upload newImage
-        blobStorageRepository.DeleteImageFromBlobStorage(imageUrl);
-        return Result.Success(202);
     }
 }

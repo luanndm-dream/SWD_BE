@@ -16,4 +16,26 @@ public class Office : DomainEntity<int>
     public virtual ICollection<Station> stations { get; set; }
     public virtual ICollection<User> users { get; set; }
     public virtual ICollection<Package> packages { get; set; }
+
+    public void Update(
+        int id,
+        int routeId,
+        string name,
+        string address,
+        string lat,
+        string lng,
+        string contact,
+        string images,
+        bool status)
+    {
+        this.id = id;
+        this.routeId = routeId;
+        this.name = name;
+        this.address = address;
+        this.lat = lat;
+        this.lng = lng;
+        this.contact = contact;
+        this.images = images;
+        this.status = status;
+    }
 }

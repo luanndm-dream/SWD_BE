@@ -3,6 +3,7 @@
 namespace BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 public interface IBlobStorageRepository
 {
-    string SaveImageOnBlobStorage(IFormFile image, string name);
-    void DeleteImageFromBlobStorage(string imageUrl);
+    Task<string> SaveImageOnBlobStorage(IFormFile image, string name, string type);
+    Task DeleteImageFromBlobStorage(string imageUrl);
+    Task RestoreContainer(string imageUrl);
 }
