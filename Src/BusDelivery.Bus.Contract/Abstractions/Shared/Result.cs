@@ -14,13 +14,13 @@ public class Result
         }
 
         IsSuccess = isSuccess;
-        Error = error;
+        message = error;
         StatusCode = statusCode;
     }
 
     public bool IsSuccess { get; }
 
-    public Error Error { get; }
+    public Error message { get; }
 
     public int? StatusCode { get; } = 200;
 
@@ -29,13 +29,23 @@ public class Result
     public static Result<TValue> Success<TValue>(TValue value) =>
         new(value, true, Error.None);
 
+    public static Result<TValue> Success<TValue>(TValue value, int statusCode) =>
+        new(value, true, Error.None, statusCode);
+
+    public static Result<TValue> Success<TValue>(int statusCode) =>
+        new(default, true, Error.None, statusCode);
     public static Result Failure(Error error) =>
-        new(false, error, 404);
+        new(false, error, 400);
 
     public static Result<TValue> Failure<TValue>(Error error) =>
         new(default, false, error);
 
+    public static Result<TValue> Failure<TValue>(Error error, int statusCode) =>
+    new(default, false, error, statusCode);
+
     public static Result<TValue> Create<TValue>(TValue? value) =>
         value is not null ? Success(value) : Failure<TValue>(Error.NullValue);
+
+
 }
 

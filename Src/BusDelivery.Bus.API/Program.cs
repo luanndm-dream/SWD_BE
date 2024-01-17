@@ -1,26 +1,32 @@
 using BusDelivery.API.DependencyInjection.Extensions;
 using BusDelivery.API.Middleware;
+using BusDelivery.Application.DependencyInjection.Extensions;
+using BusDelivery.Infrastructure.BlobStorage.DependencyInjection.Extensions;
+using BusDelivery.Infrastructure.BlobStorage.DependencyInjection.Options;
 using BusDelivery.Persistence.DependencyInjection.Extensions;
 using BusDelivery.Persistence.DependencyInjection.Options;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Serilog;
 var builder = WebApplication.CreateBuilder(args);
-// Application
-//builder.Services.AddConfigureMediatR();
-//builder.Services.AddConfigurationMapper();
+//Application
+builder.Services.AddConfigureMediatR();
+builder.Services.AddConfigurationMapper();
 
 // Infrastructure.Dapper
 //builder.Services.AddInfrastructureDapper();
 //builder.Services.AddHttpClient();
 //builder.Services.AddHttpContextAccessor();
 
+// Infrastructure.BlobStorage
+builder.Services.AddConfigInfrastructureBlobStorage();
+builder.Services.ConfigureBlobStorageOptions(
+    builder.Configuration.GetSection(nameof(BlobStorageOptions)));
 // Persistence
 builder.Services.AddSqlConfiguration();
 builder.Services.AddRepositoryBaseConfiguration();
 builder.Services.ConfigureSqlServerRetryOptions(
     builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
-//builder.Services.ConfigureBlobStorageOptions(
-//    builder.Configuration.GetSection(nameof(BlobStorageOptions)));
+
 //builder.Services.ConfigureOpenWeatherMapOptions(
 //    builder.Configuration.GetSection(nameof(OpenWeatherMapOptions)));
 

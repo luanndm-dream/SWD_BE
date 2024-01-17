@@ -3,8 +3,8 @@
 namespace BusDelivery.Domain.Entities;
 public class Role : DomainEntity<Guid>
 {
-    public string name { get; set; }
-    public string description { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
 
-    public virtual ICollection<User> users { get; set; }
+    public virtual ICollection<User> Users { get; set; }
 }

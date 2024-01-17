@@ -14,14 +14,12 @@
 	
   <ItemGroup>
     <Folder Include="DependencyInjection\Options\" />
-    <Folder Include="Usecases\V1\Commands\" />
-    <Folder Include="Usecases\V1\Events\" />
-    <Folder Include="Usecases\V1\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BusDelivery.Bus.Domain\BusDelivery.Domain.csproj" />
     <ProjectReference Include="..\BusDelivery.Bus.Persistence\BusDelivery.Persistence.csproj" />
+    <ProjectReference Include="..\BusDelivery.Infrastructure.BlobStorage\BusDelivery.Infrastructure.BlobStorage.csproj" />
   </ItemGroup>
 
 </Project>
