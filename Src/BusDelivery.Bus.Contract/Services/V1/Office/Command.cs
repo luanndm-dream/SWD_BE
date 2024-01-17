@@ -5,7 +5,6 @@ namespace BusDelivery.Contract.Services.V1.Office;
 public class Command
 {
     public record CreateOfficeCommand(
-        int routeId,
         string name,
         string address,
         string lat,
@@ -16,7 +15,6 @@ public class Command
 
     public record UpdateOfficeCommand(
         int id,
-        int routeId,
         string name,
         string address,
         string lat,

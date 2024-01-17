@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusDelivery.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240112174451_DbInit")]
+    [Migration("20240117004326_DbInit")]
     partial class DbInit
     {
         /// <inheritdoc />
@@ -30,518 +30,426 @@ namespace BusDelivery.Persistence.Migrations
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Bus", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("color")
+                    b.Property<string>("Color")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("number")
+                    b.Property<string>("Number")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("numberOfSeat")
+                    b.Property<string>("NumberOfSeat")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("operateTime")
+                    b.Property<string>("OperateTime")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<string>("organization")
+                    b.Property<string>("Organization")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("plateNumber")
+                    b.Property<string>("PlateNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("status")
+                    b.Property<bool>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Bus", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.BusRoute", b =>
                 {
-                    b.Property<int>("routeId")
+                    b.Property<int>("RouteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("busId")
+                    b.Property<int>("BusId")
                         .HasColumnType("int");
 
-                    b.HasKey("routeId", "busId");
+                    b.HasKey("RouteId", "BusId");
 
-                    b.HasIndex("busId");
+                    b.HasIndex("BusId");
 
-                    b.ToTable("BusRoutes", (string)null);
+                    b.ToTable("BusRoute", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Coordinate", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("lat")
+                    b.Property<double>("Lat")
                         .HasColumnType("float");
 
-                    b.Property<double>("lng")
+                    b.Property<double>("Lng")
                         .HasColumnType("float");
 
-                    b.Property<int>("routeId")
+                    b.Property<int>("RouteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("stt")
+                    b.Property<int>("Stt")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("routeId");
+                    b.HasIndex("RouteId");
 
-                    b.ToTable("Coordinates", (string)null);
+                    b.ToTable("Coordinate", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Office", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("address")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("contact")
+                    b.Property<string>("Contact")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("images")
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("lat")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("lng")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("routeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("status")
+                    b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.HasKey("id");
+                    b.Property<string>("Lat")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
-                    b.ToTable("Offices", (string)null);
+                    b.Property<string>("Lng")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Office", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Order", b =>
                 {
-                    b.Property<Guid>("id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("contact")
+                    b.Property<string>("Contact")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("image")
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("note")
+                    b.Property<string>("Note")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("packageId")
+                    b.Property<Guid>("PackageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float>("price")
+                    b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<float>("weight")
+                    b.Property<float>("Weight")
                         .HasColumnType("real");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("packageId");
+                    b.HasIndex("PackageId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Order", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Package", b =>
                 {
-                    b.Property<Guid>("id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("busId")
+                    b.Property<int>("BusId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("createTime")
+                    b.Property<DateTime>("CreateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 13, 0, 44, 51, 622, DateTimeKind.Local).AddTicks(4776));
+                        .HasDefaultValue(new DateTime(2024, 1, 17, 7, 43, 25, 353, DateTimeKind.Local).AddTicks(6054));
 
-                    b.Property<int>("image")
+                    b.Property<int>("Image")
                         .HasColumnType("int");
 
-                    b.Property<string>("note")
+                    b.Property<string>("Note")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("officeId")
+                    b.Property<int>("OfficeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("quantity")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("stationId")
+                    b.Property<int>("StationId")
                         .HasColumnType("int");
 
-                    b.Property<string>("status")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("True");
 
-                    b.Property<float>("totalPrice")
+                    b.Property<float>("TotalPrice")
                         .HasColumnType("real");
 
-                    b.Property<float>("totalWeight")
+                    b.Property<float>("TotalWeight")
                         .HasColumnType("real");
 
-                    b.Property<Guid>("userId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasKey("Id");
 
-                    b.HasKey("id");
+                    b.HasIndex("BusId");
 
-                    b.HasIndex("busId");
+                    b.HasIndex("OfficeId");
 
-                    b.HasIndex("officeId");
+                    b.HasIndex("StationId");
 
-                    b.HasIndex("stationId");
-
-                    b.ToTable("Packages", (string)null);
-                });
-
-            modelBuilder.Entity("BusDelivery.Domain.Entities.RefreshToken", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("clientId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("createdOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("deviceId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("expiresOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("userId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("token")
-                        .IsUnique();
-
-                    b.HasIndex("userId");
-
-                    b.HasIndex("clientId", "deviceId")
-                        .IsUnique();
-
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("Package", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Report", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("content")
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("createBy")
+                    b.Property<Guid>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("createTime")
+                    b.Property<DateTime>("CreateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 13, 0, 44, 51, 623, DateTimeKind.Local).AddTicks(1325));
+                        .HasDefaultValue(new DateTime(2024, 1, 17, 7, 43, 25, 353, DateTimeKind.Local).AddTicks(8832));
 
-                    b.Property<int>("targetId")
+                    b.Property<int>("TargetId")
                         .HasColumnType("int");
 
-                    b.Property<string>("type")
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("createBy");
+                    b.HasIndex("CreateBy");
 
-                    b.ToTable("Reports", (string)null);
+                    b.ToTable("Report", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Role", b =>
                 {
-                    b.Property<Guid>("id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Role", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Route", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("endPoint")
+                    b.Property<string>("EndPoint")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("operateTime")
+                    b.Property<string>("OperateTime")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("startPoint")
+                    b.Property<string>("StartPoint")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("status")
+                    b.Property<bool>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.ToTable("Routes", (string)null);
+                    b.ToTable("Route", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Station", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("lat")
+                    b.Property<string>("Lat")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("lng")
+                    b.Property<string>("Lng")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("officeId")
+                    b.Property<int>("OfficeId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("officeId");
+                    b.HasIndex("OfficeId");
 
-                    b.ToTable("Stations", (string)null);
+                    b.ToTable("Station", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.StationRoute", b =>
                 {
-                    b.Property<int>("routeId")
+                    b.Property<int>("RouteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("stationId")
+                    b.Property<int>("StationId")
                         .HasColumnType("int");
 
-                    b.HasKey("routeId", "stationId");
+                    b.HasKey("RouteId", "StationId");
 
-                    b.HasIndex("stationId");
+                    b.HasIndex("StationId");
 
-                    b.ToTable("StationRoutes", (string)null);
+                    b.ToTable("StationRoute", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.User", b =>
                 {
-                    b.Property<Guid>("id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DeviceId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeviceVersion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gentle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OS")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("deviceId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("deviceVersion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("gentle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1)");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("officeId")
+                    b.Property<int>("OfficeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("phoneNumber")
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("roleId")
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("status")
+                    b.Property<bool>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("officeId");
+                    b.HasIndex("OfficeId");
 
-                    b.HasIndex("roleId");
+                    b.HasIndex("RoleId");
 
-                    b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("BusDelivery.Domain.Entities.UserPackage", b =>
-                {
-                    b.Property<Guid>("userId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("packageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("userId", "packageId");
-
-                    b.HasIndex("packageId");
-
-                    b.ToTable("UserPackages", (string)null);
-                });
-
-            modelBuilder.Entity("BusDelivery.Domain.Entities.Weather", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<double>("humidity")
-                        .HasColumnType("float");
-
-                    b.Property<int>("officeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("recordAt")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("temperature")
-                        .HasColumnType("float");
-
-                    b.Property<double>("windySpeed")
-                        .HasColumnType("float");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("officeId");
-
-                    b.ToTable("Weathers", (string)null);
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.BusRoute", b =>
                 {
                     b.HasOne("BusDelivery.Domain.Entities.Bus", null)
-                        .WithMany("busRoutes")
-                        .HasForeignKey("busId")
+                        .WithMany("BusRoutes")
+                        .HasForeignKey("BusId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BusDelivery.Domain.Entities.Route", null)
-                        .WithMany("busRoutes")
-                        .HasForeignKey("routeId")
+                        .WithMany("BusRoutes")
+                        .HasForeignKey("RouteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -549,8 +457,8 @@ namespace BusDelivery.Persistence.Migrations
             modelBuilder.Entity("BusDelivery.Domain.Entities.Coordinate", b =>
                 {
                     b.HasOne("BusDelivery.Domain.Entities.Route", null)
-                        .WithMany("coordinates")
-                        .HasForeignKey("routeId")
+                        .WithMany("Coordinates")
+                        .HasForeignKey("RouteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -558,8 +466,8 @@ namespace BusDelivery.Persistence.Migrations
             modelBuilder.Entity("BusDelivery.Domain.Entities.Order", b =>
                 {
                     b.HasOne("BusDelivery.Domain.Entities.Package", null)
-                        .WithMany("orders")
-                        .HasForeignKey("packageId")
+                        .WithMany("Orders")
+                        .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -567,38 +475,29 @@ namespace BusDelivery.Persistence.Migrations
             modelBuilder.Entity("BusDelivery.Domain.Entities.Package", b =>
                 {
                     b.HasOne("BusDelivery.Domain.Entities.Bus", null)
-                        .WithMany("packages")
-                        .HasForeignKey("busId")
+                        .WithMany("Packages")
+                        .HasForeignKey("BusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusDelivery.Domain.Entities.Office", null)
-                        .WithMany("packages")
-                        .HasForeignKey("officeId")
+                        .WithMany("Packages")
+                        .HasForeignKey("OfficeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusDelivery.Domain.Entities.Station", null)
-                        .WithMany("packages")
-                        .HasForeignKey("stationId")
+                        .WithMany("Packages")
+                        .HasForeignKey("StationId")
                         .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BusDelivery.Domain.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("BusDelivery.Domain.Entities.User", null)
-                        .WithMany("refreshTokens")
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Report", b =>
                 {
                     b.HasOne("BusDelivery.Domain.Entities.User", null)
-                        .WithMany("reports")
-                        .HasForeignKey("createBy")
+                        .WithMany("Reports")
+                        .HasForeignKey("CreateBy")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -606,8 +505,8 @@ namespace BusDelivery.Persistence.Migrations
             modelBuilder.Entity("BusDelivery.Domain.Entities.Station", b =>
                 {
                     b.HasOne("BusDelivery.Domain.Entities.Office", null)
-                        .WithMany("stations")
-                        .HasForeignKey("officeId")
+                        .WithMany("Stations")
+                        .HasForeignKey("OfficeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -615,14 +514,14 @@ namespace BusDelivery.Persistence.Migrations
             modelBuilder.Entity("BusDelivery.Domain.Entities.StationRoute", b =>
                 {
                     b.HasOne("BusDelivery.Domain.Entities.Route", null)
-                        .WithMany("stationRoutes")
-                        .HasForeignKey("routeId")
+                        .WithMany("StationRoutes")
+                        .HasForeignKey("RouteId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BusDelivery.Domain.Entities.Station", null)
-                        .WithMany("stationRoutes")
-                        .HasForeignKey("stationId")
+                        .WithMany("StationRoutes")
+                        .HasForeignKey("StationId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -630,95 +529,63 @@ namespace BusDelivery.Persistence.Migrations
             modelBuilder.Entity("BusDelivery.Domain.Entities.User", b =>
                 {
                     b.HasOne("BusDelivery.Domain.Entities.Office", null)
-                        .WithMany("users")
-                        .HasForeignKey("officeId")
+                        .WithMany("Users")
+                        .HasForeignKey("OfficeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusDelivery.Domain.Entities.Role", null)
-                        .WithMany("users")
-                        .HasForeignKey("roleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BusDelivery.Domain.Entities.UserPackage", b =>
-                {
-                    b.HasOne("BusDelivery.Domain.Entities.Package", null)
-                        .WithMany("userPackages")
-                        .HasForeignKey("packageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BusDelivery.Domain.Entities.User", null)
-                        .WithMany("userPackages")
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BusDelivery.Domain.Entities.Weather", b =>
-                {
-                    b.HasOne("BusDelivery.Domain.Entities.Office", null)
-                        .WithMany("weathers")
-                        .HasForeignKey("officeId")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Bus", b =>
                 {
-                    b.Navigation("busRoutes");
+                    b.Navigation("BusRoutes");
 
-                    b.Navigation("packages");
+                    b.Navigation("Packages");
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Office", b =>
                 {
-                    b.Navigation("packages");
+                    b.Navigation("Packages");
 
-                    b.Navigation("stations");
+                    b.Navigation("Stations");
 
-                    b.Navigation("users");
-
-                    b.Navigation("weathers");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Package", b =>
                 {
-                    b.Navigation("orders");
-
-                    b.Navigation("userPackages");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Role", b =>
                 {
-                    b.Navigation("users");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Route", b =>
                 {
-                    b.Navigation("busRoutes");
+                    b.Navigation("BusRoutes");
 
-                    b.Navigation("coordinates");
+                    b.Navigation("Coordinates");
 
-                    b.Navigation("stationRoutes");
+                    b.Navigation("StationRoutes");
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Station", b =>
                 {
-                    b.Navigation("packages");
+                    b.Navigation("Packages");
 
-                    b.Navigation("stationRoutes");
+                    b.Navigation("StationRoutes");
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.User", b =>
                 {
-                    b.Navigation("refreshTokens");
-
-                    b.Navigation("reports");
-
-                    b.Navigation("userPackages");
+                    b.Navigation("Reports");
                 });
 #pragma warning restore 612, 618
         }

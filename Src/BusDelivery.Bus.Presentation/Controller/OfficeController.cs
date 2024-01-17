@@ -35,7 +35,6 @@ public class OfficeController : ApiController
         return Ok(result);
     }
 
-
     [HttpGet("GetOffices/{officeId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeReponses>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -64,7 +63,6 @@ public class OfficeController : ApiController
         var updateOffice = new Command.UpdateOfficeCommand
         (
             officeId,
-            request.routeId,
             request.name,
             request.address,
             request.lat,

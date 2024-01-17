@@ -3,8 +3,8 @@
 namespace BusDelivery.Domain.Entities;
 public class Coordinate : DomainEntity<int>
 {
-    public double lat { get; set; }
-    public double lng { get; set; }
-    public int stt { get; set; }
-    public int routeId { get; set; }
+    public double Lat { get; set; }
+    public double Lng { get; set; }
+    public int Stt { get; set; }
+    public int RouteId { get; set; }
 }

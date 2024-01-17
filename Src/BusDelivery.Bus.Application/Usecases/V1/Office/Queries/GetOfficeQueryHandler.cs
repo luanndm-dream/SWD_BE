@@ -22,7 +22,7 @@ public sealed class GetOfficeQueryHandler : IQueryHandler<Query.GetOfficeQuery, 
     {
         var EventsQuery = string.IsNullOrWhiteSpace(request.searchTerm)
         ? officeRepository.FindAll()
-        : officeRepository.FindAll(x => x.name.Contains(request.searchTerm) || x.address.Contains(request.searchTerm));
+        : officeRepository.FindAll(x => x.Name.Contains(request.searchTerm) || x.Address.Contains(request.searchTerm));
 
         var keySelector = GetSortProperty(request);
 
@@ -42,8 +42,8 @@ public sealed class GetOfficeQueryHandler : IQueryHandler<Query.GetOfficeQuery, 
     public static Expression<Func<Domain.Entities.Office, object>> GetSortProperty(Query.GetOfficeQuery request)
         => request.sortColumn?.ToLower() switch
         {
-            "name" => e => e.name,
-            "address" => e => e.address,
-            _ => e => e.name
+            "name" => e => e.Name,
+            "address" => e => e.Address,
+            _ => e => e.Name
         };
 }

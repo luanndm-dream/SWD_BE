@@ -3,10 +3,10 @@
 namespace BusDelivery.Domain.Entities;
 public class Station : DomainEntity<int>
 {
-    public int officeId { get; set; }
-    public string name { get; set; }
-    public string lat { get; set; }
-    public string lng { get; set; }
-    public virtual ICollection<Package> packages { get; set; }
-    public virtual ICollection<StationRoute> stationRoutes { get; set; }
+    public int OfficeId { get; set; }
+    public string Name { get; set; }
+    public string Lat { get; set; }
+    public string Lng { get; set; }
+    public virtual ICollection<Package> Packages { get; set; }
+    public virtual ICollection<StationRoute> StationRoutes { get; set; }
 }

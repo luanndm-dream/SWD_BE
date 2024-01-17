@@ -3,18 +3,16 @@
 namespace BusDelivery.Domain.Entities;
 public class Package : DomainEntity<Guid>
 {
-    public Guid userId { get; set; }
-    public int officeId { get; set; }
-    public int busId { get; set; }
-    public int stationId { get; set; }
-    public int quantity { get; set; }
-    public float totalWeight { get; set; }
-    public float totalPrice { get; set; }
-    public int image { get; set; }
-    public string note { get; set; }
-    public string status { get; set; }
-    public DateTime createTime { get; set; }
+    public int BusId { get; set; }
+    public int OfficeId { get; set; }
+    public int StationId { get; set; }
+    public int Quantity { get; set; }
+    public float TotalWeight { get; set; }
+    public float TotalPrice { get; set; }
+    public int Image { get; set; }
+    public string Note { get; set; }
+    public string Status { get; set; }
+    public DateTime CreateTime { get; set; }
 
-    public virtual ICollection<UserPackage> userPackages { get; set; }
-    public virtual ICollection<Order> orders { get; set; }
+    public virtual ICollection<Order> Orders { get; set; }
 }
