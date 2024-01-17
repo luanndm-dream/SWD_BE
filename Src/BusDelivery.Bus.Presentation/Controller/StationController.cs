@@ -7,6 +7,7 @@ using BusDelivery.Presentation.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace BusDelivery.Presentation.Controller;
 [ApiVersion(1)]
@@ -21,6 +22,40 @@ public class StationController : ApiController
     public async Task<IActionResult> Station([FromRoute] int stationId )
     {
         var result = await sender.Send(new Query.GetStationById(stationId));
+        return Ok(result);
+    }
+    [HttpPost("CreateStation")]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Station([FromForm] Command.CreateStationRequest request)
+    {
+        var result = await sender.Send(request);
+        return Ok(result);
+    }
+    [HttpPut("UpdateStation")]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Station ([FromQuery] Command.UpdateStationRequest request)
+    {
+        //var updateStation = new Command.UpdateStationRequest(stationId)
+        //{
+        //    officeId = request.officeId,
+        //    name = request.name,
+        //    lat = request.lat,
+        //    lng = request.lng,
+
+        //};
+        
+        var result = await sender.Send(request);
+        return Ok(result);
+    }
+
+    [HttpDelete("{stationId}")]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteOffices(int stationId)
+    {
+        var result = await sender.Send(new Command.DeleteStationRequest(stationId));
         return Ok(result);
     }
 }
