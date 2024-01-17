@@ -8,12 +8,12 @@ public class CoordinateConfiguration : IEntityTypeConfiguration<Coordinate>
 {
     public void Configure(EntityTypeBuilder<Coordinate> builder)
     {
-        builder.ToTable(TableName.Coordinates);
-        builder.HasKey(x => x.id);
+        builder.ToTable(TableName.Coordinate);
+        builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.lat).IsRequired();
-        builder.Property(x => x.lng).IsRequired();
-        builder.Property(x => x.stt).IsRequired();
-        builder.Property(x => x.routeId).IsRequired();
+        builder.Property(x => x.Lat).IsRequired();
+        builder.Property(x => x.Lng).IsRequired();
+        builder.Property(x => x.Stt).IsRequired();
+        builder.Property(x => x.RouteId).IsRequired();
     }
 }

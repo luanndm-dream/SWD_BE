@@ -8,14 +8,14 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        builder.ToTable(TableName.Orders);
-        builder.HasKey(x => x.id);
+        builder.ToTable(TableName.Order);
+        builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.packageId).IsRequired();
-        builder.Property(x => x.image).IsRequired();
-        builder.Property(x => x.weight).IsRequired();
-        builder.Property(x => x.price).IsRequired();
-        builder.Property(x => x.note).IsRequired();
-        builder.Property(x => x.contact).IsRequired();
+        builder.Property(x => x.PackageId).IsRequired();
+        builder.Property(x => x.Image).IsRequired();
+        builder.Property(x => x.Weight).IsRequired();
+        builder.Property(x => x.Price).IsRequired();
+        builder.Property(x => x.Note).IsRequired();
+        builder.Property(x => x.Contact).IsRequired();
     }
 }

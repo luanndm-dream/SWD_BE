@@ -3,15 +3,15 @@
 namespace BusDelivery.Domain.Entities;
 public class Route : DomainEntity<int>
 {
-    public string name { get; set; }
-    public string description { get; set; }
-    public bool status { get; set; }
-    public string startPoint { get; set; }
-    public string endPoint { get; set; }
-    public string operateTime { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public bool Status { get; set; }
+    public string StartPoint { get; set; }
+    public string EndPoint { get; set; }
+    public string OperateTime { get; set; }
 
-    public virtual ICollection<Coordinate> coordinates { get; set; }
-    public virtual ICollection<BusRoute> busRoutes { get; set; }
-    public virtual ICollection<StationRoute> stationRoutes { get; set; }
+    public virtual ICollection<Coordinate> Coordinates { get; set; }
+    public virtual ICollection<BusRoute> BusRoutes { get; set; }
+    public virtual ICollection<StationRoute> StationRoutes { get; set; }
 
 }

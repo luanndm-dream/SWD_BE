@@ -3,9 +3,9 @@
 namespace BusDelivery.Domain.Entities;
 public class Report : DomainEntity<int>
 {
-    public string content { get; set; }
-    public DateTime createTime { get; set; }
-    public Guid createBy { get; set; }
-    public int targetId { get; set; }
-    public string type { get; set; }
+    public string Content { get; set; }
+    public DateTime CreateTime { get; set; }
+    public Guid CreateBy { get; set; }
+    public int TargetId { get; set; }
+    public string Type { get; set; }
 }

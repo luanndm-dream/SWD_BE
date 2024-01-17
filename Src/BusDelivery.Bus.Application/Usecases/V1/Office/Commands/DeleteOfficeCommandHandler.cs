@@ -6,7 +6,7 @@ using BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Office.Commands;
-public class DeleteOfficeCommandHandler : ICommandHandler<Command.DeleteOfficeCommand>
+public sealed class DeleteOfficeCommandHandler : ICommandHandler<Command.DeleteOfficeCommand>
 {
     private readonly IBlobStorageRepository blobStorageRepository;
     private readonly OfficeRepository officeRepository;
@@ -19,7 +19,7 @@ public class DeleteOfficeCommandHandler : ICommandHandler<Command.DeleteOfficeCo
     {
         var existOffice = await officeRepository.FindByIdAsync(request.id)
             ?? throw new OfficeException.OfficeIdNotFoundException(request.id);
-        var imageUrl = existOffice.images;
+        var imageUrl = existOffice.Image;
         try
         {
             officeRepository.Remove(existOffice);

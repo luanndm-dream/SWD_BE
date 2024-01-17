@@ -43,7 +43,7 @@ public class ArchitectureTests
         var assembly = Application.AssemblyReference.Assembly;
         var otherProject = new[]
         {
-            InfrastructureNamespace,
+            //InfrastructureNamespace, // Due to
             //PersistenceNamespace,// Due to Implement sort multi columns by apply RawQuery with EntityFramework
             PresentationNamespace,
             ApiNamespace

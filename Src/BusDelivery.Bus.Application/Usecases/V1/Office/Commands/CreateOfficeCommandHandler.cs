@@ -7,7 +7,7 @@ using BusDelivery.Persistence;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Office.Commands;
-public class CreateOfficeCommandHandler : ICommandHandler<Command.CreateOfficeCommand, Responses.OfficeReponses>
+public sealed class CreateOfficeCommandHandler : ICommandHandler<Command.CreateOfficeCommand, Responses.OfficeReponses>
 {
     private readonly IBlobStorageRepository blobStorageRepository;
     private readonly OfficeRepository officeRepository;
@@ -27,14 +27,13 @@ public class CreateOfficeCommandHandler : ICommandHandler<Command.CreateOfficeCo
             ?? throw new Exception("Upload File fail");
         var office = new Domain.Entities.Office
         {
-            routeId = request.routeId,
-            name = request.name,
-            address = request.address,
-            lat = request.lat,
-            lng = request.lng,
-            contact = request.contact,
-            images = imageUrl,
-            status = request.status,
+            Name = request.name,
+            Address = request.address,
+            Lat = request.lat,
+            Lng = request.lng,
+            Contact = request.contact,
+            Image = imageUrl,
+            IsActive = request.status,
         };
         try
         {

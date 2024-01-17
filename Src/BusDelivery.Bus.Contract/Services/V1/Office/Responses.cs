@@ -3,7 +3,6 @@ public static class Responses
 {
     public record OfficeReponses(
         int id,
-        int routeId,
         string name,
         string address,
         string lat,

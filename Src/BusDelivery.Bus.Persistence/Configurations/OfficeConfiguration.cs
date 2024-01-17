@@ -9,34 +9,27 @@ public class OfficeConfiguration : IEntityTypeConfiguration<Office>
 {
     public void Configure(EntityTypeBuilder<Office> builder)
     {
-        builder.ToTable(TableName.Offices);
-        builder.HasKey(x => x.id);
+        builder.ToTable(TableName.Office);
+        builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.routeId).IsRequired();
-        builder.Property(x => x.name).IsRequired();
-        builder.Property(x => x.address).IsRequired();
-        builder.Property(x => x.lat).HasMaxLength(10);
-        builder.Property(x => x.lng).HasMaxLength(15);
-        builder.Property(x => x.contact).IsRequired();
-        builder.Property(x => x.images).IsRequired();
-        builder.Property(x => x.status).HasDefaultValue(true);
-
-        //Each Office can have many Weathers
-        builder.HasMany(x => x.weathers)
-            .WithOne()
-            .HasForeignKey(r => r.officeId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(x => x.Name).IsRequired();
+        builder.Property(x => x.Address).IsRequired();
+        builder.Property(x => x.Lat).HasMaxLength(10);
+        builder.Property(x => x.Lng).HasMaxLength(15);
+        builder.Property(x => x.Contact).IsRequired();
+        builder.Property(x => x.Image).IsRequired();
+        builder.Property(x => x.IsActive).HasDefaultValue(true);
 
         //Each Office can have many Stations
-        builder.HasMany(x => x.stations)
+        builder.HasMany(x => x.Stations)
             .WithOne()
-            .HasForeignKey(r => r.officeId)
+            .HasForeignKey(r => r.OfficeId)
             .OnDelete(DeleteBehavior.Cascade);
 
         //Each Office can have many Users
-        builder.HasMany(x => x.users)
+        builder.HasMany(x => x.Users)
             .WithOne()
-            .HasForeignKey(r => r.officeId)
+            .HasForeignKey(r => r.OfficeId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

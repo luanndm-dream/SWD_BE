@@ -1,8 +1,8 @@
 ﻿namespace BusDelivery.Domain.Abstractions.EntityBase;
 public abstract class DomainEntity<T>
 {
-    public virtual T id { get; set; }
+    public virtual T Id { get; set; }
 
     public bool IsTransient()
-        => id.Equals(default(T));
+        => Id.Equals(default(T));
 }

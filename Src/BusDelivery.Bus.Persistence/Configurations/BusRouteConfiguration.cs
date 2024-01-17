@@ -9,8 +9,8 @@ public class BusRouteConfiguration : IEntityTypeConfiguration<BusRoute>
 {
     public void Configure(EntityTypeBuilder<BusRoute> builder)
     {
-        builder.ToTable(TableName.BusRoutes);
+        builder.ToTable(TableName.BusRoute);
 
-        builder.HasKey(x => new { x.routeId, x.busId });
+        builder.HasKey(x => new { x.RouteId, x.BusId });
     }
 }

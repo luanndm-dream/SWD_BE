@@ -7,7 +7,7 @@ using BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Office.Commands;
-public class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateOfficeCommand, Responses.OfficeReponses>
+public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateOfficeCommand, Responses.OfficeReponses>
 {
     private readonly IBlobStorageRepository blobStorageRepository;
     private readonly OfficeRepository officeRepository;
@@ -25,14 +25,13 @@ public class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateOfficeCo
             ?? throw new OfficeException.OfficeIdNotFoundException(request.id);
 
         // Delete oldImage and Upload newImage
-        var oldimageUrl = existOffice.images;
-        blobStorageRepository.DeleteImageFromBlobStorage(existOffice.images);
+        var oldimageUrl = existOffice.Image;
+        blobStorageRepository.DeleteImageFromBlobStorage(existOffice.Image);
         var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, request.name, "offices")
             ?? throw new Exception("Upload File fail");
 
         existOffice.Update(
             request.id,
-            request.routeId,
             request.name,
             request.address,
             request.lat,

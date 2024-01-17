@@ -8,13 +8,13 @@ public class ReportConfiguration : IEntityTypeConfiguration<Report>
 {
     public void Configure(EntityTypeBuilder<Report> builder)
     {
-        builder.ToTable(TableName.Reports);
-        builder.HasKey(x => x.id);
+        builder.ToTable(TableName.Report);
+        builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.content).IsRequired();
-        builder.Property(x => x.createBy).IsRequired();
-        builder.Property(x => x.targetId).IsRequired();
-        builder.Property(x => x.createTime).HasDefaultValue(DateTime.Now);
-        builder.Property(x => x.type).IsRequired();
+        builder.Property(x => x.Content).IsRequired();
+        builder.Property(x => x.CreateBy).IsRequired();
+        builder.Property(x => x.TargetId).IsRequired();
+        builder.Property(x => x.CreateTime).HasDefaultValue(DateTime.Now);
+        builder.Property(x => x.Type).IsRequired();
     }
 }

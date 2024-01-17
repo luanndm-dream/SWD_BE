@@ -8,24 +8,24 @@ public class StationConfiguration : IEntityTypeConfiguration<Station>
 {
     public void Configure(EntityTypeBuilder<Station> builder)
     {
-        builder.ToTable(TableName.Stations);
-        builder.HasKey(x => x.id);
+        builder.ToTable(TableName.Station);
+        builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.officeId).IsRequired();
-        builder.Property(x => x.name).IsRequired();
-        builder.Property(x => x.lat).IsRequired();
-        builder.Property(x => x.lng).IsRequired();
+        builder.Property(x => x.OfficeId).IsRequired();
+        builder.Property(x => x.Name).IsRequired();
+        builder.Property(x => x.Lat).IsRequired();
+        builder.Property(x => x.Lng).IsRequired();
 
         //Each Station can have many Packages
-        builder.HasMany(x => x.packages)
+        builder.HasMany(x => x.Packages)
             .WithOne()
-            .HasForeignKey(r => r.stationId)
+            .HasForeignKey(r => r.StationId)
             .OnDelete(DeleteBehavior.NoAction);
 
         //Each Station can have many StationRoutes
-        builder.HasMany(x => x.stationRoutes)
+        builder.HasMany(x => x.StationRoutes)
             .WithOne()
-            .HasForeignKey(r => r.stationId)
+            .HasForeignKey(r => r.StationId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

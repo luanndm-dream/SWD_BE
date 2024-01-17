@@ -8,36 +8,25 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable(TableName.Users);
-        builder.HasKey(x => x.id);
+        builder.ToTable(TableName.User);
+        builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.roleId).IsRequired();
-        builder.Property(x => x.officeId).IsRequired();
-        builder.Property(x => x.name).IsRequired();
-        builder.Property(x => x.email).IsRequired();
-        builder.Property(x => x.phoneNumber).IsRequired();
-        builder.Property(x => x.gentle).IsRequired();
-        builder.Property(x => x.status).HasDefaultValue(true);
-        builder.Property(x => x.deviceId).IsRequired();
-        builder.Property(x => x.deviceVersion).IsRequired();
+        builder.Property(x => x.RoleId).IsRequired();
+        builder.Property(x => x.OfficeId).IsRequired();
+        builder.Property(x => x.Name).IsRequired();
+        builder.Property(x => x.Email).IsRequired();
+        builder.Property(x => x.PhoneNumber).IsRequired();
+        builder.Property(x => x.Gentle).IsRequired();
+        builder.Property(x => x.Status).HasDefaultValue(true);
+        builder.Property(x => x.DeviceId).IsRequired();
+        builder.Property(x => x.DeviceVersion).IsRequired();
         builder.Property(x => x.OS).IsRequired();
 
-        //Each User can have many RefreshToken
-        builder.HasMany(x => x.refreshTokens)
+        //Each User can have many Reports
+        builder.HasMany(x => x.Reports)
             .WithOne()
-            .HasForeignKey(r => r.userId)
+            .HasForeignKey(r => r.CreateBy)
             .OnDelete(DeleteBehavior.Cascade);
 
-        //Each User can have many RefreshToken
-        builder.HasMany(x => x.reports)
-            .WithOne()
-            .HasForeignKey(r => r.createBy)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        //Each User can have many RefreshToken
-        builder.HasMany(x => x.userPackages)
-            .WithOne()
-            .HasForeignKey(r => r.userId)
-            .OnDelete(DeleteBehavior.NoAction);
     }
 }

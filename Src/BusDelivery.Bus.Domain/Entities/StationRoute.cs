@@ -1,6 +1,6 @@
 ﻿namespace BusDelivery.Domain.Entities;
 public class StationRoute
 {
-    public int stationId { get; set; }
-    public int routeId { get; set; }
+    public int StationId { get; set; }
+    public int RouteId { get; set; }
 }
