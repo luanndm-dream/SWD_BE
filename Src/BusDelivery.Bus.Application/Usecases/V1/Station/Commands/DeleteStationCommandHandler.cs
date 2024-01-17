@@ -14,23 +14,20 @@ namespace BusDelivery.Application.Usecases.V1.Station.Commands;
 public sealed class DeleteStationCommandHandler : ICommandHandler<Command.DeleteStationRequest>
 {
     private readonly StationRepository stationRepository;
-    private readonly ApplicationDbContext context;
     private readonly IMapper mapper;
-    public DeleteStationCommandHandler(StationRepository stationRepository, ApplicationDbContext context, IMapper mapper)
+    public DeleteStationCommandHandler(StationRepository stationRepository,IMapper mapper)
     {
         this.stationRepository = stationRepository;
-        this.context = context; 
         this.mapper = mapper;   
     }
 
     public async Task<Result> Handle(Command.DeleteStationRequest request, CancellationToken cancellationToken)
     {
-        var station = context.Stations.Where( x => x.id == request.stationID).SingleOrDefault()
-            ?? throw new Exception("Station not found");
+        var station = await stationRepository.FindByIdAsync(request.stationId)
+            ?? throw new Exception();
         try
         {
             stationRepository.Remove(station);
-            context.SaveChanges();
             return Result.Success(202);
         }
         catch

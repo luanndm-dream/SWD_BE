@@ -16,48 +16,39 @@ using Microsoft.EntityFrameworkCore;
 namespace BusDelivery.Application.Usecases.V1.Station.Commands;
 public sealed class CreateStationCommandHandler : ICommandHandler<Command.CreateStationRequest, Responses.GetStationResponse>
 {
-    private readonly IBlobStorageRepository blobStorageRepository;
     private readonly IMapper mapper;
     private readonly ApplicationDbContext context;
     private readonly StationRepository stationRepository;
 
     public CreateStationCommandHandler(ApplicationDbContext dbContext, StationRepository stationRepository, IMapper mapper, IBlobStorageRepository blobStorageRepository)
     {
-        
+
         this.stationRepository = stationRepository;
         this.mapper = mapper;
-        this.blobStorageRepository = blobStorageRepository;
         context = dbContext;
     }
-    public  async Task<Result<Responses.GetStationResponse>> Handle(Command.CreateStationRequest request, CancellationToken cancellationToken)
+    public async Task<Result<Responses.GetStationResponse>> Handle(Command.CreateStationRequest request, CancellationToken cancellationToken)
     {
-        
-        var check = await context.Stations.Where(x => x.officeId == request.officeId 
-                                                    && x.name == request.name 
-                                                    && x.lat == request.lat 
-                                                    && x.lng == request.lng).ToListAsync();
-        if (check.Any())
+        var station = new Domain.Entities.Station()
         {
-            throw new Exception("This station already exist!");
-        }
-        else
+            OfficeId = request.officeId,
+            Name = request.name ?? string.Empty,
+            Lat = request.lat ?? string.Empty,
+            Lng = request.lng ?? string.Empty,
+        };
+        try
         {
-            var station = new Domain.Entities.Station()
-            {
-                officeId = request.officeId,
-                name = request.name,
-                lat = request.lat,
-                lng = request.lng,
-            };
-            
-            context.AddRangeAsync(station);
+            stationRepository.Add(station);
             await context.SaveChangesAsync();
             var response = mapper.Map<Responses.GetStationResponse>(station);
-            return await Task.FromResult(response
-                );
-    
+            return Result.Success(response,201);
         }
-        
-            
+        catch (Exception)
+        {
+            throw new Exception("Add new station error");
+        }
+
     }
-}
+}    
+            
+    

@@ -24,6 +24,6 @@ public class Command
         public string? lng { get; set; }
     }
 
-    public record DeleteStationRequest(int stationID) : ICommand;
+    public record DeleteStationRequest(int stationId) : ICommand;
    
 }

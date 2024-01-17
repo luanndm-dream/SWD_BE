@@ -10,8 +10,8 @@ public class GetStationByIdValidator : AbstractValidator<Query.GetStationById>
 {
     public GetStationByIdValidator()
     {
-        RuleFor(x => x.stationId)
-    .NotNull().WithMessage("officeId is not null");
+        RuleFor(x => x.id)
+        .NotNull().WithMessage("StationId is not null");
 
     }
 }

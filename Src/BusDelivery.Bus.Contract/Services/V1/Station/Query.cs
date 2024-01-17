@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Enumerations;
-using BusDelivery.Contract.Services.V1.Office;
 
 namespace BusDelivery.Contract.Services.V1.Station;
 public class Query
@@ -18,5 +17,5 @@ public class Query
         int pageIndex, int pageSize)
         : IQuery<PagedResult<Responses.GetStationResponse>>;
 
-    public record GetStationById(int stationId) : IQuery<Responses.GetStationResponse>;
+    public record GetStationById(int id) : IQuery<Responses.GetStationResponse>;
 }
