@@ -5,10 +5,11 @@ public class Route : DomainEntity<int>
 {
     public string Name { get; set; }
     public string Description { get; set; }
-    public bool Status { get; set; }
     public string StartPoint { get; set; }
     public string EndPoint { get; set; }
     public string OperateTime { get; set; }
+    public bool IsActive { get; set; }
+    public bool IsDeleted { get; set; }
 
     public virtual ICollection<Coordinate> Coordinates { get; set; }
     public virtual ICollection<BusRoute> BusRoutes { get; set; }

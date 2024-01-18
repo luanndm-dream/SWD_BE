@@ -15,6 +15,8 @@ public class StationConfiguration : IEntityTypeConfiguration<Station>
         builder.Property(x => x.Name).IsRequired();
         builder.Property(x => x.Lat).IsRequired();
         builder.Property(x => x.Lng).IsRequired();
+        builder.Property(x => x.IsActive).HasDefaultValue(true);
+        builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
         //Each Station can have many Packages
         builder.HasMany(x => x.Packages)
