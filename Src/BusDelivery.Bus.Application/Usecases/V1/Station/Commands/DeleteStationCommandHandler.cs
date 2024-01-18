@@ -7,6 +7,7 @@ using AutoMapper;
 using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.Station;
+using BusDelivery.Domain.Exceptions;
 using BusDelivery.Persistence;
 using BusDelivery.Persistence.Repositories;
 
@@ -24,7 +25,7 @@ public sealed class DeleteStationCommandHandler : ICommandHandler<Command.Delete
     public async Task<Result> Handle(Command.DeleteStationRequest request, CancellationToken cancellationToken)
     {
         var station = await stationRepository.FindByIdAsync(request.stationId)
-            ?? throw new Exception();
+            ?? throw new StationException.StationIdNotFoundException(request.stationId);
         try
         {
             stationRepository.Remove(station);
@@ -32,7 +33,7 @@ public sealed class DeleteStationCommandHandler : ICommandHandler<Command.Delete
         }
         catch
         {
-            throw new Exception("Delete not success");
+            throw new Exception("Delete Station not success!");
         }
 
     }

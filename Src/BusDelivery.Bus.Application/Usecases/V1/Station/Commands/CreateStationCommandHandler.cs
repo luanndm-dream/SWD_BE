@@ -20,7 +20,7 @@ public sealed class CreateStationCommandHandler : ICommandHandler<Command.Create
     private readonly ApplicationDbContext context;
     private readonly StationRepository stationRepository;
 
-    public CreateStationCommandHandler(ApplicationDbContext dbContext, StationRepository stationRepository, IMapper mapper, IBlobStorageRepository blobStorageRepository)
+    public CreateStationCommandHandler(ApplicationDbContext dbContext, StationRepository stationRepository, IMapper mapper)
     {
 
         this.stationRepository = stationRepository;
@@ -32,9 +32,9 @@ public sealed class CreateStationCommandHandler : ICommandHandler<Command.Create
         var station = new Domain.Entities.Station()
         {
             OfficeId = request.officeId,
-            Name = request.name ?? string.Empty,
-            Lat = request.lat ?? string.Empty,
-            Lng = request.lng ?? string.Empty,
+            Name = request.name,
+            Lat = request.lat,
+            Lng = request.lng,
         };
         try
         {

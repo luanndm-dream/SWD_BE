@@ -50,7 +50,7 @@ public class StationController : ApiController
         return Ok(result);
     }
 
-    [HttpDelete("{stationId}")]
+    [HttpDelete("DeleteStation/{stationId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteOffices(int stationId)

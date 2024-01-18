@@ -30,9 +30,9 @@ public sealed class UpdateStationCommandHandler : ICommandHandler<Command.Update
         try
         {
             station.OfficeId = request.officeId;
-            station.Name = request.name ?? string.Empty;
-            station.Lat = request.lat ?? string.Empty;
-            station.Lng = request.lng ?? string.Empty;
+            station.Name = request.name;
+            station.Lat = request.lat;
+            station.Lng = request.lng;
         }
         catch (Exception )
         {
