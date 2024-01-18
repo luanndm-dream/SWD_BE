@@ -32,7 +32,14 @@ public class ValidationPipelineBehavior<TRequest, TResponse>
 
         if (errors.Any())
         {
-            return CreateValidationResult<TResponse>(errors);
+            var errorMessage = validators.Select(validator => validator.Validate(request))
+                .SelectMany(validatorResult => validatorResult.Errors)
+                .Where(validatorFailure => validatorFailure != null)
+                .Select(failure => failure.ErrorMessage)
+                .Distinct()
+                .ToArray();
+            var errorMessageString = string.Join(";", errorMessage);
+            throw new ValidationException(errorMessageString);
         }
 
         return await next();

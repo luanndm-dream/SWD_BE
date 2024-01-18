@@ -21,13 +21,16 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
 
     public async Task<Result<Responses.OfficeReponses>> Handle(Command.UpdateOfficeCommand request, CancellationToken cancellationToken)
     {
+        // Check existOffice
         var existOffice = await officeRepository.FindByIdAsync(request.id)
             ?? throw new OfficeException.OfficeIdNotFoundException(request.id);
 
         // Delete oldImage and Upload newImage
-        var oldimageUrl = existOffice.Image;
-        blobStorageRepository.DeleteImageFromBlobStorage(existOffice.Image);
-        var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, request.name, "offices")
+        var oldImageUrl = existOffice.Image;
+
+
+        // Save NewImage and GetNewImageUrl
+        var newImageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, request.name, "offices")
             ?? throw new Exception("Upload File fail");
 
         existOffice.Update(
@@ -37,19 +40,22 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
             request.lat,
             request.lng,
             request.contact,
-            imageUrl,
+            newImageUrl,
             request.status);
 
         try
         {
+            // update in Database
             officeRepository.Update(existOffice);
+            // Map to Response
             var officeResponse = mapper.Map<Responses.OfficeReponses>(existOffice);
+            // Delete oldImage In BlobStorage
+            blobStorageRepository.DeleteImageFromBlobStorage(oldImageUrl);
             return Result.Success(officeResponse, 202);
         }
         catch (Exception)
         {
-            await blobStorageRepository.RestoreContainer(oldimageUrl);
-            await blobStorageRepository.DeleteImageFromBlobStorage(imageUrl);
+            await blobStorageRepository.DeleteImageFromBlobStorage(newImageUrl);
             throw new Exception("Update Office Error");
         }
     }

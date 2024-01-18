@@ -6,6 +6,6 @@ public class GetOfficeByIdValidator : AbstractValidator<Query.GetOfficeByIdQuery
     public GetOfficeByIdValidator()
     {
         RuleFor(x => x.officeId)
-            .NotNull().WithMessage("officeId is not null");
+            .NotNull().WithMessage("officeId is required");
     }
 }
