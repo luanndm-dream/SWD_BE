@@ -19,6 +19,7 @@
 	
 	<ItemGroup>
 	  <Folder Include="Services\V1\Bus\Validators\" />
+	  <Folder Include="Services\V1\Route\Validators\" />
 	</ItemGroup>
 
 </Project>
