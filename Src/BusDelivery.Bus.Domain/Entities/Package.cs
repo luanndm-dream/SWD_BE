@@ -1,4 +1,5 @@
-﻿using BusDelivery.Domain.Abstractions.EntityBase;
+﻿using BusDelivery.Contract.Enumerations;
+using BusDelivery.Domain.Abstractions.EntityBase;
 
 namespace BusDelivery.Domain.Entities;
 public class Package : DomainEntity<Guid>
@@ -11,7 +12,7 @@ public class Package : DomainEntity<Guid>
     public float TotalPrice { get; set; }
     public int Image { get; set; }
     public string Note { get; set; }
-    public string Status { get; set; }
+    public PackageStatus Status { get; set; }
     public DateTime CreateTime { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; }

@@ -10,7 +10,7 @@ public class Bus : DomainEntity<int>
     public string Color { get; set; }
     public string NumberOfSeat { get; set; }
     public string OperateTime { get; set; }
-    public bool Status { get; set; }
+    public bool IsActive { get; set; }
 
     public virtual ICollection<Package> Packages { get; set; }
     public virtual ICollection<BusRoute> BusRoutes { get; set; }

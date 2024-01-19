@@ -13,7 +13,7 @@ public class RouteConfiguration : IEntityTypeConfiguration<Route>
 
         builder.Property(x => x.Name).IsRequired();
         builder.Property(x => x.Description).IsRequired();
-        builder.Property(x => x.Status).HasDefaultValue(true);
+        builder.Property(x => x.IsDeleted).HasDefaultValue(false);
         builder.Property(x => x.StartPoint).IsRequired();
         builder.Property(x => x.EndPoint).IsRequired();
         builder.Property(x => x.OperateTime).IsRequired();

@@ -37,6 +37,11 @@ namespace BusDelivery.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -62,11 +67,6 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<string>("PlateNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
 
                     b.HasKey("Id");
 
@@ -96,11 +96,13 @@ namespace BusDelivery.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("Lat")
-                        .HasColumnType("float");
+                    b.Property<string>("Lat")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Lng")
-                        .HasColumnType("float");
+                    b.Property<string>("Lng")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RouteId")
                         .HasColumnType("int");
@@ -139,6 +141,11 @@ namespace BusDelivery.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Lat")
                         .IsRequired()
@@ -205,7 +212,7 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<DateTime>("CreateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 17, 7, 43, 25, 353, DateTimeKind.Local).AddTicks(6054));
+                        .HasDefaultValue(new DateTime(2024, 1, 18, 17, 32, 4, 326, DateTimeKind.Local).AddTicks(6675));
 
                     b.Property<int>("Image")
                         .HasColumnType("int");
@@ -223,11 +230,8 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<int>("StationId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("True");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<float>("TotalPrice")
                         .HasColumnType("real");
@@ -264,7 +268,7 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<DateTime>("CreateTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 17, 7, 43, 25, 353, DateTimeKind.Local).AddTicks(8832));
+                        .HasDefaultValue(new DateTime(2024, 1, 18, 17, 32, 4, 326, DateTimeKind.Local).AddTicks(9437));
 
                     b.Property<int>("TargetId")
                         .HasColumnType("int");
@@ -315,6 +319,14 @@ namespace BusDelivery.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -326,11 +338,6 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<string>("StartPoint")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
 
                     b.HasKey("Id");
 
@@ -344,6 +351,17 @@ namespace BusDelivery.Persistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("IsDeleted")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("False");
 
                     b.Property<string>("Lat")
                         .IsRequired()
@@ -388,29 +406,47 @@ namespace BusDelivery.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreateTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2024, 1, 18, 17, 32, 4, 328, DateTimeKind.Local).AddTicks(6107));
+
                     b.Property<string>("DeviceId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("DeviceVersion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gentle")
+                    b.Property<int>("Gentle")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HashPassword")
                         .IsRequired()
-                        .HasColumnType("nvarchar(1)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OS")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("OfficeId")
                         .HasColumnType("int");
@@ -422,11 +458,6 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
                     b.HasKey("Id");
 
                     b.HasIndex("OfficeId");
@@ -434,6 +465,37 @@ namespace BusDelivery.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("BusDelivery.Domain.Entities.Weather", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Humidity")
+                        .HasColumnType("float");
+
+                    b.Property<int>("OfficeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RecordAt")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Temperature")
+                        .HasColumnType("float");
+
+                    b.Property<double>("WindySpeed")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfficeId");
+
+                    b.ToTable("Weather", (string)null);
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.BusRoute", b =>
@@ -538,6 +600,15 @@ namespace BusDelivery.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BusDelivery.Domain.Entities.Weather", b =>
+                {
+                    b.HasOne("BusDelivery.Domain.Entities.Office", null)
+                        .WithMany("Weathers")
+                        .HasForeignKey("OfficeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BusDelivery.Domain.Entities.Bus", b =>
                 {
                     b.Navigation("BusRoutes");
@@ -552,6 +623,8 @@ namespace BusDelivery.Persistence.Migrations
                     b.Navigation("Stations");
 
                     b.Navigation("Users");
+
+                    b.Navigation("Weathers");
                 });
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Package", b =>

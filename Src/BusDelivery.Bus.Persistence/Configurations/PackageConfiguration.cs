@@ -19,7 +19,7 @@ public class PackageConfiguration : IEntityTypeConfiguration<Package>
         builder.Property(x => x.TotalPrice).IsRequired();
         builder.Property(x => x.Image).IsRequired();
         builder.Property(x => x.Note).IsRequired();
-        builder.Property(x => x.Status).HasDefaultValue(true);
+        builder.Property(x => x.Status).IsRequired();
         builder.Property(x => x.CreateTime).HasDefaultValue(DateTime.Now);
 
         //Each Bus can have many Orders
