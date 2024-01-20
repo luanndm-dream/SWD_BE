@@ -23,6 +23,7 @@ public class Result
     public int? StatusCode { get; } = 200;
 
     public static Result Success() => new(true, "");
+    public static Result Success(int statusCode) => new(true, "", statusCode);
 
     public static Result<TValue> Success<TValue>(TValue value) =>
         new(value, true, "");

@@ -4,12 +4,14 @@ using BusDelivery.Contract.Extensions;
 using BusDelivery.Contract.Services.V1.Office;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusDelivery.Presentation.Controller;
 
 [ApiVersion(1)]
+[Authorize("Admin")]
 public class OfficeController : ApiController
 {
     public OfficeController(ISender sender) : base(sender)
@@ -17,8 +19,8 @@ public class OfficeController : ApiController
     }
 
     [HttpGet("GetOffices")]
-    [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeReponses>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeReponses>>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Offices(
         string? searchTerm = null,
         string? sortColumn = null,
@@ -27,17 +29,17 @@ public class OfficeController : ApiController
         int pageSize = 10)
     {
         var result = await sender.Send(new Query.GetOfficeQuery(
-            searchTerm,
-            sortColumn,
-            SortOrderExtension.ConvertStringToSortOrder(sortOrder),
-            pageIndex,
-            pageSize));
+            searchTerm,                                             // Value to search
+            sortColumn,                                             // Column to sort
+            SortOrderExtension.ConvertStringToSortOrder(sortOrder), // Get Asc or Des
+            pageIndex,                                              // Page Value
+            pageSize));                                             // PageSize
         return Ok(result);
     }
 
     [HttpGet("GetOffices/{officeId}")]
-    [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeReponses>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Offices([FromRoute] int officeId)
     {
         var result = await sender.Send(new Query.GetOfficeByIdQuery(officeId));
@@ -46,8 +48,8 @@ public class OfficeController : ApiController
 
 
     [HttpPost("CreateOffice")]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<Responses.OfficeResponse>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Offices([FromForm] Command.CreateOfficeCommand request)
     {
         var result = await sender.Send(request);
@@ -56,9 +58,9 @@ public class OfficeController : ApiController
 
 
     [HttpPut("{officeId}")]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Offices(int officeId, [FromForm] Command.UpdateOfficeCommand request)
+    [ProducesResponseType(typeof(Result<Responses.OfficeResponse>), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Offices([FromRoute] int officeId, [FromForm] Command.UpdateOfficeCommand request)
     {
         var updateOffice = new Command.UpdateOfficeCommand
         (
@@ -78,7 +80,7 @@ public class OfficeController : ApiController
 
     [HttpDelete("{officeId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteOffices(int officeId)
     {
         var result = await sender.Send(new Command.DeleteOfficeCommand(officeId));

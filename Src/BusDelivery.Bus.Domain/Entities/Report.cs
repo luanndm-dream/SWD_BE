@@ -7,5 +7,5 @@ public class Report : DomainEntity<int>
     public Guid CreateBy { get; set; }
     public int TargetId { get; set; }
     public string Type { get; set; }
-    public DateTime CreateTime { get; set; }
+    public string CreateTime { get; set; }
 }

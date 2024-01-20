@@ -35,7 +35,5 @@ public class RegisterValidator : AbstractValidator<Command.RegisterCommand>
         RuleFor(x => x.deviceId).NotEmpty().WithMessage("DeviceId is required");
         RuleFor(x => x.deviceVersion).NotEmpty().WithMessage("DeviceVersion is required");
         RuleFor(x => x.OS).NotEmpty().WithMessage("OS is required");
-        RuleFor(x => x.IsDeleted).NotEmpty().WithMessage("IsDeleted is required");
-        RuleFor(x => x.IsActive).NotEmpty().WithMessage("IsActive is required");
     }
 }

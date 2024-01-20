@@ -142,11 +142,6 @@ namespace BusDelivery.Persistence.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Lat")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -209,10 +204,9 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<int>("BusId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 18, 17, 32, 4, 326, DateTimeKind.Local).AddTicks(6675));
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Image")
                         .HasColumnType("int");
@@ -265,10 +259,9 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<Guid>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 18, 17, 32, 4, 326, DateTimeKind.Local).AddTicks(9437));
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TargetId")
                         .HasColumnType("int");
@@ -322,11 +315,6 @@ namespace BusDelivery.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -356,12 +344,6 @@ namespace BusDelivery.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
-
-                    b.Property<string>("IsDeleted")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("False");
 
                     b.Property<string>("Lat")
                         .IsRequired()
@@ -406,10 +388,9 @@ namespace BusDelivery.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 1, 18, 17, 32, 4, 328, DateTimeKind.Local).AddTicks(6107));
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeviceId")
                         .HasMaxLength(255)
@@ -434,11 +415,6 @@ namespace BusDelivery.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()

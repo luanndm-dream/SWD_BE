@@ -2,8 +2,6 @@
 using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.Authentication;
-using BusDelivery.Domain.Entities;
-using BusDelivery.Domain.Exceptions;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Authentication.Commands;
@@ -21,14 +19,15 @@ public sealed class RegisterCommandHandler : ICommandHandler<Command.RegisterCom
     public async Task<Result<Responses.UserReponses>> Handle(Command.RegisterCommand request, CancellationToken cancellationToken)
     {
         // Check Email was Register
-        var UserWithEmailExist = await userRepository.FindByEmailAsync(request.email)
-            ?? throw new AuthException.AuthBadRequestException("Email was register!");
+        var UserWithEmailExist = await userRepository.FindByEmailAsync(request.email);
+        if (UserWithEmailExist != null)
+            return Result.Failure<Responses.UserReponses>("Email was register!");
 
         // HashPassword
         var hashPassword = userRepository.HashPassword(request.password);
 
         // Create UserEntity
-        var user = new User
+        var user = new Domain.Entities.User
         {
             RoleId = request.roleId,
             OfficeId = request.officeId,
@@ -40,9 +39,8 @@ public sealed class RegisterCommandHandler : ICommandHandler<Command.RegisterCom
             DeviceId = request.deviceId,
             DeviceVersion = request.deviceVersion,
             OS = request.OS,
-            IsDeleted = request.IsDeleted,
-            IsActive = request.IsActive,
-            CreateTime = DateTime.Now
+            IsActive = false,
+            CreateTime = DateTime.Now.ToString("dd/MM/yyyy")
         };
 
         try

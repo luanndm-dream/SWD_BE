@@ -1,4 +1,4 @@
-﻿namespace BusDelivery.Domain.Entities.OpenWeatherMap;
+﻿namespace BusDelivery.Infrastructure.OpenWeatherMap;
 
 public class Winds
 {

@@ -1,9 +1,9 @@
 ﻿namespace BusDelivery.Infrastructure.BlobStorage.DependencyInjection.Options;
 public class BlobStorageOptions
 {
-    public string blobUrl { get; set; }
-    public string resourceGroup { get; set; }
-    public string account { get; set; }
-    public string container { get; set; }
-    public string key { get; set; }
+    public string BlobUrl { get; set; }
+    public string ResourceGroup { get; set; }
+    public string Account { get; set; }
+    public string Container { get; set; }
+    public string Key { get; set; }
 }
