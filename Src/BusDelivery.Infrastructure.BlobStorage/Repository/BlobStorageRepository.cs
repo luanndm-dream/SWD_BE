@@ -18,7 +18,7 @@ public class BlobStorageRepository : IBlobStorageRepository
     public async Task<string> SaveImageOnBlobStorage(IFormFile image, string name, string type)
     {
 
-        BlobContainerClient container = new BlobContainerClient(blobStorageOptions.blobUrl, blobStorageOptions.container);
+        BlobContainerClient container = new BlobContainerClient(blobStorageOptions.BlobUrl, blobStorageOptions.Container);
         string path = $"{type}/{name}-{DateTimeOffset.Now.ToUnixTimeSeconds()}";
         BlobClient blob = container.GetBlobClient(path);
 
@@ -43,7 +43,7 @@ public class BlobStorageRepository : IBlobStorageRepository
         int length = uri.PathAndQuery.Length - containerName.Length - 1;
         string blobPath = uri.PathAndQuery.Substring(startIndex, length);
 
-        BlobContainerClient container = new BlobContainerClient(blobStorageOptions.blobUrl, containerName);
+        BlobContainerClient container = new BlobContainerClient(blobStorageOptions.BlobUrl, containerName);
         BlobClient blob = container.GetBlobClient(blobPath);
 
         // Check if the blob exists before attempting to delete
@@ -55,7 +55,7 @@ public class BlobStorageRepository : IBlobStorageRepository
 
     public async Task RestoreContainer(string imageUrl)
     {
-        BlobContainerClient container = new BlobContainerClient(blobStorageOptions.blobUrl, blobStorageOptions.container);
+        BlobContainerClient container = new BlobContainerClient(blobStorageOptions.BlobUrl, blobStorageOptions.Container);
         Uri uri = new Uri(imageUrl);
         string containerName = uri.Segments[1];  // Assuming the container name is the second segment in the URI
 

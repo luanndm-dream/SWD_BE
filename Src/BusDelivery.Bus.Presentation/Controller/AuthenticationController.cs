@@ -1,7 +1,6 @@
 ﻿using Asp.Versioning;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.Authentication;
-using BusDelivery.Persistence.Repositories;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -16,8 +15,8 @@ public class AuthenticationController : ApiController
     }
 
     [HttpPost("Register")]
-    [ProducesResponseType(typeof(Result<UserRepository>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<UserRepository>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<Responses.UserReponses>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromForm] Command.RegisterCommand request)
     {
         var result = await sender.Send(request);
@@ -28,6 +27,9 @@ public class AuthenticationController : ApiController
     }
 
     [HttpPost("LoginAsync")]
+    [ProducesResponseType(typeof(Result<Responses.LoginResponses>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> LoginAsync(Command.LoginCommand loginRequest)
     {
         var result = await sender.Send(loginRequest);

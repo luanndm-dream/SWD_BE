@@ -14,8 +14,7 @@ public class User : DomainEntity<Guid>
     public string? DeviceId { get; set; }
     public string? DeviceVersion { get; set; }
     public string? OS { get; set; }
-    public DateTime CreateTime { get; set; }
-    public bool IsDeleted { get; set; }
+    public string CreateTime { get; set; }
     public bool IsActive { get; set; }
 
     public virtual ICollection<Report> Reports { get; set; }

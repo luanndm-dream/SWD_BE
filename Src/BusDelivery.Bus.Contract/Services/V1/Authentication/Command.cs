@@ -14,9 +14,7 @@ public class Command
         Gentle gentle,
         string deviceId,
         string deviceVersion,
-        string OS,
-        bool IsDeleted,
-        bool IsActive) : ICommand<Responses.UserReponses>;
+        string OS) : ICommand<Responses.UserReponses>;
 
     public record LoginCommand(
         string email,

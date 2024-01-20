@@ -11,7 +11,7 @@ public class Query
         SortOrder? sortOrder,
         int pageIndex,
         int pageSize)
-        : IQuery<PagedResult<Responses.OfficeReponses>>;
+        : IQuery<PagedResult<Responses.OfficeResponse>>;
 
-    public record GetOfficeByIdQuery(int officeId) : IQuery<Responses.OfficeReponses>;
+    public record GetOfficeByIdQuery(int officeId) : IQuery<Responses.OfficeResponse>;
 }
