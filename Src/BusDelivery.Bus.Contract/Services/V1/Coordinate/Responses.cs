@@ -2,10 +2,10 @@
 public static class Responses
 {
     public record CoordinateResponses(
-    int id,
-    string lat,
-    string lng,
-    int stt,
-    int routeId,
-    bool status);
+    int Id,
+    int RouteId,
+    string Lat,
+    string Lng,
+    int Stt
+    );
 }

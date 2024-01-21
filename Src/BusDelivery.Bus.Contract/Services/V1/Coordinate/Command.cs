@@ -7,18 +7,9 @@ public class Command
     string lat,
     string lng,
     int stt,
-    int routeId,
-    bool status) : ICommand<Responses.CoordinateResponses>;
+    int routeId) : ICommand<Responses.CoordinateResponses>;
 
-    public record UpdateCoordinateCommand(
-    int id,
-    string lat,
-    string lng,
-    int stt,
-    int routeId,
-    bool status) : ICommand<Responses.CoordinateResponses>;
-
-    public record DeleteCoordinateCommand(int id) : ICommand;
+    public record DeleteCoordinateCommand(int Id) : ICommand;
 
 
 }

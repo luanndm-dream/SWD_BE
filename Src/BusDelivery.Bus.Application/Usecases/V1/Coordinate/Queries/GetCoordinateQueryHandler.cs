@@ -40,5 +40,6 @@ public sealed class GetCoordinateQueryHandler : IQueryHandler<Query.GetCoordinat
     => request.sortColumn?.ToLower() switch
     {
         "stt" => e => e.Stt,
+        _ => e => e.Stt,
     };
 }

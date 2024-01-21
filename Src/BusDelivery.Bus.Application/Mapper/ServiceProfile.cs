@@ -15,6 +15,13 @@ public class ServiceProfile : Profile
         // User
         CreateMap<User, BusDelivery.Contract.Services.V1.Authentication.Responses.UserReponses>().ReverseMap();
 
+        // Coordinate
+        CreateMap<Coordinate, BusDelivery.Contract.Services.V1.Coordinate.Responses.CoordinateResponses>().ReverseMap();
+        CreateMap<PagedResult<Coordinate>, PagedResult<BusDelivery.Contract.Services.V1.Coordinate.Responses.CoordinateResponses>>().ReverseMap();
+
+        // Order
+        CreateMap<Order, BusDelivery.Contract.Services.V1.Order.Responses.OrderResponses>().ReverseMap();
+        CreateMap<PagedResult<Order>, PagedResult<BusDelivery.Contract.Services.V1.Order.Responses.OrderResponses>>().ReverseMap();
 
     }
 }

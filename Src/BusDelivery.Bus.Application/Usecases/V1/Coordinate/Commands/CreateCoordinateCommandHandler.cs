@@ -2,7 +2,6 @@
 using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.Coordinate;
-using BusDelivery.Persistence;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Coordinate.Commands;
@@ -10,13 +9,12 @@ public sealed class CreateCoordinateCommandHandler : ICommandHandler<Command.Cre
 {
     private readonly CoordinateRepository coordinateRepository;
     private readonly IMapper mapper;
-    private readonly ApplicationDbContext context;
 
-    public CreateCoordinateCommandHandler(CoordinateRepository coordinateRepository, IMapper mapper, ApplicationDbContext context)
+
+    public CreateCoordinateCommandHandler(CoordinateRepository coordinateRepository, IMapper mapper)
     {
         this.coordinateRepository = coordinateRepository;
         this.mapper = mapper;
-        this.context = context;
     }
     public async Task<Result<Responses.CoordinateResponses>> Handle(Command.CreateCoordinateCommand request, CancellationToken cancellationToken)
     {
@@ -34,10 +32,10 @@ public sealed class CreateCoordinateCommandHandler : ICommandHandler<Command.Cre
             return Result.Success(coordinateResponse, 201);
 
         }
-        catch (Exception) 
+        catch (Exception)
         {
             throw new Exception("Create Coordinate Error");
         }
-        
+
     }
 }
