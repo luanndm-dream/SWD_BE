@@ -7,7 +7,7 @@ using BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Office.Commands;
-public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateOfficeCommand, Responses.OfficeReponses>
+public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateOfficeCommand, Responses.OfficeResponse>
 {
     private readonly IBlobStorageRepository blobStorageRepository;
     private readonly OfficeRepository officeRepository;
@@ -19,7 +19,7 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
         this.mapper = mapper;
     }
 
-    public async Task<Result<Responses.OfficeReponses>> Handle(Command.UpdateOfficeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Responses.OfficeResponse>> Handle(Command.UpdateOfficeCommand request, CancellationToken cancellationToken)
     {
         // Check existOffice
         var existOffice = await officeRepository.FindByIdAsync(request.id)
@@ -48,7 +48,7 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
             // update in Database
             officeRepository.Update(existOffice);
             // Map to Response
-            var officeResponse = mapper.Map<Responses.OfficeReponses>(existOffice);
+            var officeResponse = mapper.Map<Responses.OfficeResponse>(existOffice);
             // Delete oldImage In BlobStorage
             blobStorageRepository.DeleteImageFromBlobStorage(oldImageUrl);
             return Result.Success(officeResponse, 202);

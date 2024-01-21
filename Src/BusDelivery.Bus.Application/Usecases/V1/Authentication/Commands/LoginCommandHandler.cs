@@ -3,8 +3,8 @@ using AutoMapper;
 using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.Authentication;
+using BusDelivery.Domain.Exceptions;
 using BusDelivery.Persistence.Repositories;
-using Microsoft.AspNetCore.Http;
 
 namespace BusDelivery.Application.Usecases.V1.Authentication.Commands;
 public sealed class LoginCommandHandler : ICommandHandler<Command.LoginCommand, Responses.LoginResponses>
@@ -22,12 +22,11 @@ public sealed class LoginCommandHandler : ICommandHandler<Command.LoginCommand, 
     public async Task<Result<Responses.LoginResponses>> Handle(Command.LoginCommand request, CancellationToken cancellationToken)
     {
         // Check Email is register?
-        var user = await userRepository.FindByEmailAsync(request.email);
-        if (user is null)
-            return Result.Failure<Responses.LoginResponses>($"Email {request.email} was not register!", StatusCodes.Status404NotFound);
+        var user = await userRepository.FindByEmailAsync(request.email)
+            ?? throw new AuthException.AuthEmailNotFoundException(request.email);
         // Check Password
         if (!userRepository.VerifyPassword(user.HashPassword, request.password))
-            return Result.Failure<Responses.LoginResponses>("Password Incorrect", StatusCodes.Status400BadRequest);
+            throw new AuthException.AuthBadRequestException("Password Incorrect");
 
         // GetRoleName
         var roleName = roleRepository.FindByIdAsync(user.RoleId).GetAwaiter().GetResult().Name;
@@ -45,8 +44,8 @@ public sealed class LoginCommandHandler : ICommandHandler<Command.LoginCommand, 
             user.Gentle,
             user.DeviceId,
             user.DeviceVersion,
+            user.CreateTime,
             user.OS,
-            user.IsDeleted,
             user.IsActive,
             new JwtSecurityTokenHandler().WriteToken(token),
             token.ValidTo);

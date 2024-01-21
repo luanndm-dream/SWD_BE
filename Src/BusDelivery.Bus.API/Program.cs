@@ -3,6 +3,8 @@ using BusDelivery.API.Middleware;
 using BusDelivery.Application.DependencyInjection.Extensions;
 using BusDelivery.Infrastructure.BlobStorage.DependencyInjection.Extensions;
 using BusDelivery.Infrastructure.BlobStorage.DependencyInjection.Options;
+using BusDelivery.Infrastructure.OpenWeatherMap.DependencyInjection.Extensions;
+using BusDelivery.Infrastructure.OpenWeatherMap.DependencyInjection.Options;
 using BusDelivery.Persistence.DependencyInjection.Extensions;
 using BusDelivery.Persistence.DependencyInjection.Options;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
@@ -12,10 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddConfigureMediatR();
 builder.Services.AddConfigurationMapper();
 
-// Infrastructure.Dapper
-//builder.Services.AddInfrastructureDapper();
-//builder.Services.AddHttpClient();
-//builder.Services.AddHttpContextAccessor();
+// Infrastructure.OpenWeatherMap
+builder.Services.AddConfigInfrastructureOpenWeather();
+builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
+builder.Services.ConfigureOpenWeatherMapOptions(
+    builder.Configuration.GetSection(nameof(OpenWeatherMapOptions)));
 
 // Infrastructure.BlobStorage
 builder.Services.AddConfigInfrastructureBlobStorage();
@@ -26,9 +30,6 @@ builder.Services.AddSqlConfiguration();
 builder.Services.AddRepositoryBaseConfiguration();
 builder.Services.ConfigureSqlServerRetryOptions(
     builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
-
-//builder.Services.ConfigureOpenWeatherMapOptions(
-//    builder.Configuration.GetSection(nameof(OpenWeatherMapOptions)));
 
 // Add Serilog
 Log.Logger = new LoggerConfiguration().ReadFrom

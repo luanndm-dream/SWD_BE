@@ -11,7 +11,7 @@ public class Command
         string lng,
         string contact,
         IFormFile image,
-        bool status) : ICommand<Responses.OfficeReponses>;
+        bool status) : ICommand<Responses.OfficeResponse>;
 
     public record UpdateOfficeCommand(
         int id,
@@ -21,7 +21,7 @@ public class Command
         string lng,
         string contact,
         IFormFile image,
-        bool status) : ICommand<Responses.OfficeReponses>;
+        bool status) : ICommand<Responses.OfficeResponse>;
 
     public record DeleteOfficeCommand(int id) : ICommand;
 }

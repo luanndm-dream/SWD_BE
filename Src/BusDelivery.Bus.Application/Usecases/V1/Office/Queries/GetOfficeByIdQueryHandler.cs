@@ -6,7 +6,7 @@ using BusDelivery.Domain.Exceptions;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Office.Queries;
-public sealed class GetOfficeByIdQueryHandler : IQueryHandler<Query.GetOfficeByIdQuery, Responses.OfficeReponses>
+public sealed class GetOfficeByIdQueryHandler : IQueryHandler<Query.GetOfficeByIdQuery, Responses.OfficeResponse>
 {
     private readonly OfficeRepository officeRepository;
     private readonly IMapper mapper;
@@ -17,12 +17,12 @@ public sealed class GetOfficeByIdQueryHandler : IQueryHandler<Query.GetOfficeByI
         this.mapper = mapper;
     }
 
-    public async Task<Result<Responses.OfficeReponses>> Handle(Query.GetOfficeByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Responses.OfficeResponse>> Handle(Query.GetOfficeByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await officeRepository.FindByIdAsync(request.officeId)
             ?? throw new OfficeException.OfficeIdNotFoundException(request.officeId);
 
-        var resultResponse = mapper.Map<Responses.OfficeReponses>(result);
+        var resultResponse = mapper.Map<Responses.OfficeResponse>(result);
 
         return Result.Success(resultResponse);
     }

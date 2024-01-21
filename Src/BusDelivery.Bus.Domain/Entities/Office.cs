@@ -10,7 +10,6 @@ public class Office : DomainEntity<int>
     public string Contact { get; set; }
     public string Image { get; set; }
     public bool IsActive { get; set; }
-    public bool IsDeleted { get; set; }
     public virtual ICollection<Station> Stations { get; set; }
     public virtual ICollection<User> Users { get; set; }
     public virtual ICollection<Package> Packages { get; set; }

@@ -19,7 +19,6 @@ public class OfficeConfiguration : IEntityTypeConfiguration<Office>
         builder.Property(x => x.Contact).IsRequired();
         builder.Property(x => x.Image).IsRequired();
         builder.Property(x => x.IsActive).HasDefaultValue(true);
-        builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
         //Each Office can have many Stations
         builder.HasMany(x => x.Stations)
