@@ -40,7 +40,7 @@ public sealed class CreateBusCommandHandler : ICommandHandler<Command.CreateBusC
                 Color = request.color,
                 NumberOfSeat = request.numberOfSeat,
                 OperateTime = request.operateTime,
-                Status = request.status
+                IsActive = request.IsActive
             };
             try
             {

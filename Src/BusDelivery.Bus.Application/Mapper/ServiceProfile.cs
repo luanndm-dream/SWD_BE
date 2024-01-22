@@ -10,15 +10,13 @@ public class ServiceProfile : Profile
 {
     public ServiceProfile()
     {
-        CreateMap<Office, Contract.Services.V1.Office.Responses.OfficeReponses>().ReverseMap();
-        CreateMap<PagedResult<Office>, PagedResult<Contract.Services.V1.Office.Responses.OfficeReponses>>().ReverseMap();
         CreateMap<Station, Contract.Services.V1.Station.Responses.GetStationResponse>().ReverseMap();
         CreateMap<PagedResult<Station>, PagedResult<Contract.Services.V1.Station.Responses.GetStationResponse>>().ReverseMap();
         CreateMap<Bus, Contract.Services.V1.Bus.Responses.BusResponse>().ReverseMap();
         CreateMap<PagedResult<Bus>, PagedResult<Contract.Services.V1.Bus.Responses.BusResponse>>().ReverseMap();
         // Office
-        CreateMap<Office, Responses.OfficeResponse>().ReverseMap();
-        CreateMap<PagedResult<Office>, PagedResult<Responses.OfficeResponse>>().ReverseMap();
+        CreateMap<Office, Contract.Services.V1.Office.Responses.OfficeResponse>().ReverseMap();
+        CreateMap<PagedResult<Office>, PagedResult<Contract.Services.V1.Office.Responses.OfficeResponse>>().ReverseMap();
 
         // User
         CreateMap<User, BusDelivery.Contract.Services.V1.Authentication.Responses.UserReponses>().ReverseMap();

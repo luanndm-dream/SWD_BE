@@ -17,6 +17,6 @@ public class Responses
         public string color { get; init; } = null!;
         public string numberOfSeat { get; init; } = null!;
         public string operateTime { get; init; } = null!;
-        public bool status { get; init; }
+        public bool IsActive { get; init; }
     }
 }

@@ -30,7 +30,7 @@ public class UpdateRouteCommandHandler : ICommandHandler<Command.UpdateRouteComm
         {
             route.Name = request.Name;
             route.Description = request.Description;
-            route.Status = request.Status;
+            route.IsActive = request.IsActive;
             route.StartPoint = request.StartPoint;
             route.EndPoint = request.EndPoint;
             route.OperateTime = request.OperateTime;

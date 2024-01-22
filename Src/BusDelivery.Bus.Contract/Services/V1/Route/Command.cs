@@ -12,7 +12,7 @@ public class Command
     {
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
-        public bool Status { get; set; }
+        public bool IsActive { get; set; }
         public string StartPoint { get; set; } = null!;
         public string EndPoint { get; set; } = null!;
         public string OperateTime { get; set; } = null!;
@@ -22,7 +22,7 @@ public class Command
         public int id { get; set; } 
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
-        public bool Status { get; set; }
+        public bool IsActive { get; set; }
         public string StartPoint { get; set; } = null!;
         public string EndPoint { get; set; } = null!;
         public string OperateTime { get; set; } = null!;
