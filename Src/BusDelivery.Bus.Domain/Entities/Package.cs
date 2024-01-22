@@ -12,7 +12,7 @@ public class Package : DomainEntity<Guid>
     public float TotalPrice { get; set; }
     public int Image { get; set; }
     public string Note { get; set; }
-    public PackageStatus Status { get; set; }
+    public bool Status { get; set; }
     public string CreateTime { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; }

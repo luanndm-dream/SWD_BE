@@ -39,8 +39,7 @@ public static class ServiceCollectionExtensions
             .AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork))
             .AddTransient<OfficeRepository>()
             .AddTransient<UserRepository>()
-            .AddTransient<RoleRepository>();
-            .AddTransient<OfficeRepository>()
+            .AddTransient<RoleRepository>()
             .AddTransient<StationRepository>()
             .AddTransient<BusRepository>()
             .AddTransient<RouteRepository>();
