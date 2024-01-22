@@ -14,8 +14,6 @@
 	
   <ItemGroup>
     <Folder Include="DependencyInjection\Options\" />
-    <Folder Include="Usecases\V1\Route\Commands\" />
-    <Folder Include="Usecases\V1\Route\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
