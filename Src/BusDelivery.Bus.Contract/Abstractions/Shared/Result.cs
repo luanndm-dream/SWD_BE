@@ -1,7 +1,7 @@
 ﻿namespace BusDelivery.Contract.Abstractions.Shared;
 public class Result
 {
-    protected internal Result(bool isSuccess, Error error, int? statusCode = 200)
+    protected internal Result(bool isSuccess, string error, int? statusCode = 200)
     {
         if (isSuccess && error != Error.None)
         {
@@ -17,34 +17,33 @@ public class Result
         message = error;
         StatusCode = statusCode;
     }
-
     public bool IsSuccess { get; }
 
-    public Error message { get; }
-
+    public string message { get; }
     public int? StatusCode { get; } = 200;
 
-    public static Result Success() => new(true, Error.None);
+    public static Result Success() => new(true, "");
+    public static Result Success(int statusCode) => new(true, "", statusCode);
 
     public static Result<TValue> Success<TValue>(TValue value) =>
-        new(value, true, Error.None);
+        new(value, true, "");
 
     public static Result<TValue> Success<TValue>(TValue value, int statusCode) =>
-        new(value, true, Error.None, statusCode);
+        new(value, true, "", statusCode);
 
     public static Result<TValue> Success<TValue>(int statusCode) =>
-        new(default, true, Error.None, statusCode);
-    public static Result Failure(Error error) =>
+        new(default, true, "", statusCode);
+    public static Result Failure(string error) =>
         new(false, error, 400);
 
-    public static Result<TValue> Failure<TValue>(Error error) =>
+    public static Result<TValue> Failure<TValue>(string error) =>
         new(default, false, error);
 
-    public static Result<TValue> Failure<TValue>(Error error, int statusCode) =>
+    public static Result<TValue> Failure<TValue>(string error, int statusCode) =>
     new(default, false, error, statusCode);
 
     public static Result<TValue> Create<TValue>(TValue? value) =>
-        value is not null ? Success(value) : Failure<TValue>(Error.NullValue);
+        value is not null ? Success(value) : Failure<TValue>("The specified result value is null.");
 
 
 }

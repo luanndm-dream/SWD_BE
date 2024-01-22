@@ -31,5 +31,11 @@ public class OfficeConfiguration : IEntityTypeConfiguration<Office>
             .WithOne()
             .HasForeignKey(r => r.OfficeId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        //Each Office can have many Weathers
+        builder.HasMany(x => x.Weathers)
+            .WithOne()
+            .HasForeignKey(r => r.OfficeId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

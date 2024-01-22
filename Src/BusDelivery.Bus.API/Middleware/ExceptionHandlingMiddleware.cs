@@ -18,8 +18,6 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
         }
         catch (Exception e)
         {
-            //logger.LogError(e, e.Message);
-
             await HandleExceptionAsync(context, e);
         }
     }
@@ -31,9 +29,7 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
         {
             isSuccess = false,
             statusCode,
-            errors = exception is FluentValidation.ValidationException
-            ? GetErrors(exception).Select(error => error.ErrorMessage).ToList()
-            : new List<string> { exception.Message }
+            message = exception.Message
         };
 
         if (statusCode == 500)
@@ -54,15 +50,15 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
             _ => StatusCodes.Status500InternalServerError
         };
 
-    private static IReadOnlyCollection<Application.Exceptions.ValidationError> GetErrors(Exception exception)
-    {
-        IReadOnlyCollection<Application.Exceptions.ValidationError> errors = null;
+    //private static IReadOnlyCollection<Application.Exceptions.ValidationError> GetErrors(Exception exception)
+    //{
+    //    IReadOnlyCollection<Application.Exceptions.ValidationError> errors = null;
 
-        if (exception is Application.Exceptions.ValidationException validationException)
-        {
-            errors = validationException.Errors;
-        }
+    //    if (exception is Application.Exceptions.ValidationException validationException)
+    //    {
+    //        errors = validationException.Errors;
+    //    }
 
-        return errors;
-    }
+    //    return errors;
+    //}
 }

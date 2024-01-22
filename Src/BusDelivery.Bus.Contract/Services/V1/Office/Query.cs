@@ -9,8 +9,9 @@ public class Query
         string? searchTerm,
         string? sortColumn,
         SortOrder? sortOrder,
-        int pageIndex, int pageSize)
-        : IQuery<PagedResult<Responses.OfficeReponses>>;
+        int pageIndex,
+        int pageSize)
+        : IQuery<PagedResult<Responses.OfficeResponse>>;
 
-    public record GetOfficeByIdQuery(int officeId) : IQuery<Responses.OfficeReponses>;
+    public record GetOfficeByIdQuery(int officeId) : IQuery<Responses.OfficeResponse>;
 }

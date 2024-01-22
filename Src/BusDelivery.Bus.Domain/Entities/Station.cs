@@ -7,6 +7,7 @@ public class Station : DomainEntity<int>
     public string Name { get; set; }
     public string Lat { get; set; }
     public string Lng { get; set; }
+    public bool IsActive { get; set; }
     public virtual ICollection<Package> Packages { get; set; }
     public virtual ICollection<StationRoute> StationRoutes { get; set; }
 }

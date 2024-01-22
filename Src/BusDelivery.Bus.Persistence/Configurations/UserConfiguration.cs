@@ -15,12 +15,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.OfficeId).IsRequired();
         builder.Property(x => x.Name).IsRequired();
         builder.Property(x => x.Email).IsRequired();
+        builder.Property(X => X.HashPassword).IsRequired();
         builder.Property(x => x.PhoneNumber).IsRequired();
         builder.Property(x => x.Gentle).IsRequired();
-        builder.Property(x => x.Status).HasDefaultValue(true);
-        builder.Property(x => x.DeviceId).IsRequired();
-        builder.Property(x => x.DeviceVersion).IsRequired();
-        builder.Property(x => x.OS).IsRequired();
+        builder.Property(x => x.IsActive).HasDefaultValue(true);
+        builder.Property(x => x.DeviceId).HasMaxLength(255);
+        builder.Property(x => x.DeviceVersion).HasMaxLength(255);
+        builder.Property(x => x.OS).HasMaxLength(255);
+        builder.Property(x => x.CreateTime).IsRequired();
 
         //Each User can have many Reports
         builder.HasMany(x => x.Reports)

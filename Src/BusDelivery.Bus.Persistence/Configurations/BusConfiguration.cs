@@ -17,7 +17,7 @@ public class BusConfiguration : IEntityTypeConfiguration<Domain.Entities.Bus>
         builder.Property(x => x.Color).IsRequired();
         builder.Property(x => x.NumberOfSeat).HasMaxLength(10);
         builder.Property(x => x.OperateTime).HasMaxLength(15);
-        builder.Property(x => x.Status).HasDefaultValue(true);
+        builder.Property(x => x.IsActive).HasDefaultValue(true);
 
         //Each Bus can have many Routes
         builder.HasMany(x => x.Packages)

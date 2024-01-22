@@ -7,4 +7,10 @@ public class Role : DomainEntity<Guid>
     public string Description { get; set; }
 
     public virtual ICollection<User> Users { get; set; }
+
+    public void Update(string Name, string Description)
+    {
+        this.Name = Name;
+        this.Description = Description;
+    }
 }

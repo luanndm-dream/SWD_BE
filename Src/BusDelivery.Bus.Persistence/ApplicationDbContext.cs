@@ -10,19 +10,16 @@ public class ApplicationDbContext : DbContext
     => builder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
 
     public DbSet<Bus> Bus { get; set; }
-    public DbSet<BusRoute> BusRoutes { get; set; }
-    public DbSet<Coordinate> Coordinates { get; set; }
-    public DbSet<Office> Offices { get; set; }
-    public DbSet<Order> Orders { get; set; }
-    public DbSet<Package> Packages { get; set; }
-    //public DbSet<RefreshToken> RefreshTokens { get; set; }
-    public DbSet<Report> Reports { get; set; }
-    public DbSet<Role> Roles { get; set; }
-    public DbSet<Route> Routes { get; set; }
-    public DbSet<Station> Stations { get; set; }
-    public DbSet<StationRoute> StationRoutes { get; set; }
-    public DbSet<User> Users { get; set; }
-    //public DbSet<UserPackage> UserPackages { get; set; }
-    //public DbSet<Weather> Weathers { get; set; }
-
+    public DbSet<BusRoute> BusRoute { get; set; }
+    public DbSet<Coordinate> Coordinate { get; set; }
+    public DbSet<Office> Office { get; set; }
+    public DbSet<Order> Order { get; set; }
+    public DbSet<Package> Package { get; set; }
+    public DbSet<Report> Report { get; set; }
+    public DbSet<Role> Role { get; set; }
+    public DbSet<Route> Route { get; set; }
+    public DbSet<Station> Station { get; set; }
+    public DbSet<StationRoute> StationRoute { get; set; }
+    public DbSet<User> User { get; set; }
+    public DbSet<Weather> Weather { get; set; }
 }
