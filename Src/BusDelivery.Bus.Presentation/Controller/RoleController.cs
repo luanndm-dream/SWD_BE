@@ -19,7 +19,7 @@ public class RoleController : ApiController
     [ProducesResponseType(typeof(Result), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Roles()
     {
-        var result = await sender.Send(new Query.GetRoleQuery());
+        var result = await sender.Send(new Query.GetRoleQuery(null, null, null, 1, 10));
         return Ok(result);
     }
 

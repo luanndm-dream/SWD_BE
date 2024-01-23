@@ -4,6 +4,7 @@ using BusDelivery.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusDelivery.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240121170435_FixValidate")]
+    partial class FixValidate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -200,16 +203,15 @@ namespace BusDelivery.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FromOfficeId")
+                    b.Property<int>("Image")
                         .HasColumnType("int");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OfficeId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -218,9 +220,6 @@ namespace BusDelivery.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ToOfficeId")
                         .HasColumnType("int");
 
                     b.Property<float>("TotalPrice")
@@ -233,11 +232,9 @@ namespace BusDelivery.Persistence.Migrations
 
                     b.HasIndex("BusId");
 
-                    b.HasIndex("FromOfficeId");
+                    b.HasIndex("OfficeId");
 
                     b.HasIndex("StationId");
-
-                    b.HasIndex("ToOfficeId");
 
                     b.ToTable("Package", (string)null);
                 });
@@ -482,7 +479,7 @@ namespace BusDelivery.Persistence.Migrations
                     b.HasOne("BusDelivery.Domain.Entities.Route", null)
                         .WithMany("BusRoutes")
                         .HasForeignKey("RouteId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -491,7 +488,7 @@ namespace BusDelivery.Persistence.Migrations
                     b.HasOne("BusDelivery.Domain.Entities.Route", null)
                         .WithMany("Coordinates")
                         .HasForeignKey("RouteId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -500,7 +497,7 @@ namespace BusDelivery.Persistence.Migrations
                     b.HasOne("BusDelivery.Domain.Entities.Package", null)
                         .WithMany("Orders")
                         .HasForeignKey("PackageId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -509,24 +506,18 @@ namespace BusDelivery.Persistence.Migrations
                     b.HasOne("BusDelivery.Domain.Entities.Bus", null)
                         .WithMany("Packages")
                         .HasForeignKey("BusId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusDelivery.Domain.Entities.Office", null)
-                        .WithMany("PackagesFrom")
-                        .HasForeignKey("FromOfficeId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany("Packages")
+                        .HasForeignKey("OfficeId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusDelivery.Domain.Entities.Station", null)
                         .WithMany("Packages")
                         .HasForeignKey("StationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("BusDelivery.Domain.Entities.Office", null)
-                        .WithMany("PackagesTo")
-                        .HasForeignKey("ToOfficeId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
@@ -536,7 +527,7 @@ namespace BusDelivery.Persistence.Migrations
                     b.HasOne("BusDelivery.Domain.Entities.User", null)
                         .WithMany("Reports")
                         .HasForeignKey("CreateBy")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -545,7 +536,7 @@ namespace BusDelivery.Persistence.Migrations
                     b.HasOne("BusDelivery.Domain.Entities.Office", null)
                         .WithMany("Stations")
                         .HasForeignKey("OfficeId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -569,13 +560,13 @@ namespace BusDelivery.Persistence.Migrations
                     b.HasOne("BusDelivery.Domain.Entities.Office", null)
                         .WithMany("Users")
                         .HasForeignKey("OfficeId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusDelivery.Domain.Entities.Role", null)
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -584,7 +575,7 @@ namespace BusDelivery.Persistence.Migrations
                     b.HasOne("BusDelivery.Domain.Entities.Office", null)
                         .WithMany("Weathers")
                         .HasForeignKey("OfficeId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -597,9 +588,7 @@ namespace BusDelivery.Persistence.Migrations
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Office", b =>
                 {
-                    b.Navigation("PackagesFrom");
-
-                    b.Navigation("PackagesTo");
+                    b.Navigation("Packages");
 
                     b.Navigation("Stations");
 

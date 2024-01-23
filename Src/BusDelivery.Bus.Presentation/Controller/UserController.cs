@@ -19,7 +19,7 @@ public class UserController : ApiController
     [ProducesResponseType(typeof(Result<IReadOnlyCollection<Responses.UserResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Users(
-        Guid? roleId = null,
+        int? officeId = null,
         string? searchTerm = null,
         string? sortColumn = null,
         string? sortOrder = null,
@@ -27,7 +27,7 @@ public class UserController : ApiController
         int pageSize = 10)
     {
         var result = await sender.Send(new Query.GetUserQuery(
-            roleId,                                                 // Filter Role
+            officeId,                                                 // Filter Role
             searchTerm,                                             // Value to search
             sortColumn,                                             // Column to sort
             SortOrderExtension.ConvertStringToSortOrder(sortOrder), // Get Asc or Des
@@ -45,16 +45,14 @@ public class UserController : ApiController
         return Ok(result);
     }
 
-
     [HttpPost("CreateUser")]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(Result<Responses.UserResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Users([FromForm] Command.CreateUserCommand request)
     {
         var result = await sender.Send(request);
         return Ok(result);
     }
-
 
     [HttpPut("{UserId}")]
     [ProducesResponseType(typeof(Result<Responses.UserResponse>), StatusCodes.Status202Accepted)]
@@ -68,14 +66,14 @@ public class UserController : ApiController
             request.OfficeId,
             request.Name,
             request.Email,
-            request.HashPassword,
+            request.Password,
             request.PhoneNumber,
+            request.Identity,
             request.Gentle,
             request.DeviceId,
             request.DeviceVersion,
             request.OS,
             request.CreateTime,
-            request.IsDeleted,
             request.IsActive
         );
         var result = await sender.Send(updateUser);

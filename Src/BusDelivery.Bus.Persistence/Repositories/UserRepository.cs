@@ -29,6 +29,12 @@ public class UserRepository : RepositoryBase<User, Guid>
         return user;
     }
 
+    public async Task<User?> FindByIdentityAsync(string identity)
+    {
+        var user = await context.User.FirstOrDefaultAsync(x => x.Identity == identity);
+        return user;
+    }
+
     public string HashPassword(string password)
     {
         var salt = RandomNumberGenerator.GetBytes(SaltSize);
@@ -83,5 +89,11 @@ public class UserRepository : RepositoryBase<User, Guid>
             new Claim(ClaimTypes.Email, roleName)
         };
         return claims;
+    }
+
+    public void Delete(User user)
+    {
+        user.IsActive = false;
+        Update(user);
     }
 }

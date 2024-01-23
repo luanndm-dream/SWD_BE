@@ -26,7 +26,7 @@ public class WeatherRepository : RepositoryBase<Domain.Entities.Weather, int>
     public IReadOnlyCollection<Domain.Entities.Weather> GetListWeatherByOfficeIdAsync(int officeId)
     {
         var result = context.Weather.AsNoTracking().Where(x => x.OfficeId == officeId).ToList();
-        return result;
+        return result.AsReadOnly();
     }
 
     public async Task<OpenWeatherMapResponse> GetWeather5Days(string lat, string lon)
@@ -51,19 +51,26 @@ public class WeatherRepository : RepositoryBase<Domain.Entities.Weather, int>
     {
         foreach (var item in listForecast)
         {
-            var weather = new Domain.Entities.Weather
-            {
-                OfficeId = officeId,
-                Humidity = item.main.humidity,
-                Temperature = item.main.temp,
-                WindySpeed = item.wind.speed,
-                RecordAt = item.dt.ToString()
-            };
+            var existWeather = await context.Weather.FirstOrDefaultAsync(x => x.OfficeId == officeId && x.RecordAt == item.dt.ToString());
 
-            var existWeather = await context.Weather.FirstOrDefaultAsync(x => x.OfficeId == officeId && x.RecordAt == weather.RecordAt);
             if (existWeather == null)
-                Add(existWeather);
-            Update(existWeather);
+            {
+                var weather = new Domain.Entities.Weather
+                {
+                    OfficeId = officeId,
+                    Humidity = item.main.humidity,
+                    Temperature = item.main.temp,
+                    WindySpeed = item.wind.speed,
+                    RecordAt = item.dt.ToString()
+                };
+                Add(weather);
+            }
+            else
+            {
+                existWeather.Update(officeId, item.main.humidity, item.main.temp, item.wind.speed, item.dt.ToString());
+                Update(existWeather);
+            }
+            await context.SaveChangesAsync();
         }
     }
 }

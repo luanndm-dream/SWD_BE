@@ -22,7 +22,7 @@ public sealed class DeleteOfficeCommandHandler : ICommandHandler<Command.DeleteO
         var imageUrl = existOffice.Image;
         try
         {
-            officeRepository.Remove(existOffice);
+            officeRepository.Delete(existOffice);
             // Delete oldImage and Upload newImage
             await blobStorageRepository.DeleteImageFromBlobStorage(imageUrl);
             return Result.Success(202);

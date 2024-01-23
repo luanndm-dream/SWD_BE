@@ -7,4 +7,9 @@ public class OfficeRepository : RepositoryBase<Office, int>
     {
 
     }
+    public void Delete(Office office)
+    {
+        office.IsActive = false;
+        Update(office);
+    }
 }

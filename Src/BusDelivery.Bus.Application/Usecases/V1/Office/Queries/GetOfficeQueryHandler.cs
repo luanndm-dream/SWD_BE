@@ -4,17 +4,23 @@ using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Enumerations;
 using BusDelivery.Contract.Services.V1.Office;
+using BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Office.Queries;
 public sealed class GetOfficeQueryHandler : IQueryHandler<Query.GetOfficeQuery, PagedResult<Responses.OfficeResponse>>
 {
     private readonly OfficeRepository officeRepository;
+    private readonly IBlobStorageRepository blobStorageRepository;
     private readonly IMapper mapper;
 
-    public GetOfficeQueryHandler(OfficeRepository officeRepository, IMapper mapper)
+    public GetOfficeQueryHandler(
+        OfficeRepository officeRepository,
+        IBlobStorageRepository blobStorageRepository,
+        IMapper mapper)
     {
         this.officeRepository = officeRepository;
+        this.blobStorageRepository = blobStorageRepository;
         this.mapper = mapper;
     }
 
@@ -37,6 +43,11 @@ public sealed class GetOfficeQueryHandler : IQueryHandler<Query.GetOfficeQuery, 
         var Events = await PagedResult<Domain.Entities.Office>.CreateAsync(EventsQuery,
             request.pageIndex,
             request.pageSize);
+
+        foreach (var office in Events.items)
+        {
+            office.Image = await blobStorageRepository.GetImageToBase64(office.Image);
+        }
 
         var result = mapper.Map<PagedResult<Responses.OfficeResponse>>(Events);
         return Result.Success(result);
