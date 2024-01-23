@@ -2,16 +2,22 @@
 
 public enum PackageStatus
 {
-    Done,
-    Processing,
-    Cancel
+    Done = 1,
+    Processing = 0,
+    Cancel = -1
 }
 
 public enum Gentle
 {
-    Male,
-    Female,
-    Others
+    Male = 1,
+    Female = 2,
+    Others = 3
+}
+
+public enum OS
+{
+    Android = 1,
+    IOS = 2
 }
 
 

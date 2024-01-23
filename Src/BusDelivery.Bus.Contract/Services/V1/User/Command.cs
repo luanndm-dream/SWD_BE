@@ -9,14 +9,10 @@ public static class Command
         int OfficeId,
         string Name,
         string Email,
-        string HashPassword,
+        string Password,
         string PhoneNumber,
+        string Identity,
         Gentle Gentle,
-        string? DeviceId,
-        string? DeviceVersion,
-        string? OS,
-        DateTime CreateTime,
-        bool IsDeleted,
         bool IsActive) : ICommand<Responses.UserResponse>;
 
     public record UpdateUserCommand(
@@ -25,15 +21,15 @@ public static class Command
         int OfficeId,
         string Name,
         string Email,
-        string HashPassword,
+        string Password,
         string PhoneNumber,
+        string Identity,
         Gentle Gentle,
         string? DeviceId,
         string? DeviceVersion,
-        string? OS,
-        DateTime CreateTime,
-        bool IsDeleted,
-        bool IsActive);
+        OS? OS,
+        string CreateTime,
+        bool IsActive) : ICommand<Responses.UserResponse>;
 
     public record DeleteUserCommand(Guid Id) : ICommand;
 }

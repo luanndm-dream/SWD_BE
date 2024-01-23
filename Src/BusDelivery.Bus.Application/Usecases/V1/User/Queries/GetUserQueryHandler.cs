@@ -21,10 +21,10 @@ public sealed class GetUserQueryHandler : IQueryHandler<Query.GetUserQuery, Page
         IQueryable<Domain.Entities.User> EventsQuery;
 
         EventsQuery = string.IsNullOrWhiteSpace(request.searchTerm)
-            ? (request.roleId == null
+            ? (request.officeId == null
             ? userRepository.FindAll()
-            : userRepository.FindAll(x => x.RoleId == request.roleId))
-            : userRepository.FindAll(x => x.Name.Contains(request.searchTerm) && (request.roleId == null || x.RoleId == request.roleId));
+            : userRepository.FindAll(x => x.OfficeId == request.officeId))
+            : userRepository.FindAll(x => x.Name.Contains(request.searchTerm) && (request.officeId == null || x.OfficeId == request.officeId));
 
         var keySelector = GetSortProperty(request);
 

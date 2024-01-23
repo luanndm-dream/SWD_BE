@@ -26,8 +26,8 @@ public class UpdateRoleCommandHandler : ICommandHandler<Command.UpdateRoleComman
             role.Update(request.Name, request.Description);
             roleRepository.Update(role);
 
-            var resultReponse = mapper.Map<Responses.RoleResponse>(role);
-            return Result.Success(resultReponse, 202);
+            var resultResponse = mapper.Map<Responses.RoleResponse>(role);
+            return Result.Success(resultResponse, 202);
         }
         catch (Exception ex)
         {

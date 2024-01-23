@@ -6,7 +6,7 @@ namespace BusDelivery.Contract.Services.V1.User;
 public static class Query
 {
     public record GetUserQuery(
-        Guid? roleId,
+        int? officeId,
         string? searchTerm,
         string? sortColumn,
         SortOrder? sortOrder,
