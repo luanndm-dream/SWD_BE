@@ -12,7 +12,8 @@ public class Office : DomainEntity<int>
     public bool IsActive { get; set; }
     public virtual ICollection<Station> Stations { get; set; }
     public virtual ICollection<User> Users { get; set; }
-    public virtual ICollection<Package> Packages { get; set; }
+    public virtual ICollection<Package> PackagesFrom { get; set; }
+    public virtual ICollection<Package> PackagesTo { get; set; }
     public virtual ICollection<Weather> Weathers { get; set; }
     public void Update(
         int id,

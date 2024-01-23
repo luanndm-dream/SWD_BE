@@ -14,18 +14,6 @@ public class AuthenticationController : ApiController
     {
     }
 
-    [HttpPost("Register")]
-    [ProducesResponseType(typeof(Result<Responses.UserReponses>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Register([FromForm] Command.RegisterCommand request)
-    {
-        var result = await sender.Send(request);
-        if (!result.IsSuccess)
-            HandlerFailure(result);
-
-        return Ok(result);
-    }
-
     [HttpPost("LoginAsync")]
     [ProducesResponseType(typeof(Result<Responses.LoginResponses>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]

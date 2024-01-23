@@ -1,11 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using AutoMapper;
 using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
+using BusDelivery.Contract.Enumerations;
 using BusDelivery.Contract.Services.V1.Role;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Role.Queries;
-public sealed class GetRoleQueryHandler : IQueryHandler<Query.GetRoleQuery, IReadOnlyCollection<Responses.RoleResponse>>
+public sealed class GetRoleQueryHandler : IQueryHandler<Query.GetRoleQuery, PagedResult<Responses.RoleResponse>>
 {
     private readonly RoleRepository roleRepository;
     private readonly IMapper mapper;
@@ -16,19 +18,42 @@ public sealed class GetRoleQueryHandler : IQueryHandler<Query.GetRoleQuery, IRea
         this.mapper = mapper;
     }
 
-    public async Task<Result<IReadOnlyCollection<Responses.RoleResponse>>> Handle(Query.GetRoleQuery request, CancellationToken cancellationToken)
+    public async Task<Result<PagedResult<Responses.RoleResponse>>> Handle(Query.GetRoleQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            var result = roleRepository.FindAll();
+            // Check value search is nullOrWhiteSpace?
+            var EventsQuery = string.IsNullOrWhiteSpace(request.searchTerm)
+            ? roleRepository.FindAll()   // If Null GetAll
+            : roleRepository.FindAll(x => x.Name.Contains(request.searchTerm)); // If Not GetAll With Name Or Address Contain searchTerm
 
-            var resultResponses = mapper.Map<IReadOnlyCollection<Responses.RoleResponse>>(result);
+            // Get Func<TEntity,TResponse> column
+            var keySelector = GetSortProperty(request);
 
-            return Result.Success(resultResponses);
+            // Asc Or Des
+            EventsQuery = request.sortOrder == SortOrder.Descending
+                ? EventsQuery.OrderByDescending(keySelector)
+                : EventsQuery.OrderBy(keySelector);
+
+            // GetList by Pagination
+            var Events = await PagedResult<Domain.Entities.Role>.CreateAsync(EventsQuery,
+                request.pageIndex,
+                request.pageSize);
+
+            var result = mapper.Map<PagedResult<Responses.RoleResponse>>(Events);
+
+            return Result.Success(result);
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
         }
     }
+
+    public static Expression<Func<Domain.Entities.Role, object>> GetSortProperty(Query.GetRoleQuery request)
+    => request.sortColumn?.ToLower() switch
+    {
+        "Name" => e => e.Name,
+        _ => e => e.Name
+    };
 }

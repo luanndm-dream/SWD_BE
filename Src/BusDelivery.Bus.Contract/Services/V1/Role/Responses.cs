@@ -1,5 +1,5 @@
 ﻿namespace BusDelivery.Contract.Services.V1.Role;
-public class Responses
+public static class Responses
 {
     public record RoleResponse(
         Guid Id,

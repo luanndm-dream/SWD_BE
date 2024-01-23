@@ -24,7 +24,7 @@ public sealed class UpsertWeatherCommandHandler : ICommandHandler<Command.Upsert
         foreach (var office in listOfficeUpdateWeather)
         {
             var openWeatherMapResponse = await weatherRepository.GetWeather5Days(office.Lat, office.Lng);
-            if (openWeatherMapResponse.cod != "202")
+            if (openWeatherMapResponse.cod != "202" && openWeatherMapResponse.cod != "200")
                 throw new WeatherException.WeatherBadRequestException("Error in Get OpenWeatherMap API");
 
             var listForecast = openWeatherMapResponse.list;

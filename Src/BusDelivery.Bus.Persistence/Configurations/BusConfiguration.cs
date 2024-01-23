@@ -15,15 +15,15 @@ public class BusConfiguration : IEntityTypeConfiguration<Domain.Entities.Bus>
         builder.Property(x => x.Name).IsRequired();
         builder.Property(x => x.Organization).IsRequired();
         builder.Property(x => x.Color).IsRequired();
-        builder.Property(x => x.NumberOfSeat).HasMaxLength(10);
-        builder.Property(x => x.OperateTime).HasMaxLength(15);
-        builder.Property(x => x.IsActive).HasDefaultValue(true);
+        builder.Property(x => x.NumberOfSeat).IsRequired();
+        builder.Property(x => x.OperateTime).IsRequired();
+        builder.Property(x => x.IsActive).IsRequired();
 
         //Each Bus can have many Routes
         builder.HasMany(x => x.Packages)
             .WithOne()
             .HasForeignKey(p => p.BusId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
 
         //Each Bus can have many BusRoutes
         builder.HasMany(x => x.BusRoutes)
