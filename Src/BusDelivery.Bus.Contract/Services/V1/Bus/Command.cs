@@ -19,7 +19,7 @@ public class Command
         public string color { get; set; } = null!;
         public string numberOfSeat { get; set; } = null!;
         public string operateTime { get; set; } = null!;   
-        public bool status { get; set; }
+        public bool IsActive { get; set; }
     }
 
     public record UpdateBusCommandRequest(int id) : ICommand<Responses.BusResponse>
@@ -32,7 +32,7 @@ public class Command
         public string color { get; set; } = null!;
         public string numberOfSeat { get; set; } = null!;
         public string operateTime { get; set; } = null!;       
-        public bool status { get; set; }
+        public bool IsActive { get; set; }
     }
 
     public record DeleteBusCommandRequest( int id) : ICommand

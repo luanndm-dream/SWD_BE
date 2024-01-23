@@ -18,6 +18,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <Folder Include="Services\V1\Reports\Validator\" />
 	  <Folder Include="Services\V1\Weather\Validators\" />
 	</ItemGroup>
 

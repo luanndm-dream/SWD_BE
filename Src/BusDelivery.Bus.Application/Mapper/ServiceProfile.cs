@@ -10,8 +10,10 @@ public class ServiceProfile : Profile
 {
     public ServiceProfile()
     {
+        // Station
         CreateMap<Station, Contract.Services.V1.Station.Responses.GetStationResponse>().ReverseMap();
         CreateMap<PagedResult<Station>, PagedResult<Contract.Services.V1.Station.Responses.GetStationResponse>>().ReverseMap();
+        // Bus
         CreateMap<Bus, Contract.Services.V1.Bus.Responses.BusResponse>().ReverseMap();
         CreateMap<PagedResult<Bus>, PagedResult<Contract.Services.V1.Bus.Responses.BusResponse>>().ReverseMap();
         // Office
@@ -26,6 +28,14 @@ public class ServiceProfile : Profile
 
         // Role
         CreateMap<IReadOnlyCollection<Role>, IReadOnlyCollection<BusDelivery.Contract.Services.V1.Role.Responses.RoleResponse>>().ReverseMap();
+
+        // Report
+        CreateMap<Report, Contract.Services.V1.Reports.Responses.ReportResponse>().ReverseMap();
+        CreateMap<PagedResult<Report>, PagedResult<Contract.Services.V1.Reports.Responses.ReportResponse>>().ReverseMap();  
+        
+        //Route
+        CreateMap<Route, Contract.Services.V1.Route.Responses.RouteResponse>().ReverseMap();
+        CreateMap<PagedResult<Route>, PagedResult<Contract.Services.V1.Route.Responses.RouteResponse>>().ReverseMap();
     }
 
 }

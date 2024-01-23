@@ -24,8 +24,8 @@ public class GetRouteByIdHandler : IQueryHandler<Query.GetRouteById, Responses.R
 
     public async Task<Result<Responses.RouteResponse>> Handle(Query.GetRouteById request, CancellationToken cancellationToken)
     {
-        var route = await routeRepository.FindByIdAsync(request.id) 
-            ?? throw new RouteException.RouteIdNotFoundException(request.id);
+        var route = await routeRepository.FindByIdAsync(request.routeId) 
+            ?? throw new RouteException.RouteIdNotFoundException(request.routeId);
 
         var response = mapper.Map<Responses.RouteResponse>(route);
         return Result.Success(response);

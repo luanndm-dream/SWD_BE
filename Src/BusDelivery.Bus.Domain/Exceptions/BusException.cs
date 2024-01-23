@@ -17,7 +17,7 @@ public class BusException
     public class BusIdNotFoundException : NotFoundException
     {
         public BusIdNotFoundException(int busId)
-            : base($"The Bua with the id {busId} was not found.") { }
+            : base($"The Bus with the id {busId} was not found.") { }
     }
 }
 

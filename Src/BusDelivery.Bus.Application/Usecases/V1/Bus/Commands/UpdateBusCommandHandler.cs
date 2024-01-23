@@ -35,7 +35,7 @@ public sealed class UpdateBusCommandHandler : ICommandHandler<Command.UpdateBusC
             bus.Color = request.color;
             bus.NumberOfSeat = request.numberOfSeat;
             bus.OperateTime = request.operateTime;
-            bus.IsActive = request.isActive;
+            bus.IsActive = request.IsActive;
 
             busRepository.Update(bus);
             var response = mapper.Map<Responses.BusResponse>(bus);

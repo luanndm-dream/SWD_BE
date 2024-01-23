@@ -2,6 +2,7 @@
 using Asp.Versioning;
 using Azure;
 using BusDelivery.Contract.Abstractions.Shared;
+using BusDelivery.Contract.Extensions;
 using BusDelivery.Contract.Services.V1.Station;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
@@ -15,6 +16,24 @@ public class StationController : ApiController
 {
     public StationController(ISender sender) : base(sender)
     {
+    }
+    [HttpGet("GetStation")]
+    [ProducesResponseType(typeof(Result<PagedResult<Responses.GetStationResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Stations(
+        string? searchTerm = null,
+        string? sortColumn = null,
+        string? sortOrder = null,
+        int pageIndex = 1,
+        int pageSize = 10)
+    {
+        var result = await sender.Send(new Query.GetStation(
+            searchTerm,                                             // Value to search
+            sortColumn,                                             // Column to sort
+            SortOrderExtension.ConvertStringToSortOrder(sortOrder), // Get Asc or Des
+            pageIndex,                                              // Page Value
+            pageSize));                                             // PageSize
+        return Ok(result);
     }
     [HttpGet("GetStationById/{stationId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.GetStationResponse>>), StatusCodes.Status200OK)]
