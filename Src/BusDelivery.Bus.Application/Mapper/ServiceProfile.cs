@@ -27,9 +27,6 @@ public class ServiceProfile : Profile
         // Weather
         CreateMap<Weather, BusDelivery.Contract.Services.V1.Weather.Responses.GetWeatherResponse>().ReverseMap();
 
-        // Role
-        CreateMap<IReadOnlyCollection<Role>, IReadOnlyCollection<BusDelivery.Contract.Services.V1.Role.Responses.RoleResponse>>().ReverseMap();
-
         // Report
         CreateMap<Report, Contract.Services.V1.Reports.Responses.ReportResponse>().ReverseMap();
         CreateMap<PagedResult<Report>, PagedResult<Contract.Services.V1.Reports.Responses.ReportResponse>>().ReverseMap();  
