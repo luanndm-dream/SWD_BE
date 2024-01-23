@@ -13,7 +13,8 @@ public class PackageConfiguration : IEntityTypeConfiguration<Package>
 
         builder.Property(x => x.BusId).IsRequired();
         builder.Property(x => x.StationId).IsRequired();
-        builder.Property(x => x.OfficeId).IsRequired();
+        builder.Property(x => x.FromOfficeId).IsRequired();
+        builder.Property(x => x.ToOfficeId).IsRequired();
         builder.Property(x => x.Quantity).IsRequired();
         builder.Property(x => x.TotalWeight).IsRequired();
         builder.Property(x => x.TotalPrice).IsRequired();
@@ -26,6 +27,6 @@ public class PackageConfiguration : IEntityTypeConfiguration<Package>
         builder.HasMany(x => x.Orders)
             .WithOne()
             .HasForeignKey(r => r.PackageId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

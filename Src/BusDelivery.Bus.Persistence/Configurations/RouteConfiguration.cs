@@ -21,13 +21,13 @@ public class RouteConfiguration : IEntityTypeConfiguration<Route>
         builder.HasMany(x => x.Coordinates)
             .WithOne()
             .HasForeignKey(r => r.RouteId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
 
         //Each Route can have many BusRoutes
         builder.HasMany(x => x.BusRoutes)
             .WithOne()
             .HasForeignKey(r => r.RouteId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
 
         //Each Route can have many StationRoutes
         builder.HasMany(x => x.StationRoutes)

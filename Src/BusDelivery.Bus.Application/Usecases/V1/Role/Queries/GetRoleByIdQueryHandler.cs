@@ -19,7 +19,7 @@ public sealed class GetRoleByIdQueryHandler : IQueryHandler<Query.GetRoleByIdQue
 
     public async Task<Result<Responses.RoleResponse>> Handle(Query.GetRoleByIdQuery request, CancellationToken cancellationToken)
     {
-        var result = roleRepository.FindByIdAsync(request.Id, cancellationToken)
+        var result = await roleRepository.FindByIdAsync(request.Id)
             ?? throw new RoleException.RoleIdNotFoundException(request.Id);
 
         var resultResponse = mapper.Map<Responses.RoleResponse>(result);

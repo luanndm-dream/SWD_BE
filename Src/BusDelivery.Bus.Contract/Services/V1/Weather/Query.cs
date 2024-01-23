@@ -3,5 +3,5 @@
 namespace BusDelivery.Contract.Services.V1.Weather;
 public static class Query
 {
-    public record GetWeatherQuery(int officeId) : IQuery<IReadOnlyCollection<Responses.GetWeatherResponse>>;
+    public record GetWeatherQuery(int officeId) : IQuery<List<Responses.GetWeatherResponse>>;
 }
