@@ -25,8 +25,8 @@ public class GetReportByIdQueryHandler : IQueryHandler<Query.GetReportById, Resp
 
     public async Task<Result<Responses.ReportResponse>> Handle(Query.GetReportById request, CancellationToken cancellationToken)
     {
-        var report = await _dbContext.Report.AsNoTracking().Where(x => x.Id == request.id).SingleOrDefaultAsync() 
-            ?? throw new ReportException.ReportIdNotFoundException(request.id);
+        var report = await _dbContext.Report.AsNoTracking().Where(x => x.Id == request.reportId).SingleOrDefaultAsync() 
+            ?? throw new ReportException.ReportIdNotFoundException(request.reportId);
         var response = _mapper.Map<Responses.ReportResponse>(report);
         return Result.Success(response);
     }
