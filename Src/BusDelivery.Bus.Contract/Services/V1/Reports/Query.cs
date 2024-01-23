@@ -16,5 +16,5 @@ public class Query
         int pageIndex, int pageSize)
         : IQuery<PagedResult<Responses.ReportResponse>>;
 
-    public record GetReportById(int id): IQuery<Responses.ReportResponse>;
+    public record GetReportById(int reportId): IQuery<Responses.ReportResponse>;
 }
