@@ -33,9 +33,8 @@ public class CreateReportCommandHandler : ICommandHandler<Command.CreateReportCo
                 TargetId = request.TargetId,
                 Type = request.Type,
             };
-            _context.Add(report);
+            await _context.AddAsync(report);
             var response = _mapper.Map<Responses.ReportResponse>(report);
-            _context.SaveChanges();
             return Result.Success(response, 201);
 
         }
