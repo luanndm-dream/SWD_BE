@@ -4,6 +4,7 @@ using BusDelivery.Contract.Extensions;
 using BusDelivery.Contract.Services.V1.User;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ public class UserController : ApiController
     {
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("GetUsers")]
     [ProducesResponseType(typeof(Result<IReadOnlyCollection<Responses.UserResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status500InternalServerError)]
@@ -45,6 +47,7 @@ public class UserController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("CreateUser")]
     [ProducesResponseType(typeof(Result<Responses.UserResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
@@ -80,7 +83,7 @@ public class UserController : ApiController
         return Ok(result);
     }
 
-
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{UserId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]

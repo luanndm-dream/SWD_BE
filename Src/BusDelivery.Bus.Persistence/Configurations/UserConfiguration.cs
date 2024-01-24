@@ -19,9 +19,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.PhoneNumber).IsRequired();
         builder.Property(x => x.Gentle).IsRequired();
         builder.Property(x => x.IsActive).IsRequired();
-        builder.Property(x => x.DeviceId).IsRequired();
-        builder.Property(x => x.DeviceVersion).IsRequired();
-        builder.Property(x => x.OS).IsRequired();
+        //builder.Property(x => x.DeviceId).HasMaxLength(225);
+        //builder.Property(x => x.DeviceVersion).HasMaxLength(225);
+        //builder.Property(x => x.OS).HasMaxLength(225);
         builder.Property(x => x.CreateTime).IsRequired();
 
         //Each User can have many Reports
