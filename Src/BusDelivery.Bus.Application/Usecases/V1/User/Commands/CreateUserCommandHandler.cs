@@ -13,9 +13,15 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
     private readonly OfficeRepository officeRepository;
     private readonly IMapper mapper;
 
-    public CreateUserCommandHandler(UserRepository userRepository, IMapper mapper)
+    public CreateUserCommandHandler(
+        UserRepository userRepository,
+        RoleRepository roleRepository,
+        OfficeRepository officeRepository,
+        IMapper mapper)
     {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.officeRepository = officeRepository;
         this.mapper = mapper;
     }
     public async Task<Result<Responses.UserResponse>> Handle(Command.CreateUserCommand request, CancellationToken cancellationToken)
