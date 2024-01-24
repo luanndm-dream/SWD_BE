@@ -18,7 +18,14 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <Folder Include="Services\V1\Reports\Validator\" />
 	  <Folder Include="Services\V1\Weather\Validators\" />
+	</ItemGroup>
+
+	
+	<ItemGroup>
+	  <Folder Include="Services\V1\Bus\Validators\" />
+	  <Folder Include="Services\V1\Route\Validators\" />
 	</ItemGroup>
 
 </Project>

@@ -39,7 +39,11 @@ public static class ServiceCollectionExtensions
             .AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork))
             .AddTransient<OfficeRepository>()
             .AddTransient<UserRepository>()
-            .AddTransient<RoleRepository>();
+            .AddTransient<RoleRepository>()
+            .AddTransient<StationRepository>()
+            .AddTransient<BusRepository>()
+            .AddTransient<RouteRepository>()
+            .AddTransient<ReportRepository>();
 
     public static OptionsBuilder<SqlServerRetryOptions> ConfigureSqlServerRetryOptions(this IServiceCollection services, IConfigurationSection section)
         => services.AddOptions<SqlServerRetryOptions>()
