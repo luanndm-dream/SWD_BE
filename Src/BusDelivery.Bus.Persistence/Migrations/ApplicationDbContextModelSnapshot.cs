@@ -155,9 +155,11 @@ namespace BusDelivery.Persistence.Migrations
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Order", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Contact")
                         .IsRequired()
@@ -171,8 +173,8 @@ namespace BusDelivery.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PackageId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("PackageId")
+                        .HasColumnType("int");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
@@ -189,16 +191,17 @@ namespace BusDelivery.Persistence.Migrations
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Package", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BusId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreateTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("FromOfficeId")
                         .HasColumnType("int");
@@ -254,12 +257,11 @@ namespace BusDelivery.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CreateBy")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CreateBy")
+                        .HasColumnType("int");
 
-                    b.Property<string>("CreateTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TargetId")
                         .HasColumnType("int");
@@ -277,9 +279,11 @@ namespace BusDelivery.Persistence.Migrations
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.Role", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -380,13 +384,14 @@ namespace BusDelivery.Persistence.Migrations
 
             modelBuilder.Entity("BusDelivery.Domain.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<string>("CreateTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DeviceId")
                         .HasColumnType("nvarchar(max)");
@@ -426,8 +431,8 @@ namespace BusDelivery.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

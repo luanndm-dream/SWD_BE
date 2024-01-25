@@ -4,8 +4,8 @@ namespace BusDelivery.Contract.Services.V1.Authentication;
 public static class Responses
 {
     public record LoginResponses(
-        Guid Id,
-        Guid RoleId,
+        int Id,
+        int RoleId,
         int OfficeId,
         string Name,
         string Email,

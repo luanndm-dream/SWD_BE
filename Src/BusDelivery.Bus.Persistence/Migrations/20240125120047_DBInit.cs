@@ -5,7 +5,7 @@
 namespace BusDelivery.Persistence.Migrations;
 
 /// <inheritdoc />
-public partial class DbInit : Migration
+public partial class DBInit : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,9 +21,9 @@ public partial class DbInit : Migration
                 Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Organization = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                NumberOfSeat = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                OperateTime = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
+                NumberOfSeat = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                OperateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -38,11 +38,11 @@ public partial class DbInit : Migration
                     .Annotation("SqlServer:Identity", "1, 1"),
                 Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                Lat = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                Lng = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                Lat = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                Lng = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Contact = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -53,7 +53,8 @@ public partial class DbInit : Migration
             name: "Role",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                Id = table.Column<int>(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
                 Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
             },
@@ -70,10 +71,10 @@ public partial class DbInit : Migration
                     .Annotation("SqlServer:Identity", "1, 1"),
                 Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                 StartPoint = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 EndPoint = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                OperateTime = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                OperateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -89,7 +90,8 @@ public partial class DbInit : Migration
                 OfficeId = table.Column<int>(type: "int", nullable: false),
                 Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Lat = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                Lng = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                Lng = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -98,25 +100,50 @@ public partial class DbInit : Migration
                     name: "FK_Station_Office_OfficeId",
                     column: x => x.OfficeId,
                     principalTable: "Office",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Cascade);
+                    principalColumn: "Id");
+            });
+
+        migrationBuilder.CreateTable(
+            name: "Weather",
+            columns: table => new
+            {
+                Id = table.Column<int>(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
+                OfficeId = table.Column<int>(type: "int", nullable: false),
+                Temperature = table.Column<double>(type: "float", nullable: false),
+                Humidity = table.Column<double>(type: "float", nullable: false),
+                WindySpeed = table.Column<double>(type: "float", nullable: false),
+                RecordAt = table.Column<string>(type: "nvarchar(max)", nullable: false)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_Weather", x => x.Id);
+                table.ForeignKey(
+                    name: "FK_Weather_Office_OfficeId",
+                    column: x => x.OfficeId,
+                    principalTable: "Office",
+                    principalColumn: "Id");
             });
 
         migrationBuilder.CreateTable(
             name: "User",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                Id = table.Column<int>(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
+                RoleId = table.Column<int>(type: "int", nullable: false),
                 OfficeId = table.Column<int>(type: "int", nullable: false),
                 Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                HashPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                Gentle = table.Column<string>(type: "nvarchar(1)", nullable: false),
-                Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                DeviceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                DeviceVersion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                OS = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                Identity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                Gentle = table.Column<int>(type: "int", nullable: false),
+                DeviceId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                DeviceVersion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                OS = table.Column<int>(type: "int", nullable: true),
+                CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -125,14 +152,12 @@ public partial class DbInit : Migration
                     name: "FK_User_Office_OfficeId",
                     column: x => x.OfficeId,
                     principalTable: "Office",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Cascade);
+                    principalColumn: "Id");
                 table.ForeignKey(
                     name: "FK_User_Role_RoleId",
                     column: x => x.RoleId,
                     principalTable: "Role",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Cascade);
+                    principalColumn: "Id");
             });
 
         migrationBuilder.CreateTable(
@@ -154,8 +179,7 @@ public partial class DbInit : Migration
                     name: "FK_BusRoute_Route_RouteId",
                     column: x => x.RouteId,
                     principalTable: "Route",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Cascade);
+                    principalColumn: "Id");
             });
 
         migrationBuilder.CreateTable(
@@ -164,10 +188,10 @@ public partial class DbInit : Migration
             {
                 Id = table.Column<int>(type: "int", nullable: false)
                     .Annotation("SqlServer:Identity", "1, 1"),
-                Lat = table.Column<double>(type: "float", nullable: false),
-                Lng = table.Column<double>(type: "float", nullable: false),
-                Stt = table.Column<int>(type: "int", nullable: false),
-                RouteId = table.Column<int>(type: "int", nullable: false)
+                RouteId = table.Column<int>(type: "int", nullable: false),
+                Lat = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                Lng = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                Stt = table.Column<int>(type: "int", nullable: false)
             },
             constraints: table =>
             {
@@ -176,25 +200,26 @@ public partial class DbInit : Migration
                     name: "FK_Coordinate_Route_RouteId",
                     column: x => x.RouteId,
                     principalTable: "Route",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Cascade);
+                    principalColumn: "Id");
             });
 
         migrationBuilder.CreateTable(
             name: "Package",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                Id = table.Column<int>(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
                 BusId = table.Column<int>(type: "int", nullable: false),
-                OfficeId = table.Column<int>(type: "int", nullable: false),
+                FromOfficeId = table.Column<int>(type: "int", nullable: false),
+                ToOfficeId = table.Column<int>(type: "int", nullable: false),
                 StationId = table.Column<int>(type: "int", nullable: false),
                 Quantity = table.Column<int>(type: "int", nullable: false),
                 TotalWeight = table.Column<float>(type: "real", nullable: false),
                 TotalPrice = table.Column<float>(type: "real", nullable: false),
-                Image = table.Column<int>(type: "int", nullable: false),
+                Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Note = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                Status = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "True"),
-                CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 1, 17, 7, 43, 25, 353, DateTimeKind.Local).AddTicks(6054))
+                Status = table.Column<int>(type: "int", nullable: false),
+                CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
             },
             constraints: table =>
             {
@@ -203,14 +228,17 @@ public partial class DbInit : Migration
                     name: "FK_Package_Bus_BusId",
                     column: x => x.BusId,
                     principalTable: "Bus",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Cascade);
+                    principalColumn: "Id");
                 table.ForeignKey(
-                    name: "FK_Package_Office_OfficeId",
-                    column: x => x.OfficeId,
+                    name: "FK_Package_Office_FromOfficeId",
+                    column: x => x.FromOfficeId,
                     principalTable: "Office",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Cascade);
+                    principalColumn: "Id");
+                table.ForeignKey(
+                    name: "FK_Package_Office_ToOfficeId",
+                    column: x => x.ToOfficeId,
+                    principalTable: "Office",
+                    principalColumn: "Id");
                 table.ForeignKey(
                     name: "FK_Package_Station_StationId",
                     column: x => x.StationId,
@@ -247,10 +275,10 @@ public partial class DbInit : Migration
                 Id = table.Column<int>(type: "int", nullable: false)
                     .Annotation("SqlServer:Identity", "1, 1"),
                 Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 1, 17, 7, 43, 25, 353, DateTimeKind.Local).AddTicks(8832)),
-                CreateBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                CreateBy = table.Column<int>(type: "int", nullable: false),
                 TargetId = table.Column<int>(type: "int", nullable: false),
-                Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
             },
             constraints: table =>
             {
@@ -259,16 +287,16 @@ public partial class DbInit : Migration
                     name: "FK_Report_User_CreateBy",
                     column: x => x.CreateBy,
                     principalTable: "User",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Cascade);
+                    principalColumn: "Id");
             });
 
         migrationBuilder.CreateTable(
             name: "Order",
             columns: table => new
             {
-                Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                PackageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                Id = table.Column<int>(type: "int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
+                PackageId = table.Column<int>(type: "int", nullable: false),
                 Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Weight = table.Column<float>(type: "real", nullable: false),
                 Price = table.Column<float>(type: "real", nullable: false),
@@ -282,8 +310,7 @@ public partial class DbInit : Migration
                     name: "FK_Order_Package_PackageId",
                     column: x => x.PackageId,
                     principalTable: "Package",
-                    principalColumn: "Id",
-                    onDelete: ReferentialAction.Cascade);
+                    principalColumn: "Id");
             });
 
         migrationBuilder.CreateIndex(
@@ -307,14 +334,19 @@ public partial class DbInit : Migration
             column: "BusId");
 
         migrationBuilder.CreateIndex(
-            name: "IX_Package_OfficeId",
+            name: "IX_Package_FromOfficeId",
             table: "Package",
-            column: "OfficeId");
+            column: "FromOfficeId");
 
         migrationBuilder.CreateIndex(
             name: "IX_Package_StationId",
             table: "Package",
             column: "StationId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Package_ToOfficeId",
+            table: "Package",
+            column: "ToOfficeId");
 
         migrationBuilder.CreateIndex(
             name: "IX_Report_CreateBy",
@@ -340,6 +372,11 @@ public partial class DbInit : Migration
             name: "IX_User_RoleId",
             table: "User",
             column: "RoleId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Weather_OfficeId",
+            table: "Weather",
+            column: "OfficeId");
     }
 
     /// <inheritdoc />
@@ -359,6 +396,9 @@ public partial class DbInit : Migration
 
         migrationBuilder.DropTable(
             name: "StationRoute");
+
+        migrationBuilder.DropTable(
+            name: "Weather");
 
         migrationBuilder.DropTable(
             name: "Package");

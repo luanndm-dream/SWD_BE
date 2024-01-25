@@ -8,9 +8,9 @@ public class Command
         string Description) : ICommand<Responses.RoleResponse>;
 
     public record UpdateRoleCommand(
-        Guid Id,
+        int Id,
         string Name,
         string Description) : ICommand<Responses.RoleResponse>;
 
-    public record DeleteRoleCommand(Guid Id) : ICommand;
+    public record DeleteRoleCommand(int Id) : ICommand;
 }
