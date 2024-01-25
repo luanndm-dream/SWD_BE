@@ -3,17 +3,23 @@ using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.Role;
 using BusDelivery.Domain.Exceptions;
+using BusDelivery.Persistence;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Role.Commands;
 public sealed class CreateRoleCommandHandler : ICommandHandler<Command.CreateRoleCommand, Responses.RoleResponse>
 {
     private readonly RoleRepository roleRepository;
+    private readonly ApplicationDbContext context;
     private readonly IMapper mapper;
 
-    public CreateRoleCommandHandler(RoleRepository roleRepository, IMapper mapper)
+    public CreateRoleCommandHandler(
+        RoleRepository roleRepository,
+        ApplicationDbContext context,
+        IMapper mapper)
     {
         this.roleRepository = roleRepository;
+        this.context = context;
         this.mapper = mapper;
     }
 
@@ -31,6 +37,7 @@ public sealed class CreateRoleCommandHandler : ICommandHandler<Command.CreateRol
         try
         {
             roleRepository.Add(role);
+            await context.SaveChangesAsync();
             var resultResponse = mapper.Map<Responses.RoleResponse>(role);
             return Result.Success(resultResponse, 201);
         }

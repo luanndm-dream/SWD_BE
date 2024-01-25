@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BusDelivery.Persistence.Repositories;
-public class UserRepository : RepositoryBase<User, Guid>
+public class UserRepository : RepositoryBase<User, int>
 {
     private readonly ApplicationDbContext context;
     private readonly IConfiguration configuration;
@@ -23,6 +23,14 @@ public class UserRepository : RepositoryBase<User, Guid>
         this.configuration = configuration;
     }
 
+    public string HashPassword(string password)
+    {
+        var salt = RandomNumberGenerator.GetBytes(SaltSize);
+        var hash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, hashAlgorithmName, KeySize);
+
+        return string.Join(Delimiter, Convert.ToBase64String(salt), Convert.ToBase64String(hash));
+    }
+
     public async Task<User?> FindByEmailAsync(string email)
     {
         var user = await context.User.FirstOrDefaultAsync(x => x.Email == email);
@@ -35,13 +43,6 @@ public class UserRepository : RepositoryBase<User, Guid>
         return user;
     }
 
-    public string HashPassword(string password)
-    {
-        var salt = RandomNumberGenerator.GetBytes(SaltSize);
-        var hash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, hashAlgorithmName, KeySize);
-
-        return string.Join(Delimiter, Convert.ToBase64String(salt), Convert.ToBase64String(hash));
-    }
 
     public bool VerifyPassword(string hashPassword, string inputPassword)
     {
@@ -86,7 +87,7 @@ public class UserRepository : RepositoryBase<User, Guid>
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Email, roleName)
+            new Claim(ClaimTypes.Role, roleName)
         };
         return claims;
     }

@@ -14,5 +14,5 @@ public static class Query
         int pageSize)
         : IQuery<PagedResult<Responses.UserResponse>>;
 
-    public record GetUserByIdQuery(Guid Id) : IQuery<Responses.UserResponse>;
+    public record GetUserByIdQuery(int Id) : IQuery<Responses.UserResponse>;
 }
