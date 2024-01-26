@@ -10,7 +10,7 @@ public static class RoleException
 
     public class RoleIdNotFoundException : NotFoundException
     {
-        public RoleIdNotFoundException(Guid RoleId)
+        public RoleIdNotFoundException(int RoleId)
             : base($"The Role with the id {RoleId} was not found.") { }
     }
 }

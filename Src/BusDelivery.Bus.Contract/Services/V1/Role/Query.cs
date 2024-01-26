@@ -11,5 +11,5 @@ public static class Query
         SortOrder? sortOrder,
         int pageIndex,
         int pageSize) : IQuery<PagedResult<Responses.RoleResponse>>;
-    public record GetRoleByIdQuery(Guid Id) : IQuery<Responses.RoleResponse>;
+    public record GetRoleByIdQuery(int Id) : IQuery<Responses.RoleResponse>;
 }

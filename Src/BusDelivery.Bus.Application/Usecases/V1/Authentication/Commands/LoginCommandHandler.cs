@@ -36,8 +36,9 @@ public sealed class LoginCommandHandler : ICommandHandler<Command.LoginCommand, 
                 CheckLoginUser(user, request);
             // GetToken
             var token = await userRepository.GenerateToken(user, roleName);
-
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
             // loginResponse
+            // Add Role Description
             var loginResponse = new Responses.LoginResponses(
                 user.Id,
                 user.RoleId,
@@ -50,9 +51,9 @@ public sealed class LoginCommandHandler : ICommandHandler<Command.LoginCommand, 
                 request.DeviceId,
                 request.DeviceVersion,
                 request.OS,
-                user.CreateTime,
+                user.CreateTime.ToString("dd/MM/yyyy"),
                 user.IsActive,
-                new JwtSecurityTokenHandler().WriteToken(token),
+                tokenString,
                 token.ValidTo);
             return Result.Success(loginResponse);
         }

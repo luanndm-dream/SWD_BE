@@ -1,11 +1,10 @@
-﻿using Azure.Storage.Blobs;
+﻿using System.Drawing;
+using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using BusDelivery.Infrastructure.BlobStorage.DependencyInjection.Options;
 using BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 
 namespace BusDelivery.Infrastructure.BlobStorage.Repositories;
 public class BlobStorageRepository : IBlobStorageRepository
@@ -76,38 +75,19 @@ public class BlobStorageRepository : IBlobStorageRepository
         return null;
     }
 
-    public async Task<string?> GetImageToBase64(string imageUrl, int? width, int? height)
+    public async Task<string?> GetResizeImageToBase64(string imageUrl, int width, int height)
     {
         var blobPath = GetBlobPath(imageUrl);
-        var blobServiceClient = new BlobServiceClient(blobStorageOptions.BlobUrl);
-        var blobContainerClient = blobServiceClient.GetBlobContainerClient(blobStorageOptions.Container);
+        var blobClient = GetBlobClient(blobPath);
 
-        var blobClient = blobContainerClient.GetBlobClient(blobPath);
-
-
-        using (var memoryStream = new MemoryStream())
+        if (!await BlobExists(blobClient))
         {
-
-            BlobDownloadInfo download = blobClient.Download();
-            download.Content.CopyTo(memoryStream);
-            memoryStream.Position = 0;
-            if (width.HasValue && height.HasValue)
-            {
-                using var image = await Image.LoadAsync(memoryStream);
-                image.Mutate(x => x.Resize(new ResizeOptions
-                {
-                    Size = new Size(width.Value, height.Value),
-                    Mode = ResizeMode.Max
-                }));
-
-                // Return the resized image
-                memoryStream.Position = 0;
-            }
-
-            if (memoryStream.Length > 0)
-                return Convert.ToBase64String(memoryStream.ToArray());
+            return null;
         }
-        return null;
+
+        var base64String = await GetResizedImageBase64(blobClient, width, height);
+
+        return base64String;
     }
 
     private string GetBlobPath(string imageUrl)
@@ -120,5 +100,42 @@ public class BlobStorageRepository : IBlobStorageRepository
         int length = uri.PathAndQuery.Length - containerName.Length - 1;
         string blobPath = uri.PathAndQuery.Substring(startIndex, length);
         return blobPath;
+    }
+
+    private BlobClient GetBlobClient(string blobPath)
+    {
+        var blobServiceClient = new BlobServiceClient(blobStorageOptions.BlobUrl);
+        var blobContainerClient = blobServiceClient.GetBlobContainerClient(blobStorageOptions.Container);
+        return blobContainerClient.GetBlobClient(blobPath);
+    }
+
+    private async Task<bool> BlobExists(BlobClient blobClient)
+    {
+        try
+        {
+            return await blobClient.ExistsAsync();
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private async Task<string> GetResizedImageBase64(BlobClient blobClient, int width, int height)
+    {
+        using (var memoryStream = new MemoryStream())
+        {
+            var download = await blobClient.DownloadAsync();
+            await download.Value.Content.CopyToAsync(memoryStream);
+
+            using (var originalImage = Image.FromStream(memoryStream))
+            using (var resizedImage = new Bitmap(originalImage, width, height))
+            using (var memoryStreamResized = new MemoryStream())
+            {
+                resizedImage.Save(memoryStreamResized, System.Drawing.Imaging.ImageFormat.Jpeg);
+                byte[] imageBytes = memoryStreamResized.ToArray();
+                return Convert.ToBase64String(imageBytes);
+            }
+        }
     }
 }

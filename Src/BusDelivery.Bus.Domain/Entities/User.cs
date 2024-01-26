@@ -1,10 +1,11 @@
 ﻿using BusDelivery.Contract.Enumerations;
 using BusDelivery.Domain.Abstractions.EntityBase;
+using static BusDelivery.Contract.Services.V1.User.Responses;
 
 namespace BusDelivery.Domain.Entities;
-public class User : DomainEntity<Guid>
+public class User : DomainEntity<int>
 {
-    public Guid RoleId { get; set; }
+    public int RoleId { get; set; }
     public int OfficeId { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
@@ -15,25 +16,23 @@ public class User : DomainEntity<Guid>
     public string? DeviceId { get; set; }
     public string? DeviceVersion { get; set; }
     public OS? OS { get; set; }
-    public string CreateTime { get; set; }
+    public DateTime CreateTime { get; set; }
     public bool IsActive { get; set; }
 
     public virtual ICollection<Report> Reports { get; set; }
 
     public void Update(
-        Guid Id,
-        Guid RoleId,
+        int Id,
+        int RoleId,
         int OfficeId,
         string Name,
         string Email,
-        string HashPassword,
         string PhoneNumber,
         string Identity,
         Gentle Gentle,
         string? DeviceId,
         string? DeviceVersion,
         OS? OS,
-        string CreateTime,
         bool IsActive)
     {
         this.Id = Id;
@@ -41,14 +40,32 @@ public class User : DomainEntity<Guid>
         this.OfficeId = OfficeId;
         this.Name = Name;
         this.Email = Email;
-        this.HashPassword = HashPassword;
         this.PhoneNumber = PhoneNumber;
         this.Identity = Identity;
         this.Gentle = Gentle;
         this.DeviceId = DeviceId;
         this.DeviceVersion = DeviceVersion;
         this.OS = OS;
-        this.CreateTime = CreateTime;
         this.IsActive = IsActive;
     }
+
+    public UserResponse ToResponses(string roleDescription)
+        => new UserResponse
+        {
+            Id = Id,
+            RoleId = RoleId,
+            RoleDescription = roleDescription,
+            OfficeId = OfficeId,
+            Name = Name,
+            Email = Email,
+            PhoneNumber = PhoneNumber,
+            Identity = Identity,
+            Gentle = Gentle,
+            DeviceId = DeviceId,
+            DeviceVersion = DeviceVersion,
+            OS = OS,
+            CreateTime = CreateTime.ToString("dd/MM/yyyy"),
+            IsActive = IsActive,
+        };
+
 }

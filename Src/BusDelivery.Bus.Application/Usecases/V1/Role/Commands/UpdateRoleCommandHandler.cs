@@ -6,7 +6,7 @@ using BusDelivery.Domain.Exceptions;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Role.Commands;
-public class UpdateRoleCommandHandler : ICommandHandler<Command.UpdateRoleCommand, Responses.RoleResponse>
+public sealed class UpdateRoleCommandHandler : ICommandHandler<Command.UpdateRoleCommand, Responses.RoleResponse>
 {
     private readonly RoleRepository roleRepository;
     private readonly IMapper mapper;

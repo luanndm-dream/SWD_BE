@@ -5,7 +5,7 @@ namespace BusDelivery.Contract.Services.V1.User;
 public static class Command
 {
     public record CreateUserCommand(
-        Guid RoleId,
+        int RoleId,
         int OfficeId,
         string Name,
         string Email,
@@ -16,20 +16,18 @@ public static class Command
         bool IsActive) : ICommand<Responses.UserResponse>;
 
     public record UpdateUserCommand(
-        Guid Id,
-        Guid RoleId,
+        int Id,
+        int RoleId,
         int OfficeId,
         string Name,
         string Email,
-        string Password,
         string PhoneNumber,
         string Identity,
         Gentle Gentle,
         string? DeviceId,
         string? DeviceVersion,
         OS? OS,
-        string CreateTime,
         bool IsActive) : ICommand<Responses.UserResponse>;
 
-    public record DeleteUserCommand(Guid Id) : ICommand;
+    public record DeleteUserCommand(int Id) : ICommand;
 }
