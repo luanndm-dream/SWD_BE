@@ -9,4 +9,22 @@ public class Order : DomainEntity<int>
     public float Price { get; set; }
     public string Note { get; set; }
     public string Contact { get; set; }
+
+    public void Update(
+    Guid id,
+    Guid packageId,
+    float weight,
+    float price,
+    string note,
+    string contact,
+    string image)
+    {
+        Id = id;
+        PackageId = packageId;
+        Weight = weight;
+        Price = price;
+        Note = note;
+        Contact = contact;
+        Image = image;
+    }
 }

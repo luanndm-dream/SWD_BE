@@ -25,6 +25,15 @@ public class ServiceProfile : Profile
         // Weather
         CreateMap<Weather, BusDelivery.Contract.Services.V1.Weather.Responses.GetWeatherResponse>().ReverseMap();
 
+        // Coordinate
+        CreateMap<Coordinate, BusDelivery.Contract.Services.V1.Coordinate.Responses.CoordinateResponses>().ReverseMap();
+        CreateMap<PagedResult<Coordinate>, PagedResult<BusDelivery.Contract.Services.V1.Coordinate.Responses.CoordinateResponses>>().ReverseMap();
+
+        // Order
+        CreateMap<Order, BusDelivery.Contract.Services.V1.Order.Responses.OrderResponses>().ReverseMap();
+        CreateMap<PagedResult<Order>, PagedResult<BusDelivery.Contract.Services.V1.Order.Responses.OrderResponses>>().ReverseMap();
+        // Role
+
         // Report
         CreateMap<Report, Contract.Services.V1.Reports.Responses.ReportResponse>().ReverseMap();
         CreateMap<PagedResult<Report>, PagedResult<Contract.Services.V1.Reports.Responses.ReportResponse>>().ReverseMap();
@@ -35,6 +44,7 @@ public class ServiceProfile : Profile
         //Role
         CreateMap<PagedResult<Role>, PagedResult<BusDelivery.Contract.Services.V1.Role.Responses.RoleResponse>>().ReverseMap();
         CreateMap<Role, BusDelivery.Contract.Services.V1.Role.Responses.RoleResponse>().ReverseMap();
+
     }
 
 }
