@@ -56,7 +56,7 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
         catch (Exception)
         {
             await blobStorageRepository.DeleteImageFromBlobStorage(newImageUrl);
-            throw new Exception("Update Office Error");
+            throw new Exception("Update Package Error");
         }
     }
 }

@@ -5,7 +5,7 @@ using BusDelivery.Contract.Services.V1.Package;
 using BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 using BusDelivery.Persistence.Repositories;
 
-namespace BusDelivery.Application.Usecases.V1.Package;
+namespace BusDelivery.Application.Usecases.V1.Package.Commands;
 public class CreatePackageCommandHandler : ICommandHandler<Command.CreatePackageCommand, Responses.PackageResponse>
 {
     private readonly IBlobStorageRepository blobStorageRepository;
@@ -22,10 +22,11 @@ public class CreatePackageCommandHandler : ICommandHandler<Command.CreatePackage
     {
         var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, $"{request.note}-{DateTimeOffset.Now.ToUnixTimeMilliseconds}", "package")
     ?? throw new Exception("Upload File fail");
-        var packeage = new Domain.Entities.Package
+        var package = new Domain.Entities.Package
         {
             BusId = request.busId,
-            OfficeId = request.officeId,
+            FromOfficeId = request.fromOfficeId,
+            ToOfficeId = request.toOfficeId,
             StationId = request.stationId,
             Quantity = request.quantity,
             TotalWeight = request.totalWeight,
@@ -34,7 +35,18 @@ public class CreatePackageCommandHandler : ICommandHandler<Command.CreatePackage
             Note = request.note,
             Status = request.status,
             CreateTime = request.createTime,
-
         };
+
+        try
+        {
+            packageRepository.Add(package);
+            var packageResponse = mapper.Map<Responses.PackageResponse>(package);
+            return Result.Success(packageResponse, 201);
+        }
+        catch (Exception)
+        {
+            await blobStorageRepository.DeleteImageFromBlobStorage(imageUrl);
+            throw new Exception("Create Package Error");
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BusDelivery.Contract.Enumerations;
+using Microsoft.AspNetCore.Http;
 
 namespace BusDelivery.Contract.Services.V1.Package;
 public class Responses
@@ -6,13 +7,14 @@ public class Responses
     public record PackageResponse(
     Guid Id,
     int BusId,
-    int OfficeId,
+    int FromOfficeId,
+    int ToOfficeId,
     int StationId,
     int Quantity,
     float TotalWeight,
     float TotalPrice,
     IFormFile Image,
     string Note,
-    bool IsActive,
+    PackageStatus Status,
     string CreateTime);
 }

@@ -41,7 +41,8 @@ public static class ServiceCollectionExtensions
             .AddTransient<CoordinateRepository>()
             .AddTransient<UserRepository>()
             .AddTransient<RoleRepository>()
-            .AddTransient<OrderRepository>();
+            .AddTransient<OrderRepository>()
+            .AddTransient<PackageRepository>();
 
 
     public static OptionsBuilder<SqlServerRetryOptions> ConfigureSqlServerRetryOptions(this IServiceCollection services, IConfigurationSection section)

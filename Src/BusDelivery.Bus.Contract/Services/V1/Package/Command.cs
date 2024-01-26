@@ -7,7 +7,8 @@ public class Command
 {
     public record CreatePackageCommand(
     int busId,
-    int officeId,
+    int fromOfficeId,
+    int toOfficeId,
     int stationId,
     int quantity,
     float totalWeight,
@@ -20,7 +21,8 @@ public class Command
     public record UpdatePackageCommand(
     Guid id,
     int busId,
-    int officeId,
+    int fromOfficeId,
+    int toOfficeId,
     int stationId,
     int quantity,
     float totalWeight,
@@ -30,5 +32,5 @@ public class Command
     PackageStatus status,
     string createTime) : ICommand<Responses.PackageResponse>;
 
-    public record DeleteOfficeCommand(Guid id) : ICommand;
+    public record DeletePackageCommand(Guid id) : ICommand;
 }
