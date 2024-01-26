@@ -5,7 +5,7 @@ namespace BusDelivery.Contract.Services.V1.Order;
 public class Command
 {
     public record CreateOrderCommand(
-    Guid packageid,
+    int packageid,
     IFormFile image,
     float weight,
     float price,
@@ -13,13 +13,13 @@ public class Command
     string contact) : ICommand<Responses.OrderResponses>;
 
     public record UpdateOrderCommand(
-    Guid id,
-    Guid packageid,
+    int id,
+    int packageid,
     IFormFile image,
     float weight,
     float price,
     string note,
     string contact) : ICommand<Responses.OrderResponses>;
 
-    public record DeleteOrderCommand(Guid id) : ICommand;
+    public record DeleteOrderCommand(int id) : ICommand;
 }

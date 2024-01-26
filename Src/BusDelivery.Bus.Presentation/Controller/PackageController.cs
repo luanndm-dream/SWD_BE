@@ -40,7 +40,7 @@ public class PackageController : ApiController
     [HttpGet("GetPackages/{packageId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Packages([FromRoute] Guid packageId)
+    public async Task<IActionResult> Packages([FromRoute] int packageId)
     {
         var result = await sender.Send(new Query.GetPackageByIdQuery(packageId));
         return Ok(result);
@@ -58,7 +58,7 @@ public class PackageController : ApiController
     [HttpPut("{packageId}")]
     [ProducesResponseType(typeof(Result<Responses.PackageResponse>), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Packages([FromRoute] Guid packageId, [FromForm] Command.UpdatePackageCommand request)
+    public async Task<IActionResult> Packages([FromRoute] int packageId, [FromForm] Command.UpdatePackageCommand request)
     {
         var updatePackage = new Command.UpdatePackageCommand
         (
@@ -82,7 +82,7 @@ public class PackageController : ApiController
     [HttpDelete("{packageId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeletePackages(Guid packageId)
+    public async Task<IActionResult> DeletePackages(int packageId)
     {
         var result = await sender.Send(new Command.DeletePackageCommand(packageId));
         return Ok(result);

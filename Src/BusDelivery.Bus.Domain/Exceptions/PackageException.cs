@@ -10,7 +10,7 @@ public class PackageException
 
     public class PackageIdNotFoundException : NotFoundException
     {
-        public PackageIdNotFoundException(Guid PackageId)
+        public PackageIdNotFoundException(int PackageId)
             : base($"The Package with the id {PackageId} was not found.") { }
     }
 

@@ -14,12 +14,12 @@ public class Package : DomainEntity<int>
     public string Image { get; set; }
     public string Note { get; set; }
     public PackageStatus Status { get; set; }
-    public DateTime CreateTime { get; set; }
+    public string CreateTime { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; }
 
     public void Update(
-    Guid id,
+    int id,
     int busId,
     int fromOfficeId,
     int toOfficeId,

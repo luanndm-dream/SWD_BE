@@ -11,8 +11,8 @@ public class Order : DomainEntity<int>
     public string Contact { get; set; }
 
     public void Update(
-    Guid id,
-    Guid packageId,
+    int id,
+    int packageId,
     float weight,
     float price,
     string note,
