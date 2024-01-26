@@ -17,4 +17,33 @@ public class Package : DomainEntity<int>
     public DateTime CreateTime { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; }
+
+    public void Update(
+    Guid id,
+    int busId,
+    int fromOfficeId,
+    int toOfficeId,
+    int stationId,
+    int quantity,
+    float totalWeight,
+    float totalPrice,
+    string image,
+    string note,
+    PackageStatus status,
+    string createTime)
+    {
+        Id = id;
+        BusId = busId;
+        FromOfficeId = fromOfficeId;
+        ToOfficeId = toOfficeId;
+        StationId = stationId;
+        Quantity = quantity;
+        TotalWeight = totalWeight;
+        TotalPrice = totalPrice;
+        Image = image;
+        Note = note;
+        Status = status;
+        CreateTime = createTime;
+
+    }
 }
