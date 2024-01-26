@@ -45,7 +45,7 @@ public sealed class GetUserQueryHandler : IQueryHandler<Query.GetUserQuery, Page
         var result = mapper.Map<PagedResult<Responses.UserResponse>>(Events);
         foreach (var user in result.items)
         {
-            user.RoleDescription = roleRepository.FindByIdAsync(user.Id).GetAwaiter().GetResult().Description;
+            user.RoleDescription = roleRepository.FindByIdAsync(user.RoleId).GetAwaiter().GetResult().Description;
         }
         return Result.Success(result);
     }

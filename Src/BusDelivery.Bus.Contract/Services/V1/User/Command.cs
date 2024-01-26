@@ -16,7 +16,7 @@ public static class Command
         bool IsActive) : ICommand<Responses.UserResponse>;
 
     public record UpdateUserCommand(
-        int Id,
+        int? Id,
         int RoleId,
         int OfficeId,
         string Name,

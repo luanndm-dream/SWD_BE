@@ -4,6 +4,7 @@ using BusDelivery.Contract.Extensions;
 using BusDelivery.Contract.Services.V1.Office;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,7 @@ public class OfficeController : ApiController
     [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Offices(
+        bool? status,
         string? searchTerm = null,
         string? sortColumn = null,
         string? sortOrder = null,
@@ -27,6 +29,7 @@ public class OfficeController : ApiController
         int pageSize = 10)
     {
         var result = await sender.Send(new Query.GetOfficeQuery(
+            status,
             searchTerm,                                             // Value to search
             sortColumn,                                             // Column to sort
             SortOrderExtension.ConvertStringToSortOrder(sortOrder), // Get Asc or Des
@@ -44,7 +47,7 @@ public class OfficeController : ApiController
         return Ok(result);
     }
 
-
+    [Authorize(Roles = "Admin")]
     [HttpPost("CreateOffice")]
     [ProducesResponseType(typeof(Result<Responses.OfficeResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
@@ -54,7 +57,7 @@ public class OfficeController : ApiController
         return Ok(result);
     }
 
-
+    [Authorize(Roles = "Admin")]
     [HttpPut("{officeId}")]
     [ProducesResponseType(typeof(Result<Responses.OfficeResponse>), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
@@ -75,7 +78,7 @@ public class OfficeController : ApiController
         return Ok(result);
     }
 
-
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{officeId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]

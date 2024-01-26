@@ -47,6 +47,7 @@ public class UserController : ApiController
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("CreateUser")]
     [ProducesResponseType(typeof(Result<Responses.UserResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
