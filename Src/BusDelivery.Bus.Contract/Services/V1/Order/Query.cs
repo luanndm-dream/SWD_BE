@@ -14,5 +14,5 @@ public class Query
         int pageSize
         ) : IQuery<PagedResult<OrderResponses>>;
 
-    public record GetOrderByIdQuery(Guid orderId) : IQuery<Responses.OrderResponses>;
+    public record GetOrderByIdQuery(int orderId) : IQuery<Responses.OrderResponses>;
 }

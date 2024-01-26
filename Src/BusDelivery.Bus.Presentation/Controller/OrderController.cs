@@ -36,7 +36,7 @@ public class OrderController : ApiController
     [HttpGet("GetOrders/{orderId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.OrderResponses>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Orders([FromRoute] Guid orderId)
+    public async Task<IActionResult> Orders([FromRoute] int orderId)
     {
         var result = await sender.Send(new Query.GetOrderByIdQuery(orderId));
         return Ok(result);
@@ -54,7 +54,7 @@ public class OrderController : ApiController
     [HttpPut("{orderId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Orders(Guid orderId, [FromForm] Command.UpdateOrderCommand request)
+    public async Task<IActionResult> Orders(int orderId, [FromForm] Command.UpdateOrderCommand request)
     {
         var updateOrder = new Command.UpdateOrderCommand
         (
@@ -72,7 +72,7 @@ public class OrderController : ApiController
     [HttpDelete("{orderId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteOrder(Guid orderId)
+    public async Task<IActionResult> DeleteOrder(int orderId)
     {
         var result = await sender.Send(new Command.DeleteOrderCommand(orderId));
         return Ok(result);

@@ -19,7 +19,7 @@ public class Command
     string createTime) : ICommand<Responses.PackageResponse>;
 
     public record UpdatePackageCommand(
-    Guid id,
+    int id,
     int busId,
     int fromOfficeId,
     int toOfficeId,
@@ -32,5 +32,5 @@ public class Command
     PackageStatus status,
     string createTime) : ICommand<Responses.PackageResponse>;
 
-    public record DeletePackageCommand(Guid id) : ICommand;
+    public record DeletePackageCommand(int id) : ICommand;
 }

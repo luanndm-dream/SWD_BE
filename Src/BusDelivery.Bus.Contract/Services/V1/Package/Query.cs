@@ -14,7 +14,7 @@ public class Query
         int pageSize)
     : IQuery<PagedResult<Responses.PackageResponse>>;
 
-    public record GetPackageByIdQuery(Guid packageId) : IQuery<Responses.PackageResponse>;
+    public record GetPackageByIdQuery(int packageId) : IQuery<Responses.PackageResponse>;
     public record GetPackageByDateQuery(string date) : IQuery<Responses.PackageResponse>;
     public record GetPackageByStatusQuery(bool status) : IQuery<Responses.PackageResponse>;
 

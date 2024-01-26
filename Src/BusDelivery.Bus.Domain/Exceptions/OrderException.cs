@@ -10,7 +10,7 @@ public class OrderException
 
     public class OrderIdNotFoundException : NotFoundException
     {
-        public OrderIdNotFoundException(Guid OrderId)
+        public OrderIdNotFoundException(int OrderId)
             : base($"The Order with the id {OrderId} was not found.") { }
     }
 }
