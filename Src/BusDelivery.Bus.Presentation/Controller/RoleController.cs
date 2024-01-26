@@ -3,11 +3,13 @@ using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.Role;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusDelivery.Presentation.Controller;
 [ApiVersion(1)]
+[Authorize(Roles = "Admin")]
 public class RoleController : ApiController
 {
     public RoleController(ISender sender) : base(sender)

@@ -22,8 +22,8 @@ public sealed class UpdateUserCommandHandler : ICommandHandler<Command.UpdateUse
     }
     public async Task<Result<Responses.UserResponse>> Handle(Command.UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var userExist = await userRepository.FindByIdAsync(request.Id)
-            ?? throw new UserException.UserIdNotFoundException(request.Id);
+        var userExist = await userRepository.FindByIdAsync(request.Id.Value)
+            ?? throw new UserException.UserIdNotFoundException(request.Id.Value);
 
         var roleExist = await roleRepository.FindByIdAsync(request.RoleId)
             ?? throw new RoleException.RoleIdNotFoundException(request.RoleId);
@@ -34,7 +34,7 @@ public sealed class UpdateUserCommandHandler : ICommandHandler<Command.UpdateUse
         try
         {
             userExist.Update(
-                request.Id,
+                request.Id.Value,
                 request.RoleId,
                 request.OfficeId,
                 request.Name,

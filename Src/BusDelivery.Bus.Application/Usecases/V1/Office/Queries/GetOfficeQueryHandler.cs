@@ -26,10 +26,19 @@ public sealed class GetOfficeQueryHandler : IQueryHandler<Query.GetOfficeQuery, 
 
     public async Task<Result<PagedResult<Responses.OfficeResponse>>> Handle(Query.GetOfficeQuery request, CancellationToken cancellationToken)
     {
-        // Check value search is nullOrWhiteSpace?
-        var EventsQuery = string.IsNullOrWhiteSpace(request.searchTerm)
-        ? officeRepository.FindAll()   // If Null GetAll
-        : officeRepository.FindAll(x => x.Name.Contains(request.searchTerm) || x.Address.Contains(request.searchTerm)); // If Not GetAll With Name Or Address Contain searchTerm
+        IQueryable<Domain.Entities.Office> EventsQuery;
+        if (string.IsNullOrWhiteSpace(request.searchTerm))
+        {
+            EventsQuery = (request.isActive == null)
+                ? officeRepository.FindAll()
+                : officeRepository.FindAll(x => x.IsActive == request.isActive);
+        }
+        else
+        {
+            EventsQuery = (request.isActive == null)
+                ? officeRepository.FindAll(x => x.Name.Contains(request.searchTerm) || x.Address.Contains(request.searchTerm))
+                : officeRepository.FindAll(x => x.IsActive == request.isActive && (x.Name.Contains(request.searchTerm) || x.Address.Contains(request.searchTerm)));
+        }
 
         // Get Func<TEntity,TResponse> column
         var keySelector = GetSortProperty(request);

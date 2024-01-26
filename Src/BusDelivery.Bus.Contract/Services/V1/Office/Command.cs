@@ -14,7 +14,7 @@ public class Command
         bool status) : ICommand<Responses.OfficeResponse>;
 
     public record UpdateOfficeCommand(
-        int id,
+        int? id,
         string name,
         string address,
         string lat,

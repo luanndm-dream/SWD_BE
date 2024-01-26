@@ -6,6 +6,7 @@ public static class Responses
     public record LoginResponses(
         int Id,
         int RoleId,
+        string RoleDescription,
         int OfficeId,
         string Name,
         string Email,
@@ -18,5 +19,5 @@ public static class Responses
         string CreateTime,
         bool IsActive,
         string Token,
-        DateTime ExpireOn);
+        string ExpireOn);
 }
