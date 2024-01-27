@@ -50,8 +50,8 @@ public sealed class GetOfficeQueryHandler : IQueryHandler<Query.GetOfficeQuery, 
 
         // GetList by Pagination
         var Events = await PagedResult<Domain.Entities.Office>.CreateAsync(EventsQuery,
-            request.pageIndex,
-            request.pageSize);
+            request.pageIndex.Value,
+            request.pageSize.Value);
 
         // Encode toBase64String
         //foreach (var office in Events.items)

@@ -59,6 +59,10 @@ builder.Services
         options.SubstituteApiVersionInUrl = true;
     });
 
+// Add Cors
+builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
+build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()));
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
@@ -66,7 +70,7 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 //if (app.Environment.IsDevelopment() || builder.Environment.IsStaging())
 app.ConfigureSwagger();
 
-
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

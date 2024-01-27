@@ -27,17 +27,17 @@ public sealed class CreateOfficeCommandHandler : ICommandHandler<Command.CreateO
 
     public async Task<Result<Responses.OfficeResponse>> Handle(Command.CreateOfficeCommand request, CancellationToken cancellationToken)
     {
-        var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, request.name, "offices")
+        var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.Image, request.Name, "offices")
             ?? throw new Exception("Upload File fail");
         var office = new Domain.Entities.Office
         {
-            Name = request.name,
-            Address = request.address,
-            Lat = request.lat,
-            Lng = request.lng,
-            Contact = request.contact,
+            Name = request.Name,
+            Address = request.Address,
+            Lat = request.Lat,
+            Lng = request.Lng,
+            Contact = request.Contact,
             Image = imageUrl,
-            IsActive = request.status,
+            IsActive = request.IsActive,
         };
 
         try

@@ -25,8 +25,8 @@ public class OfficeController : ApiController
         string? searchTerm = null,
         string? sortColumn = null,
         string? sortOrder = null,
-        int pageIndex = 1,
-        int pageSize = 10)
+        int? pageIndex = 1,
+        int? pageSize = 10)
     {
         var result = await sender.Send(new Query.GetOfficeQuery(
             status,
@@ -66,25 +66,25 @@ public class OfficeController : ApiController
         var updateOffice = new Command.UpdateOfficeCommand
         (
             officeId,
-            request.name,
-            request.address,
-            request.lat,
-            request.lng,
-            request.contact,
-            request.image,
-            request.status
+            request.Name,
+            request.Address,
+            request.Lat,
+            request.Lng,
+            request.Contact,
+            request.Image,
+            request.IsActive
         );
         var result = await sender.Send(updateOffice);
         return Ok(result);
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpDelete("{officeId}")]
+    [HttpDelete("{OfficeId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteOffices(int officeId)
+    public async Task<IActionResult> DeleteOffices(int OfficeId)
     {
-        var result = await sender.Send(new Command.DeleteOfficeCommand(officeId));
+        var result = await sender.Send(new Command.DeleteOfficeCommand(OfficeId));
         return Ok(result);
     }
 

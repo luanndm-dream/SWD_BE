@@ -22,26 +22,26 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
     public async Task<Result<Responses.OfficeResponse>> Handle(Command.UpdateOfficeCommand request, CancellationToken cancellationToken)
     {
         // Check existOffice
-        var existOffice = await officeRepository.FindByIdAsync(request.id.Value)
-            ?? throw new OfficeException.OfficeIdNotFoundException(request.id.Value);
+        var existOffice = await officeRepository.FindByIdAsync(request.Id.Value)
+            ?? throw new OfficeException.OfficeIdNotFoundException(request.Id.Value);
 
         // Delete oldImage and Upload newImage
         var oldImageUrl = existOffice.Image;
 
 
         // Save NewImage and GetNewImageUrl
-        var newImageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, request.name, "offices")
+        var newImageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.Image, request.Name, "offices")
             ?? throw new Exception("Upload File fail");
 
         existOffice.Update(
-            request.id.Value,
-            request.name,
-            request.address,
-            request.lat,
-            request.lng,
-            request.contact,
+            request.Id.Value,
+            request.Name,
+            request.Address,
+            request.Lat,
+            request.Lng,
+            request.Contact,
             newImageUrl,
-            request.status);
+            request.IsActive);
 
         try
         {
