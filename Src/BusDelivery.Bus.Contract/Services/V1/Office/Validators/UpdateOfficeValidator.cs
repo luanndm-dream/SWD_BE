@@ -5,12 +5,12 @@ public class UpdateOfficeValidator : AbstractValidator<Command.UpdateOfficeComma
 {
     public UpdateOfficeValidator()
     {
-        RuleFor(x => x.id).NotNull().WithMessage("Id is required");
-        RuleFor(x => x.name).NotEmpty().WithMessage("Name is required.");
-        RuleFor(x => x.address).NotEmpty().WithMessage("Address is required.");
-        RuleFor(x => x.lat).NotEmpty().WithMessage("Lat is required.");
-        RuleFor(x => x.lng).NotEmpty().WithMessage("Lng is required.");
-        RuleFor(x => x.image).NotEmpty().WithMessage("Image is required.");
-        RuleFor(x => x.status).NotNull().WithMessage("Status is required");
+        RuleFor(x => x.Id).NotNull().WithMessage("Id is required");
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
+        RuleFor(x => x.Address).NotEmpty().WithMessage("Address is required.");
+        RuleFor(x => x.Lat).NotEmpty().WithMessage("Lat is required.");
+        RuleFor(x => x.Lng).NotEmpty().WithMessage("Lng is required.");
+        RuleFor(x => x.Image).NotEmpty().WithMessage("Image is required.");
+        RuleFor(x => x.IsActive).NotNull().WithMessage("Status is required");
     }
 }

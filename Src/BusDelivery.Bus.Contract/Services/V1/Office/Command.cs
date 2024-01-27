@@ -5,23 +5,23 @@ namespace BusDelivery.Contract.Services.V1.Office;
 public class Command
 {
     public record CreateOfficeCommand(
-        string name,
-        string address,
-        string lat,
-        string lng,
-        string contact,
-        IFormFile image,
-        bool status) : ICommand<Responses.OfficeResponse>;
+        string Name,
+        string Address,
+        string Lat,
+        string Lng,
+        string Contact,
+        IFormFile Image,
+        bool IsActive) : ICommand<Responses.OfficeResponse>;
 
     public record UpdateOfficeCommand(
-        int? id,
-        string name,
-        string address,
-        string lat,
-        string lng,
-        string contact,
-        IFormFile image,
-        bool status) : ICommand<Responses.OfficeResponse>;
+        int? Id,
+        string Name,
+        string Address,
+        string Lat,
+        string Lng,
+        string Contact,
+        IFormFile Image,
+        bool IsActive) : ICommand<Responses.OfficeResponse>;
 
     public record DeleteOfficeCommand(int id) : ICommand;
 }

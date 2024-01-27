@@ -10,4 +10,11 @@ public class Command
         string? DeviceId,
         string? DeviceVersion,
         OS? OS) : ICommand<Responses.LoginResponses>;
+
+    public record ForgotPasswordCommand(
+        string Email,
+        string NewPassword,
+        string DeviceId,
+        string DeviceVersion,
+        OS OS) : ICommand;
 }
