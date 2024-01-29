@@ -15,11 +15,13 @@ public sealed class CreateBusCommandHandler : ICommandHandler<Command.CreateBusC
 {
     private readonly BusRepository busRepository;
     private readonly IMapper mapper;
+    private readonly ApplicationDbContext context;
 
-    public CreateBusCommandHandler(BusRepository busRepository, IMapper mapper)
+    public CreateBusCommandHandler(BusRepository busRepository, IMapper mapper, ApplicationDbContext context)
     {
         this.busRepository = busRepository;
         this.mapper = mapper;
+        this.context = context;
     }
 
     public async Task<Result<Responses.BusResponse>> Handle(Command.CreateBusCommandRequest request, CancellationToken cancellationToken)
@@ -46,6 +48,7 @@ public sealed class CreateBusCommandHandler : ICommandHandler<Command.CreateBusC
             {
                 busRepository.Add(newBus);
                 var response = mapper.Map<Responses.BusResponse>(newBus);
+                await context.SaveChangesAsync();
                 return Result.Success(response, 201);
             }
             catch

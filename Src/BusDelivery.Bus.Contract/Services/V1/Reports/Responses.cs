@@ -9,6 +9,7 @@ namespace BusDelivery.Contract.Services.V1.Reports;
 {
     public record ReportResponse
     {
+        public int id {  get; set; }
         public string Content { get; set; } = null!;
         public Guid CreateBy { get; set; }
         public int TargetId { get; set; }
