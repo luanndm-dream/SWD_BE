@@ -42,7 +42,7 @@ public class GetReportByUser : IQueryHandler<Query.GetReportByUser, List<Respons
                     CreateBy = e.CreateBy,
                     TargetId = e.TargetId,
                     Type = e.Type,
-                    CreateTime = e.CreateTime,
+                    CreateTime = e.CreateTime.ToString(),
                 })
                 .ToListAsync()
                 ?? throw new Exception("CreateBy was not exist");

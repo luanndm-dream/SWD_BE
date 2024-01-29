@@ -18,7 +18,7 @@ public class Query
 
     public record GetReportById(int reportId): IQuery<Responses.ReportResponse>;
 
-    public record GetReportByUser(Guid userId) : IQuery<List<Responses.ReportResponse>>
+    public record GetReportByUser(int userId) : IQuery<List<Responses.ReportResponse>>
     {
        // public Guid UserId { get; set; } 
     }

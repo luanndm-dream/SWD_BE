@@ -43,12 +43,12 @@ public class ReportController : ApiController
         var result = await sender.Send(new Query.GetReportById(reportId));
         return Ok(result);
     }
-    [HttpGet("GetReportByUserID/{userid}")]
+    [HttpGet("GetReportByUserID/{userId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.ReportResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetReport([FromRoute] Guid userid)
+    public async Task<IActionResult> GetReport([FromRoute] int userId)
     {
-            var result = await sender.Send( new Query.GetReportByUser(userid));
+            var result = await sender.Send( new Query.GetReportByUser(userId));
         return Ok(result);
     }
 
