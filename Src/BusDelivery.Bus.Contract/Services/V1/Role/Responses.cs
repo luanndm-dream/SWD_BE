@@ -2,7 +2,7 @@
 public static class Responses
 {
     public record RoleResponse(
-        Guid Id,
+        int Id,
         string Name,
         string Description);
 }

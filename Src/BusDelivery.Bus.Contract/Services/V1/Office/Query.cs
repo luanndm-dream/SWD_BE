@@ -6,11 +6,12 @@ namespace BusDelivery.Contract.Services.V1.Office;
 public class Query
 {
     public record GetOfficeQuery(
+        bool? isActive,
         string? searchTerm,
         string? sortColumn,
         SortOrder? sortOrder,
-        int pageIndex,
-        int pageSize)
+        int? pageIndex,
+        int? pageSize)
         : IQuery<PagedResult<Responses.OfficeResponse>>;
 
     public record GetOfficeByIdQuery(int officeId) : IQuery<Responses.OfficeResponse>;

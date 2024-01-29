@@ -1,7 +1,7 @@
 ﻿using BusDelivery.Domain.Abstractions.EntityBase;
 
 namespace BusDelivery.Domain.Entities;
-public class Role : DomainEntity<Guid>
+public class Role : DomainEntity<int>
 {
     public string Name { get; set; }
     public string Description { get; set; }

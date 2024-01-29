@@ -10,7 +10,7 @@ public static class UserException
 
     public class UserIdNotFoundException : NotFoundException
     {
-        public UserIdNotFoundException(Guid UserId)
+        public UserIdNotFoundException(int UserId)
             : base($"The User with the id {UserId} was not found.") { }
     }
 }

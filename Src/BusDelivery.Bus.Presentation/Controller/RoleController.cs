@@ -3,11 +3,13 @@ using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.Role;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusDelivery.Presentation.Controller;
 [ApiVersion(1)]
+[Authorize(Roles = "Admin")]
 public class RoleController : ApiController
 {
     public RoleController(ISender sender) : base(sender)
@@ -26,7 +28,7 @@ public class RoleController : ApiController
     [HttpGet("GetRoles/{RoleId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.RoleResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Roles([FromRoute] Guid RoleId)
+    public async Task<IActionResult> Roles([FromRoute] int RoleId)
     {
         var result = await sender.Send(new Query.GetRoleByIdQuery(RoleId));
         return Ok(result);
@@ -46,7 +48,7 @@ public class RoleController : ApiController
     [HttpPut("{RoleId}")]
     [ProducesResponseType(typeof(Result<Responses.RoleResponse>), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Roles([FromRoute] Guid RoleId, [FromForm] Command.UpdateRoleCommand request)
+    public async Task<IActionResult> Roles([FromRoute] int RoleId, [FromForm] Command.UpdateRoleCommand request)
     {
         var updateRole = new Command.UpdateRoleCommand
         (
@@ -62,7 +64,7 @@ public class RoleController : ApiController
     [HttpDelete("{RoleId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteRoles([FromRoute] Guid RoleId)
+    public async Task<IActionResult> DeleteRoles([FromRoute] int RoleId)
     {
         var result = await sender.Send(new Command.DeleteRoleCommand(RoleId));
         return Ok(result);

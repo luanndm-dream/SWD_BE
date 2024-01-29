@@ -1,7 +1,7 @@
 ﻿namespace BusDelivery.Contract.Abstractions.Shared;
 public class Result
 {
-    protected internal Result(bool isSuccess, string error, int? statusCode = 200)
+    protected internal Result(bool isSuccess, string error, int statusCode = 200)
     {
         if (isSuccess && error != Error.None)
         {
@@ -14,13 +14,13 @@ public class Result
         }
 
         IsSuccess = isSuccess;
-        message = error;
+        Message = error;
         StatusCode = statusCode;
     }
     public bool IsSuccess { get; }
 
-    public string message { get; }
-    public int? StatusCode { get; } = 200;
+    public string Message { get; }
+    public int StatusCode { get; } = 200;
 
     public static Result Success() => new(true, "");
     public static Result Success(int statusCode) => new(true, "", statusCode);

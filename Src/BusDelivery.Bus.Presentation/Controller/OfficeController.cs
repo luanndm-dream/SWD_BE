@@ -4,6 +4,7 @@ using BusDelivery.Contract.Extensions;
 using BusDelivery.Contract.Services.V1.Office;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,13 +21,15 @@ public class OfficeController : ApiController
     [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Offices(
+        bool? status,
         string? searchTerm = null,
         string? sortColumn = null,
         string? sortOrder = null,
-        int pageIndex = 1,
-        int pageSize = 10)
+        int? pageIndex = 1,
+        int? pageSize = 10)
     {
         var result = await sender.Send(new Query.GetOfficeQuery(
+            status,
             searchTerm,                                             // Value to search
             sortColumn,                                             // Column to sort
             SortOrderExtension.ConvertStringToSortOrder(sortOrder), // Get Asc or Des
@@ -44,7 +47,7 @@ public class OfficeController : ApiController
         return Ok(result);
     }
 
-
+    [Authorize(Roles = "Admin")]
     [HttpPost("CreateOffice")]
     [ProducesResponseType(typeof(Result<Responses.OfficeResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
@@ -54,7 +57,7 @@ public class OfficeController : ApiController
         return Ok(result);
     }
 
-
+    [Authorize(Roles = "Admin")]
     [HttpPut("{officeId}")]
     [ProducesResponseType(typeof(Result<Responses.OfficeResponse>), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
@@ -63,25 +66,25 @@ public class OfficeController : ApiController
         var updateOffice = new Command.UpdateOfficeCommand
         (
             officeId,
-            request.name,
-            request.address,
-            request.lat,
-            request.lng,
-            request.contact,
-            request.image,
-            request.status
+            request.Name,
+            request.Address,
+            request.Lat,
+            request.Lng,
+            request.Contact,
+            request.Image,
+            request.IsActive
         );
         var result = await sender.Send(updateOffice);
         return Ok(result);
     }
 
-
-    [HttpDelete("{officeId}")]
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{OfficeId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteOffices(int officeId)
+    public async Task<IActionResult> DeleteOffices(int OfficeId)
     {
-        var result = await sender.Send(new Command.DeleteOfficeCommand(officeId));
+        var result = await sender.Send(new Command.DeleteOfficeCommand(OfficeId));
         return Ok(result);
     }
 

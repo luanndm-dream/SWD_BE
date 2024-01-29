@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using BusDelivery.Contract.Abstractions.Message;
+﻿using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.User;
 using BusDelivery.Domain.Exceptions;
+using BusDelivery.Persistence;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.User.Commands;
@@ -11,12 +11,18 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
     private readonly UserRepository userRepository;
     private readonly RoleRepository roleRepository;
     private readonly OfficeRepository officeRepository;
-    private readonly IMapper mapper;
+    private readonly ApplicationDbContext context;
 
-    public CreateUserCommandHandler(UserRepository userRepository, IMapper mapper)
+    public CreateUserCommandHandler(
+        UserRepository userRepository,
+        RoleRepository roleRepository,
+        OfficeRepository officeRepository,
+        ApplicationDbContext context)
     {
         this.userRepository = userRepository;
-        this.mapper = mapper;
+        this.roleRepository = roleRepository;
+        this.officeRepository = officeRepository;
+        this.context = context;
     }
     public async Task<Result<Responses.UserResponse>> Handle(Command.CreateUserCommand request, CancellationToken cancellationToken)
     {
@@ -51,14 +57,15 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
             Identity = request.Identity,
             Gentle = request.Gentle,
             IsActive = true,
-            CreateTime = DateTime.Now.ToString("dd/MM/yyyy")
+            CreateTime = DateTime.Now,
         };
 
         try
         {
             userRepository.Add(user);
-            var userResponse = mapper.Map<Responses.UserResponse>(user);
-            return Result.Success(userResponse);
+            await context.SaveChangesAsync();
+            var userResponse = user.ToResponses(roleExist.Description);
+            return Result.Success(userResponse, 201);
         }
         catch (Exception ex)
         {

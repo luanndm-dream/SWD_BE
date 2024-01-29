@@ -18,10 +18,22 @@ public class AuthenticationController : ApiController
     [ProducesResponseType(typeof(Result<Responses.LoginResponses>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> LoginAsync(Command.LoginCommand loginRequest)
+    public async Task<IActionResult> LoginAsync([FromForm] Command.LoginCommand request)
     {
-        var result = await sender.Send(loginRequest);
+        var result = await sender.Send(request);
 
+        if (!result.IsSuccess)
+            HandlerFailure(result);
+
+        return Ok(result);
+    }
+
+    [HttpPost("ForgotPassword")]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ForgotPassword([FromForm] Command.ForgotPasswordCommand request)
+    {
+        var result = await sender.Send(request);
         if (!result.IsSuccess)
             HandlerFailure(result);
 

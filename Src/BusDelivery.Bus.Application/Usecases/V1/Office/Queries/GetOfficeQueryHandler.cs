@@ -26,10 +26,19 @@ public sealed class GetOfficeQueryHandler : IQueryHandler<Query.GetOfficeQuery, 
 
     public async Task<Result<PagedResult<Responses.OfficeResponse>>> Handle(Query.GetOfficeQuery request, CancellationToken cancellationToken)
     {
-        // Check value search is nullOrWhiteSpace?
-        var EventsQuery = string.IsNullOrWhiteSpace(request.searchTerm)
-        ? officeRepository.FindAll()   // If Null GetAll
-        : officeRepository.FindAll(x => x.Name.Contains(request.searchTerm) || x.Address.Contains(request.searchTerm)); // If Not GetAll With Name Or Address Contain searchTerm
+        IQueryable<Domain.Entities.Office> EventsQuery;
+        if (string.IsNullOrWhiteSpace(request.searchTerm))
+        {
+            EventsQuery = (request.isActive == null)
+                ? officeRepository.FindAll()
+                : officeRepository.FindAll(x => x.IsActive == request.isActive);
+        }
+        else
+        {
+            EventsQuery = (request.isActive == null)
+                ? officeRepository.FindAll(x => x.Name.Contains(request.searchTerm) || x.Address.Contains(request.searchTerm))
+                : officeRepository.FindAll(x => x.IsActive == request.isActive && (x.Name.Contains(request.searchTerm) || x.Address.Contains(request.searchTerm)));
+        }
 
         // Get Func<TEntity,TResponse> column
         var keySelector = GetSortProperty(request);
@@ -41,13 +50,14 @@ public sealed class GetOfficeQueryHandler : IQueryHandler<Query.GetOfficeQuery, 
 
         // GetList by Pagination
         var Events = await PagedResult<Domain.Entities.Office>.CreateAsync(EventsQuery,
-            request.pageIndex,
-            request.pageSize);
+            request.pageIndex.Value,
+            request.pageSize.Value);
 
-        foreach (var office in Events.items)
-        {
-            office.Image = await blobStorageRepository.GetImageToBase64(office.Image);
-        }
+        // Encode toBase64String
+        //foreach (var office in Events.items)
+        //{
+        //    office.Image = await blobStorageRepository.GetImageToBase64(office.Image);
+        //}
 
         var result = mapper.Map<PagedResult<Responses.OfficeResponse>>(Events);
         return Result.Success(result);

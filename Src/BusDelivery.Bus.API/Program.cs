@@ -50,7 +50,7 @@ builder.Services
     .AddSwaggerGenNewtonsoftSupport()
     .AddFluentValidationRulesToSwagger()
     .AddEndpointsApiExplorer()
-    .AddSwagger();
+    .AddSwagger(builder.Configuration);
 builder.Services
     .AddApiVersioning(options => options.ReportApiVersions = true)
     .AddApiExplorer(options =>
@@ -59,15 +59,18 @@ builder.Services
         options.SubstituteApiVersionInUrl = true;
     });
 
+// Add Cors
+builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
+build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()));
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || builder.Environment.IsStaging())
-{
-    app.ConfigureSwagger();
-}
+//if (app.Environment.IsDevelopment() || builder.Environment.IsStaging())
+app.ConfigureSwagger();
 
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

@@ -24,23 +24,38 @@ public sealed class LoginCommandHandler : ICommandHandler<Command.LoginCommand, 
         // Check Email is register?
         var user = await userRepository.FindByEmailAsync(request.Email)
             ?? throw new AuthException.AuthEmailNotFoundException(request.Email);
+
+        if (user.IsActive == false)
+            throw new AuthException.AuthBadRequestException("Account is not active");
         // Check Password
         if (!userRepository.VerifyPassword(user.HashPassword, request.Password))
             throw new AuthException.AuthBadRequestException("Password Incorrect");
 
         try
         {
-            var roleName = roleRepository.FindByIdAsync(user.RoleId).GetAwaiter().GetResult().Name;
+            var role = await roleRepository.FindByIdAsync(user.RoleId);
             // If user -> CheckLogin
-            if (!string.Equals(roleName.Trim().ToLower(), "admin", StringComparison.OrdinalIgnoreCase))
-                CheckLoginUser(user, request);
+            if (!string.Equals(role.Name.Trim().ToLower(), "admin", StringComparison.OrdinalIgnoreCase))
+            {
+                if (IsFirstLogin(user))
+                {
+                    user.DeviceId = request.DeviceId;
+                    user.DeviceVersion = request.DeviceVersion;
+                    user.OS = request.OS;
+                    userRepository.Update(user);
+                }
+                else if (!CheckDevice(user, request))
+                    throw new AuthException.AuthBadRequestException("Can not login on other device");
+            }
             // GetToken
-            var token = await userRepository.GenerateToken(user, roleName);
-
+            var token = await userRepository.GenerateToken(user, role.Name);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
             // loginResponse
+            // Add Role Description
             var loginResponse = new Responses.LoginResponses(
                 user.Id,
                 user.RoleId,
+                role.Description,
                 user.OfficeId,
                 user.Name,
                 user.Email,
@@ -50,10 +65,10 @@ public sealed class LoginCommandHandler : ICommandHandler<Command.LoginCommand, 
                 request.DeviceId,
                 request.DeviceVersion,
                 request.OS,
-                user.CreateTime,
+                user.CreateTime.ToString("dd/MM/yyyy"),
                 user.IsActive,
-                new JwtSecurityTokenHandler().WriteToken(token),
-                token.ValidTo);
+                tokenString,
+                token.ValidTo.ToString("dd/MM/yyyy"));
             return Result.Success(loginResponse);
         }
         catch (Exception ex)
@@ -62,25 +77,12 @@ public sealed class LoginCommandHandler : ICommandHandler<Command.LoginCommand, 
         }
     }
 
-    private async void CheckLoginUser(Domain.Entities.User user, Command.LoginCommand request)
-    {
-        if (FirstLogin(user))
-        {
-            userRepository.Update(user);
-        }
-        else if (CheckDevice(user, request))
-        {
-            throw new AuthException.AuthBadRequestException("Can not login on other device");
-        }
-
-    }
-
     private bool CheckDevice(Domain.Entities.User user, Command.LoginCommand request)
         => user.DeviceId == request.DeviceId
         && user.DeviceVersion == request.DeviceVersion
         && user.OS == request.OS;
 
-    private bool FirstLogin(Domain.Entities.User user)
+    private bool IsFirstLogin(Domain.Entities.User user)
         => string.IsNullOrWhiteSpace(user.DeviceId)
         || string.IsNullOrWhiteSpace(user.DeviceVersion)
         || user.OS == null;

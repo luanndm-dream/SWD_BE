@@ -10,11 +10,16 @@ namespace BusDelivery.Application.Usecases.V1.User.Queries;
 public sealed class GetUserQueryHandler : IQueryHandler<Query.GetUserQuery, PagedResult<Responses.UserResponse>>
 {
     private readonly UserRepository userRepository;
+    private readonly RoleRepository roleRepository;
     private readonly IMapper mapper;
-    public GetUserQueryHandler(UserRepository userRepository, IMapper mapper)
+    public GetUserQueryHandler(
+        UserRepository userRepository,
+        IMapper mapper,
+        RoleRepository roleRepository)
     {
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.roleRepository = roleRepository;
     }
     public async Task<Result<PagedResult<Responses.UserResponse>>> Handle(Query.GetUserQuery request, CancellationToken cancellationToken)
     {
@@ -36,14 +41,19 @@ public sealed class GetUserQueryHandler : IQueryHandler<Query.GetUserQuery, Page
             request.pageIndex,
             request.pageSize);
 
+
         var result = mapper.Map<PagedResult<Responses.UserResponse>>(Events);
+        foreach (var user in result.items)
+        {
+            user.RoleDescription = roleRepository.FindByIdAsync(user.RoleId).GetAwaiter().GetResult().Description;
+        }
         return Result.Success(result);
     }
 
-    public static Expression<Func<Domain.Entities.User, object>> GetSortProperty(Query.GetUserQuery request)
+    private static Expression<Func<Domain.Entities.User, object>> GetSortProperty(Query.GetUserQuery request)
     => request.sortColumn?.ToLower() switch
     {
-        "Name" => e => e.Name,
-        _ => e => DateTime.ParseExact(e.CreateTime, "dd/MM/yyyy", null)
+        "name" => e => e.Name,
+        _ => e => e.CreateTime
     };
 }

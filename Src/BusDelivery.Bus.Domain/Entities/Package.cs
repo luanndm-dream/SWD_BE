@@ -2,7 +2,7 @@
 using BusDelivery.Domain.Abstractions.EntityBase;
 
 namespace BusDelivery.Domain.Entities;
-public class Package : DomainEntity<Guid>
+public class Package : DomainEntity<int>
 {
     public int BusId { get; set; }
     public int FromOfficeId { get; set; }
@@ -17,4 +17,33 @@ public class Package : DomainEntity<Guid>
     public string CreateTime { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; }
+
+    public void Update(
+    int id,
+    int busId,
+    int fromOfficeId,
+    int toOfficeId,
+    int stationId,
+    int quantity,
+    float totalWeight,
+    float totalPrice,
+    string image,
+    string note,
+    PackageStatus status,
+    string createTime)
+    {
+        Id = id;
+        BusId = busId;
+        FromOfficeId = fromOfficeId;
+        ToOfficeId = toOfficeId;
+        StationId = stationId;
+        Quantity = quantity;
+        TotalWeight = totalWeight;
+        TotalPrice = totalPrice;
+        Image = image;
+        Note = note;
+        Status = status;
+        CreateTime = createTime;
+
+    }
 }

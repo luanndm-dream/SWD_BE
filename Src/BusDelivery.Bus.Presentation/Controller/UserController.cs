@@ -4,6 +4,7 @@ using BusDelivery.Contract.Extensions;
 using BusDelivery.Contract.Services.V1.User;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ public class UserController : ApiController
     {
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("GetUsers")]
     [ProducesResponseType(typeof(Result<IReadOnlyCollection<Responses.UserResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status500InternalServerError)]
@@ -39,12 +41,13 @@ public class UserController : ApiController
     [HttpGet("GetUsers/{UserId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.UserResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Users([FromRoute] Guid UserId)
+    public async Task<IActionResult> Users([FromRoute] int UserId)
     {
         var result = await sender.Send(new Query.GetUserByIdQuery(UserId));
         return Ok(result);
     }
 
+    //[Authorize(Roles = "Admin")]
     [HttpPost("CreateUser")]
     [ProducesResponseType(typeof(Result<Responses.UserResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
@@ -57,7 +60,7 @@ public class UserController : ApiController
     [HttpPut("{UserId}")]
     [ProducesResponseType(typeof(Result<Responses.UserResponse>), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Users([FromRoute] Guid UserId, [FromForm] Command.UpdateUserCommand request)
+    public async Task<IActionResult> Users([FromRoute] int UserId, [FromForm] Command.UpdateUserCommand request)
     {
         var updateUser = new Command.UpdateUserCommand
         (
@@ -66,25 +69,23 @@ public class UserController : ApiController
             request.OfficeId,
             request.Name,
             request.Email,
-            request.Password,
             request.PhoneNumber,
             request.Identity,
             request.Gentle,
             request.DeviceId,
             request.DeviceVersion,
             request.OS,
-            request.CreateTime,
             request.IsActive
         );
         var result = await sender.Send(updateUser);
         return Ok(result);
     }
 
-
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{UserId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteUsers([FromRoute] Guid UserId)
+    public async Task<IActionResult> DeleteUsers([FromRoute] int UserId)
     {
         var result = await sender.Send(new Command.DeleteUserCommand(UserId));
         return Ok(result);
