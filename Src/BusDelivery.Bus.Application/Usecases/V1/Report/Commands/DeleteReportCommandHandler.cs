@@ -28,7 +28,7 @@ public class DeleteReportCommandHandler : ICommandHandler<Command.DeleteReportCo
         var report = await _context.Report.AsNoTracking().Where(x => x.Id == request.id).SingleOrDefaultAsync()
             ?? throw new ReportException.ReportIdNotFoundException(request.id);
         try
-        {
+        {         
             _context.RemoveRange(report);
             return Result.Success(202);
         }catch

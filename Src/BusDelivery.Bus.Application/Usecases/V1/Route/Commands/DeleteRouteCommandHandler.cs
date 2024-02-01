@@ -28,7 +28,9 @@ public class DeleteRouteCommandHandler : ICommandHandler<Command.DeleteRouteComm
             ?? throw new RouteException.RouteIdNotFoundException(request.id);
         try
         {
-            routeRepository.Remove(route);
+            route.IsActive = false;
+            routeRepository.Update(route);
+            
             return Result.Success(202);
         }
         catch

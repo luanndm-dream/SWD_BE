@@ -27,7 +27,8 @@ public sealed class DeleteBusCommandHandler : ICommandHandler<Command.DeleteBusC
 
         try
         {
-            busRepository.Remove(bus);
+            bus.IsActive = false;
+            busRepository.Update(bus);
             return Result.Success(202);
         }
         catch
