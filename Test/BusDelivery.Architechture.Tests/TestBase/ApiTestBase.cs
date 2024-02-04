@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using Microsoft.Identity.Client;
-using Moq;
-using AutoMapper;
-using MediatR;
-using BusDelivery.Persistence;
+﻿using AutoMapper;
 using BusDelivery.Application.Mapper;
+using BusDelivery.Persistence;
 using BusDelivery.Persistence.Repositories;
+using MediatR;
+using Moq;
 
 namespace BusDelivery.Architecture.Tests.TestBase;
 public abstract class ApiTestBase
@@ -32,6 +25,6 @@ public abstract class ApiTestBase
         });
         _mapper = mapperConfig.CreateMapper();
         _mockMediator = new Mock<IMediator>();
-    } 
+    }
 
 }

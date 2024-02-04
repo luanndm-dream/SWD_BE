@@ -70,6 +70,9 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 //if (app.Environment.IsDevelopment() || builder.Environment.IsStaging())
 app.ConfigureSwagger();
 
+// UseScheduler
+app.ConfigureWeatherScheduler();
+
 app.UseCors();
 app.UseHttpsRedirection();
 
