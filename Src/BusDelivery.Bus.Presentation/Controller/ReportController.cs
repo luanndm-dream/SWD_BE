@@ -38,11 +38,20 @@ public class ReportController : ApiController
     [HttpGet("GetReportById/{reportId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.ReportResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetBus([FromRoute] int reportId)
+    public async Task<IActionResult> GetReportById([FromRoute] int reportId)
     {
         var result = await sender.Send(new Query.GetReportById(reportId));
         return Ok(result);
     }
+    [HttpGet("GetReportByUserID/{userId}")]
+    [ProducesResponseType(typeof(Result<PagedResult<Responses.ReportResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetReport([FromRoute] int userId)
+    {
+            var result = await sender.Send( new Query.GetReportByUser(userId));
+        return Ok(result);
+    }
+
     [HttpPost("CreateReport")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -54,7 +63,7 @@ public class ReportController : ApiController
     [HttpPut("UpdateReport")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateBus([FromForm] Command.UpdateReportCommandRequest request)
+    public async Task<IActionResult> UpdateReport([FromForm] Command.UpdateReportCommandRequest request)
     {
         var result = await sender.Send(request);
         return Ok(result);
@@ -63,7 +72,7 @@ public class ReportController : ApiController
     [HttpDelete("DeleteReport")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteBus([FromForm] Command.DeleteReportCommandRequest request)
+    public async Task<IActionResult> DeleteReport([FromForm] Command.DeleteReportCommandRequest request)
     {
         var result = await sender.Send(request);
         return Ok(result);

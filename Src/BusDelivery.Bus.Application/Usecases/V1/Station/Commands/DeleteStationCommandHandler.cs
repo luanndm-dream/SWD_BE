@@ -28,7 +28,8 @@ public sealed class DeleteStationCommandHandler : ICommandHandler<Command.Delete
             ?? throw new StationException.StationIdNotFoundException(request.stationId);
         try
         {
-            stationRepository.Remove(station);
+            station.IsActive = false;
+            stationRepository.Update(station);
             return Result.Success(202);
         }
         catch

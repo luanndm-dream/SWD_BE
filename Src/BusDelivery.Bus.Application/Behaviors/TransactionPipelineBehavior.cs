@@ -39,5 +39,5 @@ public sealed class TransactionPipelineBehavior<TRequest, TResponse>
     }
 
     private bool IsCommand()
-        => typeof(TRequest).Name.EndsWith("Command");
+        => typeof(TRequest).Name.Contains("Command");
 }

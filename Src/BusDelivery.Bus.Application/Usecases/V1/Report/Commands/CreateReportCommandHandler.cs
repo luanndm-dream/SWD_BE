@@ -8,6 +8,7 @@ using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.Reports;
 using BusDelivery.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusDelivery.Application.Usecases.V1.Report.Commands;
 public class CreateReportCommandHandler : ICommandHandler<Command.CreateReportCommandRequest, Responses.ReportResponse>
@@ -23,25 +24,32 @@ public class CreateReportCommandHandler : ICommandHandler<Command.CreateReportCo
 
     public async Task<Result<Responses.ReportResponse>> Handle(Command.CreateReportCommandRequest request, CancellationToken cancellationToken)
     {
-        try
+        var checkUser = await _context.User.AsNoTracking().Where(x => x.Id == request.CreateBy).SingleOrDefaultAsync();
+        if (checkUser == null)
         {
-            var report = new Domain.Entities.Report()
-            {
-                Content = request.Content,
-                CreateBy = request.CreateBy,
-                CreateTime = request.CreateTime,
-                TargetId = request.TargetId,
-                Type = request.Type,
-            };
-            _context.Add(report);
-            var response = _mapper.Map<Responses.ReportResponse>(report);
-            _context.SaveChanges();
-            return Result.Success(response, 201);
-
+            throw new Exception("UserID was not exist!");
         }
-        catch
+        else
         {
-            throw new Exception("Create new Report error!");
+            try
+            {
+                var report = new Domain.Entities.Report()
+                {
+                    Content = request.Content,
+                    CreateBy = request.CreateBy,
+                    CreateTime = request.CreateTime,
+                    TargetId = request.TargetId,
+                    Type = request.Type,
+                };
+                await _context.AddAsync(report);
+                var response = _mapper.Map<Responses.ReportResponse>(report);
+                return Result.Success(response, 201);
+
+            }
+            catch
+            {
+                throw new Exception("Create new Report error!");
+            }
         }
     }
 }
