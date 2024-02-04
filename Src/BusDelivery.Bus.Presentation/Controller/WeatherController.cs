@@ -21,12 +21,12 @@ public class WeatherController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("GetWeather/{officeId}")]
+    [HttpGet("GetWeather/{OfficeId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Weathers(int officeId)
+    public async Task<IActionResult> Weathers(int OfficeId)
     {
-        var result = await sender.Send(new Query.GetWeatherQuery(officeId));
+        var result = await sender.Send(new Query.GetWeatherQuery(OfficeId));
         if (result == null)
             HandlerFailure(result);
         return Ok(result);
