@@ -44,8 +44,8 @@ public sealed class LoginCommandHandler : ICommandHandler<Command.LoginCommand, 
                     user.OS = request.OS;
                     userRepository.Update(user);
                 }
-                else if (!CheckDevice(user, request))
-                    throw new AuthException.AuthBadRequestException("Can not login on other device");
+                //else if (!CheckDevice(user, request))
+                //    throw new AuthException.AuthBadRequestException("Can not login on other device");
             }
             // GetToken
             var token = await userRepository.GenerateToken(user, role.Name);
