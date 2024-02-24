@@ -1,5 +1,6 @@
 ﻿using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Enumerations;
+using Microsoft.AspNetCore.Http;
 
 namespace BusDelivery.Contract.Services.V1.User;
 public static class Command
@@ -13,7 +14,8 @@ public static class Command
         string PhoneNumber,
         string Identity,
         Gentle Gentle,
-        bool IsActive) : ICommand<Responses.UserResponse>;
+        bool IsActive,
+        IFormFile Avatar) : ICommand<Responses.UserResponse>;
 
     public record UpdateUserCommand(
         int? Id,
@@ -27,7 +29,8 @@ public static class Command
         string? DeviceId,
         string? DeviceVersion,
         OS? OS,
-        bool IsActive) : ICommand<Responses.UserResponse>;
+        bool IsActive,
+        IFormFile Avatar) : ICommand<Responses.UserResponse>;
 
     public record DeleteUserCommand(int Id) : ICommand;
 }

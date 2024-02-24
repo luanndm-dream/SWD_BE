@@ -4,11 +4,13 @@ using BusDelivery.Contract.Extensions;
 using BusDelivery.Contract.Services.V1.Order;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusDelivery.Presentation.Controller;
 [ApiVersion(1)]
+[Authorize]
 public class OrderController : ApiController
 {
     public OrderController(ISender sender) : base(sender)

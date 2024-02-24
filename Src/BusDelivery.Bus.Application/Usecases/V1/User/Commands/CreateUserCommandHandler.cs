@@ -2,6 +2,7 @@
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.User;
 using BusDelivery.Domain.Exceptions;
+using BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 using BusDelivery.Persistence;
 using BusDelivery.Persistence.Repositories;
 
@@ -12,17 +13,20 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
     private readonly RoleRepository roleRepository;
     private readonly OfficeRepository officeRepository;
     private readonly ApplicationDbContext context;
+    private readonly IBlobStorageRepository blobStorageRepository;
 
     public CreateUserCommandHandler(
         UserRepository userRepository,
         RoleRepository roleRepository,
         OfficeRepository officeRepository,
-        ApplicationDbContext context)
+        ApplicationDbContext context,
+        IBlobStorageRepository blobStorageRepository)
     {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.officeRepository = officeRepository;
         this.context = context;
+        this.blobStorageRepository = blobStorageRepository;
     }
     public async Task<Result<Responses.UserResponse>> Handle(Command.CreateUserCommand request, CancellationToken cancellationToken)
     {
@@ -45,6 +49,10 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
         // HashPassword
         var hashPassword = userRepository.HashPassword(request.Password);
 
+        // SaveImageInBlob
+        var avatarUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.Avatar, request.Name, "avatars")
+            ?? throw new Exception("Upload File fail");
+
         // Create UserEntity
         var user = new Domain.Entities.User
         {
@@ -58,17 +66,20 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
             Gentle = request.Gentle,
             IsActive = true,
             CreateTime = DateTime.Now,
+            Avatar = avatarUrl
         };
 
         try
         {
             userRepository.Add(user);
             await context.SaveChangesAsync();
+
             var userResponse = user.ToResponses(roleExist.Description);
             return Result.Success(userResponse, 201);
         }
         catch (Exception ex)
         {
+            await blobStorageRepository.DeleteImageFromBlobStorage(avatarUrl);
             throw new Exception(ex.Message);
         }
     }

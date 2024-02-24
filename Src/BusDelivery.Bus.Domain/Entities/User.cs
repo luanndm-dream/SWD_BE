@@ -18,6 +18,7 @@ public class User : DomainEntity<int>
     public OS? OS { get; set; }
     public DateTime CreateTime { get; set; }
     public bool IsActive { get; set; }
+    public string? Avatar { get; set; }
 
     public virtual ICollection<Report> Reports { get; set; }
 
@@ -33,7 +34,8 @@ public class User : DomainEntity<int>
         string? DeviceId,
         string? DeviceVersion,
         OS? OS,
-        bool IsActive)
+        bool IsActive,
+        string? Avatar = "")
     {
         this.Id = Id;
         this.RoleId = RoleId;
@@ -47,6 +49,7 @@ public class User : DomainEntity<int>
         this.DeviceVersion = DeviceVersion;
         this.OS = OS;
         this.IsActive = IsActive;
+        this.Avatar = Avatar;
     }
 
     public UserResponse ToResponses(string roleDescription)
@@ -66,6 +69,7 @@ public class User : DomainEntity<int>
             OS = OS,
             CreateTime = CreateTime.ToString("dd/MM/yyyy"),
             IsActive = IsActive,
+            Avatar = Avatar
         };
 
 }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusDelivery.Presentation.Controller;
 [ApiVersion(1)]
+[Authorize]
 public class UserController : ApiController
 {
     public UserController(ISender sender) : base(sender)
@@ -75,7 +76,8 @@ public class UserController : ApiController
             request.DeviceId,
             request.DeviceVersion,
             request.OS,
-            request.IsActive
+            request.IsActive,
+            request.Avatar
         );
         var result = await sender.Send(updateUser);
         return Ok(result);

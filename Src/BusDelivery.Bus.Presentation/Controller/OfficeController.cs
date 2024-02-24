@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusDelivery.Presentation.Controller;
 
 [ApiVersion(1)]
+[Authorize]
 public class OfficeController : ApiController
 {
     public OfficeController(ISender sender) : base(sender)
