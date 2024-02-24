@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Extensions;
 using BusDelivery.Contract.Services.V1.Bus;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusDelivery.Presentation.Controller;
 [ApiVersion(1)]
+[Authorize]
 public class BusController : ApiController
 {
     public BusController(ISender sender) : base(sender)
@@ -48,7 +45,7 @@ public class BusController : ApiController
     [HttpPost("CreateBus")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateBus ([FromForm] Command.CreateBusCommandRequest request)
+    public async Task<IActionResult> CreateBus([FromForm] Command.CreateBusCommandRequest request)
     {
         var result = await sender.Send(request);
         return Ok(result);

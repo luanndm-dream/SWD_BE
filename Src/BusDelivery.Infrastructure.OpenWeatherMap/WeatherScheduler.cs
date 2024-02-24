@@ -33,6 +33,5 @@ public class WeatherScheduler : IInvocable
         }
         Console.WriteLine("Update Weather Successful");
         logger.LogInformation("Weather has been update");
-
     }
 }

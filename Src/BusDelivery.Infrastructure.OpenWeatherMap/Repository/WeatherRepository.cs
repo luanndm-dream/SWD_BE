@@ -49,11 +49,10 @@ public class WeatherRepository : RepositoryBase<Domain.Entities.Weather, int>
 
     public async Task UpsertWeather(int officeId, List<Forecast> listForecast)
     {
-        foreach (var item in listForecast)
+        var listWeather = context.Weather.AsTracking().Where(x => x.OfficeId == officeId).ToList();
+        if (listWeather == null)
         {
-            var existWeather = await context.Weather.FirstOrDefaultAsync(x => x.OfficeId == officeId && x.RecordAt == item.dt.ToString());
-
-            if (existWeather == null)
+            foreach (var item in listForecast)
             {
                 var weather = new Domain.Entities.Weather
                 {
@@ -65,12 +64,17 @@ public class WeatherRepository : RepositoryBase<Domain.Entities.Weather, int>
                 };
                 Add(weather);
             }
-            else
-            {
-                existWeather.Update(officeId, item.main.humidity, item.main.temp, item.wind.speed, item.dt.ToString());
-                Update(existWeather);
-            }
-            await context.SaveChangesAsync();
         }
+        else
+        {
+            int index = 0;
+            foreach (var item in listForecast)
+            {
+                listWeather[index].Update(officeId, item.main.humidity, item.main.temp, item.wind.speed, item.dt.ToString());
+                Update(listWeather[index]);
+                index++;
+            }
+        }
+        await context.SaveChangesAsync();
     }
 }

@@ -24,7 +24,7 @@ public static class ServiceCollectionExtensions
     {
         app.Services.UseScheduler(scheduler =>
         {
-            scheduler.Schedule<WeatherScheduler>().DailyAt(0, 0);
+            scheduler.Schedule<WeatherScheduler>().DailyAtHour(1);
         });
     }
 }

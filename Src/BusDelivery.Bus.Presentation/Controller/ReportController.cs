@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Asp.Versioning;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Extensions;
 using BusDelivery.Contract.Services.V1.Reports;
 using BusDelivery.Presentation.Abstractions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusDelivery.Presentation.Controller;
+
+[ApiVersion(1)]
+[Authorize]
 public class ReportController : ApiController
 {
     public ReportController(ISender sender) : base(sender)
-        {
-        }
+    {
+    }
     [HttpGet("GetAllReport")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.ReportResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.ReportResponse>>), StatusCodes.Status400BadRequest)]
@@ -48,7 +48,7 @@ public class ReportController : ApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetReport([FromRoute] int userId)
     {
-            var result = await sender.Send( new Query.GetReportByUser(userId));
+        var result = await sender.Send(new Query.GetReportByUser(userId));
         return Ok(result);
     }
 
@@ -68,7 +68,7 @@ public class ReportController : ApiController
         var result = await sender.Send(request);
         return Ok(result);
     }
-    
+
     [HttpDelete("DeleteReport")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

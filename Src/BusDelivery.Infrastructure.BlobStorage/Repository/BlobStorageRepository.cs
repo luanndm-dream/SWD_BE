@@ -52,6 +52,9 @@ public class BlobStorageRepository : IBlobStorageRepository
 
     public async Task<string?> GetImageToBase64(string imageUrl)
     {
+        if (string.IsNullOrWhiteSpace(imageUrl))
+            return null;
+
         var blobPath = GetBlobPath(imageUrl);
         var blobServiceClient = new BlobServiceClient(blobStorageOptions.BlobUrl);
         var blobContainerClient = blobServiceClient.GetBlobContainerClient(blobStorageOptions.Container);

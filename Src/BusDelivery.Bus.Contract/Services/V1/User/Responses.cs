@@ -19,5 +19,6 @@ public static class Responses
         public OS? OS { get; set; }
         public string CreateTime { get; set; }
         public bool IsActive { get; set; }
+        public string? Avatar { get; set; }
     }
 }

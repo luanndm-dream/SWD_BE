@@ -33,7 +33,11 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
         var newImageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.Image, request.Name, "offices")
             ?? throw new Exception("Upload File fail");
 
-        existOffice.Update(
+
+
+        try
+        {
+            existOffice.Update(
             request.Id.Value,
             request.Name,
             request.Address,
@@ -43,8 +47,6 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
             newImageUrl,
             request.IsActive);
 
-        try
-        {
             // update in Database
             officeRepository.Update(existOffice);
             // Map to Response
@@ -56,7 +58,7 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
         catch (Exception)
         {
             await blobStorageRepository.DeleteImageFromBlobStorage(newImageUrl);
-            throw new Exception("Update Package Error");
+            throw new Exception("Update Office Error");
         }
     }
 }
