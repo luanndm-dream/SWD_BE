@@ -7,7 +7,6 @@ using BusDelivery.Infrastructure.OpenWeatherMap.DependencyInjection.Extensions;
 using BusDelivery.Infrastructure.OpenWeatherMap.DependencyInjection.Options;
 using BusDelivery.Persistence.DependencyInjection.Extensions;
 using BusDelivery.Persistence.DependencyInjection.Options;
-using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 //Application
@@ -46,22 +45,11 @@ builder.Services.AddControllers()
     .AddApplicationPart(BusDelivery.Presentation.AssemblyReference.Assembly);
 
 // Versioning
-builder.Services
-    .AddSwaggerGenNewtonsoftSupport()
-    .AddFluentValidationRulesToSwagger()
-    .AddEndpointsApiExplorer()
-    .AddSwagger(builder.Configuration);
-builder.Services
-    .AddApiVersioning(options => options.ReportApiVersions = true)
-    .AddApiExplorer(options =>
-    {
-        options.GroupNameFormat = "'v'VVV";
-        options.SubstituteApiVersionInUrl = true;
-    });
+builder.Services.AddVersioningConfiguration(builder.Configuration);
 
-// Add Cors
-builder.Services.AddCors(p => p.AddPolicy("MyCors", build =>
-build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()));
+// Add Cors Policy
+builder.Services.AddCors(p => p.AddPolicy("AllowAllOrigins", build =>
+    build.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
 var app = builder.Build();
 
@@ -73,7 +61,7 @@ app.ConfigureSwagger();
 // UseScheduler
 app.ConfigureWeatherScheduler();
 
-app.UseCors();
+app.UseCors("AllowAllOrigins");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
