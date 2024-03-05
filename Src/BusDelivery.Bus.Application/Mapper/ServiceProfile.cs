@@ -22,6 +22,10 @@ public class ServiceProfile : Profile
             .ForMember(dest => dest.CreateTime, opt => opt.MapFrom(src => src.CreateTime.ToString("dd/MM/yyyy"))).ReverseMap();
         CreateMap<PagedResult<User>, PagedResult<BusDelivery.Contract.Services.V1.User.Responses.UserResponse>>().ReverseMap();
 
+        // Package
+        CreateMap<Package, BusDelivery.Contract.Services.V1.Package.Responses.PackageResponse>()
+            .ForMember(dest => dest.CreateTime, opt => opt.MapFrom(src => src.CreateTime.ToString("dd/MM/yyyy"))).ReverseMap();
+        CreateMap<PagedResult<Package>, PagedResult<Contract.Services.V1.Package.Responses.PackageResponse>>().ReverseMap();
         // Weather
         CreateMap<Weather, BusDelivery.Contract.Services.V1.Weather.Responses.GetWeatherResponse>().ReverseMap();
 
@@ -32,7 +36,6 @@ public class ServiceProfile : Profile
         // Order
         CreateMap<Order, BusDelivery.Contract.Services.V1.Order.Responses.OrderResponses>().ReverseMap();
         CreateMap<PagedResult<Order>, PagedResult<BusDelivery.Contract.Services.V1.Order.Responses.OrderResponses>>().ReverseMap();
-        // Role
 
         // Report
         CreateMap<Report, Contract.Services.V1.Reports.Responses.ReportResponse>().ReverseMap();
