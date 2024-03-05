@@ -45,7 +45,8 @@ public sealed class UpdateOrderCommandHandler : ICommandHandler<Command.UpdateOr
             // Map to Response
             var orderResponse = mapper.Map<Responses.OrderResponses>(existOrder);
             // Delete oldImage In BlobStorage
-            blobStorageRepository.DeleteImageFromBlobStorage(oldImageUrl);
+            if (!string.IsNullOrEmpty(oldImageUrl) || oldImageUrl != "..")
+                blobStorageRepository.DeleteImageFromBlobStorage(oldImageUrl);
             return Result.Success(orderResponse, 202);
         }
         catch (Exception)

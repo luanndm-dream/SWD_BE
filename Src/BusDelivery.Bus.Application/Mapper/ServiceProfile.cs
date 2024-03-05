@@ -44,6 +44,8 @@ public class ServiceProfile : Profile
         //Route
         CreateMap<Route, Contract.Services.V1.Route.Responses.RouteResponse>().ReverseMap();
         CreateMap<PagedResult<Route>, PagedResult<Contract.Services.V1.Route.Responses.RouteResponse>>().ReverseMap();
+        CreateMap<Station, Contract.Services.V1.Route.Responses.StationResponse>().ReverseMap();
+
         //Role
         CreateMap<PagedResult<Role>, PagedResult<BusDelivery.Contract.Services.V1.Role.Responses.RoleResponse>>().ReverseMap();
         CreateMap<Role, BusDelivery.Contract.Services.V1.Role.Responses.RoleResponse>().ReverseMap();
