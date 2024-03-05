@@ -12,7 +12,8 @@ public class ServiceProfile : Profile
         CreateMap<PagedResult<Station>, PagedResult<Contract.Services.V1.Station.Responses.GetStationResponse>>().ReverseMap();
         // Bus
         CreateMap<Bus, Contract.Services.V1.Bus.Responses.BusResponse>().ReverseMap();
-        CreateMap<PagedResult<Bus>, PagedResult<Contract.Services.V1.Bus.Responses.BusResponse>>().ReverseMap();
+        CreateMap<Bus, Contract.Services.V1.Bus.Responses.AllBusResponse>().ReverseMap();
+        CreateMap<PagedResult<Bus>, PagedResult<Contract.Services.V1.Bus.Responses.AllBusResponse>>().ReverseMap();
         // Office
         CreateMap<Office, Contract.Services.V1.Office.Responses.OfficeResponse>().ReverseMap();
         CreateMap<PagedResult<Office>, PagedResult<Contract.Services.V1.Office.Responses.OfficeResponse>>().ReverseMap();
