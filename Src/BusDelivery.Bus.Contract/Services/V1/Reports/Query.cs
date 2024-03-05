@@ -20,6 +20,7 @@ public class Query
 
     public record GetReportByUser(int userId) : IQuery<List<Responses.ReportResponse>>
     {
-       // public Guid UserId { get; set; } 
+        // public Guid UserId { get; set; } 
     }
+    public record CountReportByUserId( int userId) : IQuery<Responses.CountReport>;
 }
