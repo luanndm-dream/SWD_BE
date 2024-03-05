@@ -16,7 +16,7 @@ public class Command
     IFormFile image,
     string note,
     PackageStatus status,
-    string createTime) : ICommand<Responses.PackageResponse>;
+    DateTime createTime) : ICommand<Responses.PackageResponse>;
 
     public record UpdatePackageCommand(
     int id,
@@ -30,7 +30,7 @@ public class Command
     IFormFile image,
     string note,
     PackageStatus status,
-    string createTime) : ICommand<Responses.PackageResponse>;
+    DateTime createTime) : ICommand<Responses.PackageResponse>;
 
     public record DeletePackageCommand(int id) : ICommand;
 }

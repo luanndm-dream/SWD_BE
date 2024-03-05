@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using AutoMapper;
 using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Enumerations;
 using BusDelivery.Contract.Services.V1.Bus;
 using BusDelivery.Persistence.Repositories;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BusDelivery.Application.Usecases.V1.Bus.Queries;
 public sealed class GetBusHandler : IQueryHandler<Query.GetBus, PagedResult<Responses.BusResponse>>

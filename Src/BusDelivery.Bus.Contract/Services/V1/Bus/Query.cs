@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusDelivery.Contract.Abstractions.Message;
+﻿using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Enumerations;
 
@@ -17,8 +12,5 @@ public class Query
         int pageIndex, int pageSize)
         : IQuery<PagedResult<Responses.BusResponse>>;
 
-    public record GetBusById (int id): IQuery<Responses.BusResponse>
-    {
-        //public int Id { get; set; }
-    }
+    public record GetBusById(int id) : IQuery<Responses.BusResponse>;
 }

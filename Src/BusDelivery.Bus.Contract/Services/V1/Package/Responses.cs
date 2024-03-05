@@ -1,11 +1,10 @@
 ﻿using BusDelivery.Contract.Enumerations;
-using Microsoft.AspNetCore.Http;
 
 namespace BusDelivery.Contract.Services.V1.Package;
 public class Responses
 {
     public record PackageResponse(
-    Guid Id,
+    int Id,
     int BusId,
     int FromOfficeId,
     int ToOfficeId,
@@ -13,7 +12,7 @@ public class Responses
     int Quantity,
     float TotalWeight,
     float TotalPrice,
-    IFormFile Image,
+    string Image,
     string Note,
     PackageStatus Status,
     string CreateTime);
