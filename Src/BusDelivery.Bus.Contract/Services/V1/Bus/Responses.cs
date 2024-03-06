@@ -13,4 +13,11 @@ public class Responses
         public string operateTime { get; init; } = null!;
         public bool IsActive { get; init; }
     }
+    public class AllBusResponse
+    {
+        public int id { get; init; }
+        public string number { get; init; } = null!;
+        public string name { get; init; } = null!;
+        public bool IsActive { get; init; }
+    }
 }

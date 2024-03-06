@@ -27,7 +27,7 @@ public class GetReportByUser : IQueryHandler<Query.GetReportByUser, List<Respons
     {
         var checkUser = await context.User.AsNoTracking().Where(x => x.Id == request.userId).SingleOrDefaultAsync();
 
-        if (checkUser != null)
+        if (checkUser == null)
         {
             throw new Exception("UserId was not exist!");
         }

@@ -10,4 +10,8 @@ public class Responses
         public string Type { get; set; } = null!;
         public string CreateTime { get; set; } = null!;
     }
+    public record CountReport
+    {
+        public int number { get; set; }
+    }
 }

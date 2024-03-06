@@ -52,6 +52,15 @@ public class ReportController : ApiController
         return Ok(result);
     }
 
+    [HttpGet("CountReportByUserID/{userId}")]
+    [ProducesResponseType(typeof(Result<PagedResult<Responses.CountReport>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CountReport([FromRoute] int userId)
+    {
+        var result = await sender.Send(new Query.CountReportByUserId(userId));
+        return Ok(result);
+    }
+
     [HttpPost("CreateReport")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -17,8 +17,8 @@ public class BusController : ApiController
     {
     }
     [HttpGet("GetAllBus")]
-    [ProducesResponseType(typeof(Result<PagedResult<Responses.BusResponse>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result<PagedResult<Responses.BusResponse>>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Result<PagedResult<Responses.AllBusResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<PagedResult<Responses.AllBusResponse>>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Bus(
         string? searchTerm = null,
         string? sortColumn = null,

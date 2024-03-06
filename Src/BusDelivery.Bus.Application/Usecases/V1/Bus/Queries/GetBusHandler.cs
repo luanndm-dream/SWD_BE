@@ -7,7 +7,7 @@ using BusDelivery.Contract.Services.V1.Bus;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.Bus.Queries;
-public sealed class GetBusHandler : IQueryHandler<Query.GetBus, PagedResult<Responses.BusResponse>>
+public sealed class GetBusHandler : IQueryHandler<Query.GetBus, PagedResult<Responses.AllBusResponse>>
 {
     private readonly BusRepository _busRepository;
     private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ public sealed class GetBusHandler : IQueryHandler<Query.GetBus, PagedResult<Resp
         _mapper = mapper;
     }
 
-    public async Task<Result<PagedResult<Responses.BusResponse>>> Handle(Query.GetBus request, CancellationToken cancellationToken)
+    public async Task<Result<PagedResult<Responses.AllBusResponse>>> Handle(Query.GetBus request, CancellationToken cancellationToken)
     {
         var EventsQuery = string.IsNullOrWhiteSpace(request.searchTerm)
         ? _busRepository.FindAll()
@@ -34,7 +34,7 @@ public sealed class GetBusHandler : IQueryHandler<Query.GetBus, PagedResult<Resp
             request.pageIndex,
             request.pageSize);
 
-        var result = _mapper.Map<PagedResult<Responses.BusResponse>>(Events);
+        var result = _mapper.Map<PagedResult<Responses.AllBusResponse>>(Events);
         return Result.Success(result);
     }
     public static Expression<Func<Domain.Entities.Bus, object>> GetSortProperty(Query.GetBus request)
