@@ -10,7 +10,7 @@ public class Query
         string? sortColumn,
         SortOrder? sortOrder,
         int pageIndex, int pageSize)
-        : IQuery<PagedResult<Responses.BusResponse>>;
+        : IQuery<PagedResult<Responses.AllBusResponse>>;
 
     public record GetBusById(int id) : IQuery<Responses.BusResponse>;
 }
