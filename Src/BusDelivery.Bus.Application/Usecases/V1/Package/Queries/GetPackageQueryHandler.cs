@@ -29,25 +29,6 @@ public sealed class GetPackageQueryHandler : IQueryHandler<Query.GetPackageQuery
         IQueryable<Domain.Entities.Package> EventsQuery;
 
         EventsQuery = packageRepository.FindAll();
-
-        if (request.status != null)
-        {
-            var statusPackage = request.status switch
-            {
-                1 => PackageStatus.Done,
-                0 => PackageStatus.Processing,
-                _ => PackageStatus.Cancel,
-            };
-
-            EventsQuery = EventsQuery.Where(x => x.Status == statusPackage);
-        }
-
-        if (request.fromDay.HasValue && request.toDay.HasValue)
-        {
-            // EventsQuery = EventsQuery.Where(x => x.CreateTime >= request.fromDay.Value && x.CreateTime <= request.toDay.Value);
-        }
-
-
         var keySelector = GetSortProperty(request);
 
         EventsQuery = request.sortOrder == SortOrder.Descending
