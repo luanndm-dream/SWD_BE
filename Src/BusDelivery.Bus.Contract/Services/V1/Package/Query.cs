@@ -6,17 +6,16 @@ namespace BusDelivery.Contract.Services.V1.Package;
 public class Query
 {
     public record GetPackageQuery(
-        DateTime? fromDay,
-        DateTime? toDay,
-        int? status,
         SortOrder? sortOrder,
         int pageIndex,
         int pageSize)
     : IQuery<PagedResult<Responses.PackageResponse>>;
 
     public record GetPackageByIdQuery(int packageId) : IQuery<Responses.PackageResponse>;
-    public record GetPackageByDateQuery(string date) : IQuery<Responses.PackageResponse>;
-    public record GetPackageByStatusQuery(bool status) : IQuery<Responses.PackageResponse>;
+    public record GetPackageByIdOffice(int idOffice, int pageIndex,
+        int pageSize) : IQuery<PagedResult<Responses.PackageResponse>>;
+    public record GetPackageByStatusQuery(int status, int pageIndex,
+        int pageSize) : IQuery<PagedResult<Responses.PackageResponse>>;
 
 
 
