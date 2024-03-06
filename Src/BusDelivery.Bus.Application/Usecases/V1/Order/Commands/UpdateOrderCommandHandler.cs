@@ -21,8 +21,8 @@ public sealed class UpdateOrderCommandHandler : ICommandHandler<Command.UpdateOr
     }
     public async Task<Result<Responses.OrderResponses>> Handle(Command.UpdateOrderCommand request, CancellationToken cancellationToken)
     {
-        var existOrder = await orderRepository.FindByIdAsync(request.id)
-    ?? throw new OrderException.OrderIdNotFoundException(request.id);
+        var existOrder = await orderRepository.FindByIdAsync(request.id.Value)
+    ?? throw new OrderException.OrderIdNotFoundException(request.id.Value);
 
         var oldImageUrl = existOrder.Image;
 
@@ -30,7 +30,7 @@ public sealed class UpdateOrderCommandHandler : ICommandHandler<Command.UpdateOr
         ?? throw new Exception("Upload File fail");
 
         existOrder.Update(
-        request.id,
+        request.id.Value,
         request.packageid,
         request.weight,
         request.price,
@@ -45,7 +45,7 @@ public sealed class UpdateOrderCommandHandler : ICommandHandler<Command.UpdateOr
             // Map to Response
             var orderResponse = mapper.Map<Responses.OrderResponses>(existOrder);
             // Delete oldImage In BlobStorage
-            if (!string.IsNullOrEmpty(oldImageUrl) || oldImageUrl != "..")
+            if (!string.IsNullOrEmpty(oldImageUrl))
                 blobStorageRepository.DeleteImageFromBlobStorage(oldImageUrl);
             return Result.Success(orderResponse, 202);
         }

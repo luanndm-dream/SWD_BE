@@ -13,7 +13,7 @@ public class Command
     string contact) : ICommand<Responses.OrderResponses>;
 
     public record UpdateOrderCommand(
-    int id,
+    int? id,
     int packageid,
     IFormFile image,
     float weight,

@@ -19,7 +19,7 @@ public class Command
     DateTime createTime) : ICommand<Responses.PackageResponse>;
 
     public record UpdatePackageCommand(
-    int id,
+    int? id,
     int busId,
     int fromOfficeId,
     int toOfficeId,
@@ -29,8 +29,7 @@ public class Command
     float totalPrice,
     IFormFile image,
     string note,
-    PackageStatus status,
-    DateTime createTime) : ICommand<Responses.PackageResponse>;
+    PackageStatus status) : ICommand<Responses.PackageResponse>;
 
     public record DeletePackageCommand(int id) : ICommand;
 }
