@@ -21,8 +21,8 @@ public sealed class UpdatePackageCommandHandler : ICommandHandler<Command.Update
 
     public async Task<Result<Responses.PackageResponse>> Handle(Command.UpdatePackageCommand request, CancellationToken cancellationToken)
     {
-        var existPackage = await packageRepository.FindByIdAsync(request.id)
-        ?? throw new PackageException.PackageIdNotFoundException(request.id);
+        var existPackage = await packageRepository.FindByIdAsync(request.id.Value)
+        ?? throw new PackageException.PackageIdNotFoundException(request.id.Value);
 
         var oldImageUrl = existPackage.Image;
 
@@ -30,7 +30,7 @@ public sealed class UpdatePackageCommandHandler : ICommandHandler<Command.Update
         ?? throw new Exception("Upload File fail");
 
         existPackage.Update(
-            request.id,
+            request.id.Value,
             request.busId,
             request.fromOfficeId,
             request.toOfficeId,
@@ -40,8 +40,7 @@ public sealed class UpdatePackageCommandHandler : ICommandHandler<Command.Update
             request.totalPrice,
             newImageUrl,
             request.note,
-            request.status,
-            request.createTime);
+            request.status);
         try
         {
             // update in Database
@@ -49,7 +48,9 @@ public sealed class UpdatePackageCommandHandler : ICommandHandler<Command.Update
             // Map to Response
             var officeResponse = mapper.Map<Responses.PackageResponse>(existPackage);
             // Delete oldImage In BlobStorage
-            blobStorageRepository.DeleteImageFromBlobStorage(oldImageUrl);
+            if (string.IsNullOrEmpty(oldImageUrl))
+                blobStorageRepository.DeleteImageFromBlobStorage(oldImageUrl);
+
             return Result.Success(officeResponse, 202);
         }
         catch (Exception)

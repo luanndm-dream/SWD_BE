@@ -74,8 +74,7 @@ public class PackageController : ApiController
             request.totalPrice,
             request.image,
             request.note,
-            request.status,
-            request.createTime
+            request.status
         );
         var result = await sender.Send(updatePackage);
         return Ok(result);

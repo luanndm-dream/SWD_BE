@@ -29,8 +29,7 @@ public class Package : DomainEntity<int>
     float totalPrice,
     string image,
     string note,
-    PackageStatus status,
-    DateTime createTime)
+    PackageStatus status)
     {
         Id = id;
         BusId = busId;
@@ -43,7 +42,5 @@ public class Package : DomainEntity<int>
         Image = image;
         Note = note;
         Status = status;
-        CreateTime = createTime;
-
     }
 }

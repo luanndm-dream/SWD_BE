@@ -2,8 +2,8 @@
 public class Responses
 {
     public record OrderResponses(
-        Guid Id,
-        Guid PackageId,
+        int Id,
+        int PackageId,
         string image,
         float weight,
         float price,

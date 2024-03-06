@@ -62,8 +62,9 @@ public sealed class UpdateUserCommandHandler : ICommandHandler<Command.UpdateUse
 
             userRepository.Update(userExist);
             var userResponse = userExist.ToResponses(roleExist.Description);
+            if (!string.IsNullOrEmpty(oldAvatarUrl))
+                blobStorageRepository.DeleteImageFromBlobStorage(oldAvatarUrl);
 
-            blobStorageRepository.DeleteImageFromBlobStorage(oldAvatarUrl);
             return Result.Success(userResponse, 202);
         }
         catch (Exception ex)
