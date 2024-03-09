@@ -52,7 +52,7 @@ public class User : DomainEntity<int>
         this.Avatar = Avatar;
     }
 
-    public UserResponse ToResponses(string roleDescription)
+    public UserResponse ToResponses(string roleDescription, int? numberOfReport = null)
         => new UserResponse
         {
             Id = Id,
@@ -64,6 +64,7 @@ public class User : DomainEntity<int>
             PhoneNumber = PhoneNumber,
             Identity = Identity,
             Gentle = Gentle,
+            NumberOfReport = numberOfReport,
             DeviceId = DeviceId,
             DeviceVersion = DeviceVersion,
             OS = OS,

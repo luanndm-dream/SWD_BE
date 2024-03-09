@@ -53,7 +53,7 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
             var officeResponse = mapper.Map<Responses.OfficeResponse>(existOffice);
 
             // Delete oldImage In BlobStorage
-            if (!string.IsNullOrEmpty(oldImageUrl) || oldImageUrl != "..")
+            if (!string.IsNullOrEmpty(oldImageUrl))
                 blobStorageRepository.DeleteImageFromBlobStorage(oldImageUrl);
 
             return Result.Success(officeResponse, 202);
