@@ -14,6 +14,7 @@ public static class Responses
         public string PhoneNumber { get; set; }
         public string Identity { get; set; }
         public Gentle Gentle { get; set; }
+        public int? NumberOfReport { get; set; }
         public string? DeviceId { get; set; }
         public string? DeviceVersion { get; set; }
         public OS? OS { get; set; }
