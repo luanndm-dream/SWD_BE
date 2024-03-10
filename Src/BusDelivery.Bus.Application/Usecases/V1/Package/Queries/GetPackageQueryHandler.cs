@@ -39,12 +39,6 @@ public sealed class GetPackageQueryHandler : IQueryHandler<Query.GetPackageQuery
         request.pageIndex,
         request.pageSize);
 
-        foreach (var package in Events.items)
-        {
-            if (package.Image != "..")
-                package.Image = await blobStorageRepository.GetImageToBase64(package.Image);
-        }
-
         var result = mapper.Map<PagedResult<Responses.PackageResponse>>(Events);
         return Result.Success(result);
     }
@@ -57,5 +51,3 @@ public sealed class GetPackageQueryHandler : IQueryHandler<Query.GetPackageQuery
 
 }
 
-// Convert CreateTime, FromDay, ToDay sang DateTime
-// FromDay< CreateTime < ToDay
