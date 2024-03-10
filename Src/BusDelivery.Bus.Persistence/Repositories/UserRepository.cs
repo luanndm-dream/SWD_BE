@@ -97,4 +97,15 @@ public class UserRepository : RepositoryBase<User, int>
         user.IsActive = false;
         Update(user);
     }
+
+    public string GetFirstPartEmail(string input)
+    {
+        int atIndex = input.IndexOf('@');
+
+        if (atIndex == -1)
+            return input;
+
+        string firstPart = input.Substring(0, atIndex);
+        return firstPart;
+    }
 }

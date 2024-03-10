@@ -20,8 +20,8 @@ public class CreatePackageCommandHandler : ICommandHandler<Command.CreatePackage
 
     public async Task<Result<Responses.PackageResponse>> Handle(Command.CreatePackageCommand request, CancellationToken cancellationToken)
     {
-        var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, $"{request.note}-{DateTimeOffset.Now.ToUnixTimeMilliseconds}", "package")
-    ?? throw new Exception("Upload File fail");
+        var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, $"{request.fromOfficeId}-{DateTimeOffset.Now.ToUnixTimeMilliseconds}", "packages")
+            ?? throw new Exception("Upload File fail");
         var package = new Domain.Entities.Package
         {
             BusId = request.busId,
