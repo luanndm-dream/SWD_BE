@@ -39,10 +39,10 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
         if (userWithIdentityExist != null)
             throw new UserException.UserBadRequestException("Identity was exist");
 
-
+        // Check RoleExist
         var roleExist = await roleRepository.FindByIdAsync(request.RoleId)
             ?? throw new RoleException.RoleIdNotFoundException(request.RoleId);
-
+        // Check OfficeExist
         var officeExist = await officeRepository.FindByIdAsync(request.OfficeId)
             ?? throw new OfficeException.OfficeIdNotFoundException(request.OfficeId);
 
@@ -50,7 +50,8 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
         var hashPassword = userRepository.HashPassword(request.Password);
 
         // SaveImageInBlob
-        var avatarUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.Avatar, request.Name, "avatars")
+        var nameImage = userRepository.GetFirstPartEmail(request.Email);
+        var avatarUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.Avatar, nameImage, "avatars")
             ?? throw new Exception("Upload File fail");
 
         // Create UserEntity
