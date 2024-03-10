@@ -39,4 +39,5 @@ public sealed class GetUserIdQueryHandler : IQueryHandler<Query.GetUserByIdQuery
         var resultResponse = userExist.ToResponses(role.Description, numOfReports);
         return Result.Success(resultResponse);
     }
+
 }
