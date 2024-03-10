@@ -40,7 +40,8 @@ public sealed class UpdateUserCommandHandler : ICommandHandler<Command.UpdateUse
 
 
         // Save newAvatar and GetNewAvatarUrl
-        var newAvatarUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.Avatar, request.Name, "avatars")
+        var NameImage = userRepository.GetFirstPartEmail(request.Email);
+        var newAvatarUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.Avatar, NameImage, "avatars")
             ?? throw new Exception("Upload File fail");
 
         try
