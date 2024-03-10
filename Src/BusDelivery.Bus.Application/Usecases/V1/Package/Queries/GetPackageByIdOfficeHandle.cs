@@ -22,6 +22,7 @@ public sealed class GetPackageByIdOfficeHandle : IQueryHandler<Query.GetPackageB
     public async Task<Result<PagedResult<Responses.PackageResponse>>> Handle(Query.GetPackageByIdOffice request, CancellationToken cancellationToken)
     {
         IQueryable<Domain.Entities.Package> EventsQuery;
+
         EventsQuery = packageRepository.FindAll();
         var idOffice = request.idOffice;
         EventsQuery = EventsQuery.Where(x => x.ToOfficeId == idOffice);
@@ -30,6 +31,7 @@ public sealed class GetPackageByIdOfficeHandle : IQueryHandler<Query.GetPackageB
         .CreateAsync(EventsQuery,
         request.pageIndex,
         request.pageSize);
+
 
         var result = mapper.Map<PagedResult<Responses.PackageResponse>>(Events);
         return Result.Success(result);

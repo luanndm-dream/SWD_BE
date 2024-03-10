@@ -26,7 +26,7 @@ public sealed class UpdatePackageCommandHandler : ICommandHandler<Command.Update
 
         var oldImageUrl = existPackage.Image;
 
-        var newImageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, $"{request.note}-{DateTimeOffset.Now.ToUnixTimeMilliseconds}", "offices")
+        var newImageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, $"{request.note}-{DateTimeOffset.Now.ToUnixTimeMilliseconds}", "package")
         ?? throw new Exception("Upload File fail");
 
         existPackage.Update(
@@ -56,7 +56,7 @@ public sealed class UpdatePackageCommandHandler : ICommandHandler<Command.Update
         catch (Exception)
         {
             await blobStorageRepository.DeleteImageFromBlobStorage(newImageUrl);
-            throw new Exception("Update Office Error");
+            throw new Exception("Update Package Error");
         }
     }
 
