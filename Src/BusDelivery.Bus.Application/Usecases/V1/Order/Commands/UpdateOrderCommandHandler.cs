@@ -26,7 +26,7 @@ public sealed class UpdateOrderCommandHandler : ICommandHandler<Command.UpdateOr
 
         var oldImageUrl = existOrder.Image;
 
-        var newImageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, $"{request.contact}-{DateTimeOffset.Now.ToUnixTimeMilliseconds}", "order")
+        var newImageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, $"{request.contact}-{DateTimeOffset.Now.ToUnixTimeMilliseconds()}", "order")
         ?? throw new Exception("Upload File fail");
 
         existOrder.Update(
