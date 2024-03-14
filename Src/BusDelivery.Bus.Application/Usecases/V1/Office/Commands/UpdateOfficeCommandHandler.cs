@@ -30,7 +30,7 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
 
 
         // Save NewImage and GetNewImageUrl
-        var newImageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.Image, request.Name, "offices")
+        var newImageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.Image, request.Contact, "offices")
             ?? throw new Exception("Upload File fail");
 
 
@@ -44,6 +44,7 @@ public sealed class UpdateOfficeCommandHandler : ICommandHandler<Command.UpdateO
             request.Lat,
             request.Lng,
             request.Contact,
+            request.OperationTime,
             newImageUrl,
             request.IsActive);
 
