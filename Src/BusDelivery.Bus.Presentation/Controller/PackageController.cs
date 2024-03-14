@@ -64,6 +64,18 @@ public class PackageController : ApiController
         return Ok(result);
     }
 
+    [HttpGet("GetPackagesFromTimeToTime/{fromTime}/{toTime}")]
+    [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetPackagesFromTimeToTime([FromRoute] string fromTime,
+        string toTime,
+    int pageIndex = 1,
+    int pageSize = 10)
+    {
+        var result = await sender.Send(new Query.GetPackageFromTo(fromTime, toTime, pageIndex, pageSize));
+        return Ok(result);
+    }
+
     [HttpPost("CreatePackage")]
     [ProducesResponseType(typeof(Result<Responses.PackageResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
