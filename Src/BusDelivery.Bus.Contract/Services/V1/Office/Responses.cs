@@ -8,6 +8,7 @@ public static class Responses
         string Lat,
         string Lng,
         string Contact,
+        string OperationTime,
         string Image,
         bool IsActive);
 }

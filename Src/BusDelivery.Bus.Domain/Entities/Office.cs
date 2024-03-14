@@ -8,6 +8,7 @@ public class Office : DomainEntity<int>
     public string Lat { get; set; }
     public string Lng { get; set; }
     public string Contact { get; set; }
+    public string? OperationTime { get; set; }
     public string Image { get; set; }
     public bool IsActive { get; set; }
     public virtual ICollection<Station> Stations { get; set; }
@@ -22,6 +23,7 @@ public class Office : DomainEntity<int>
         string lat,
         string lng,
         string contact,
+        string? operationTime,
         string image,
         bool status)
     {
@@ -31,6 +33,7 @@ public class Office : DomainEntity<int>
         Lat = lat;
         Lng = lng;
         Contact = contact;
+        OperationTime = operationTime;
         Image = image;
         IsActive = status;
     }

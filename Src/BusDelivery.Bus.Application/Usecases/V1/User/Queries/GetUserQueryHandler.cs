@@ -4,6 +4,7 @@ using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Enumerations;
 using BusDelivery.Contract.Services.V1.User;
+using BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 using BusDelivery.Persistence.Repositories;
 
 namespace BusDelivery.Application.Usecases.V1.User.Queries;
@@ -12,14 +13,17 @@ public sealed class GetUserQueryHandler : IQueryHandler<Query.GetUserQuery, Page
     private readonly UserRepository userRepository;
     private readonly RoleRepository roleRepository;
     private readonly IMapper mapper;
+    private readonly IBlobStorageRepository blobStorageRepository;
     public GetUserQueryHandler(
         UserRepository userRepository,
         IMapper mapper,
-        RoleRepository roleRepository)
+        RoleRepository roleRepository,
+        IBlobStorageRepository blobStorageRepository)
     {
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.roleRepository = roleRepository;
+        this.blobStorageRepository = blobStorageRepository;
     }
     public async Task<Result<PagedResult<Responses.UserResponse>>> Handle(Query.GetUserQuery request, CancellationToken cancellationToken)
     {
@@ -46,13 +50,14 @@ public sealed class GetUserQueryHandler : IQueryHandler<Query.GetUserQuery, Page
         foreach (var user in result.items)
         {
             user.RoleDescription = roleRepository.FindByIdAsync(user.RoleId).GetAwaiter().GetResult().Description;
+            user.Avatar = await blobStorageRepository.GetImageToBase64(user.Avatar);
         }
 
         // Encode toBase64String
-        //foreach (var user in Events.items)
-        //{
-        //    user.Avatar = await blobStorageRepository.GetImageToBase64(user.Avatar);
-        //}
+        foreach (var user in Events.items)
+        {
+            user.Avatar = await blobStorageRepository.GetImageToBase64(user.Avatar);
+        }
         return Result.Success(result);
     }
 

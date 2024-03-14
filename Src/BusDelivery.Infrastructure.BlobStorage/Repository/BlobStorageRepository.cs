@@ -69,7 +69,6 @@ public class BlobStorageRepository : IBlobStorageRepository
 
         using (var memoryStream = new MemoryStream())
         {
-
             BlobDownloadInfo download = blobClient.Download();
             download.Content.CopyTo(memoryStream);
             if (memoryStream.Length > 0)
