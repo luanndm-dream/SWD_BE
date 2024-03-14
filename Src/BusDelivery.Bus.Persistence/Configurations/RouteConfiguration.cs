@@ -31,7 +31,7 @@ public class RouteConfiguration : IEntityTypeConfiguration<Route>
 
         //Each Route can have many StationRoutes
         builder.HasMany(x => x.StationRoutes)
-            .WithOne()
+            .WithOne(r => r.Route)
             .HasForeignKey(r => r.RouteId)
             .OnDelete(DeleteBehavior.NoAction);
     }

@@ -72,6 +72,7 @@ public class OfficeController : ApiController
             request.Lat,
             request.Lng,
             request.Contact,
+            request.OperationTime,
             request.Image,
             request.IsActive
         );

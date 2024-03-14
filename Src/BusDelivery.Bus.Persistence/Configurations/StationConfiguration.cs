@@ -25,7 +25,7 @@ public class StationConfiguration : IEntityTypeConfiguration<Station>
 
         //Each Station can have many StationRoutes
         builder.HasMany(x => x.StationRoutes)
-            .WithOne()
+            .WithOne(r => r.Station)
             .HasForeignKey(r => r.StationId)
             .OnDelete(DeleteBehavior.NoAction);
     }
