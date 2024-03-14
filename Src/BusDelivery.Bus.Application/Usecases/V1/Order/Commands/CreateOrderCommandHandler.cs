@@ -20,7 +20,7 @@ public class CreateOrderCommandHandler : ICommandHandler<Command.CreateOrderComm
     }
     public async Task<Result<Responses.OrderResponses>> Handle(Command.CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, $"{request.contact}-{DateTimeOffset.Now.ToUnixTimeMilliseconds}", "orders")
+        var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, $"{request.contact}-{DateTimeOffset.Now.ToUnixTimeMilliseconds()}", "orders")
             ?? throw new Exception("Upload File fail");
         var order = new Domain.Entities.Order
         {

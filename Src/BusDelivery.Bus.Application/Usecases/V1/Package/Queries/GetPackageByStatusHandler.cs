@@ -40,7 +40,10 @@ public sealed class GetPackageByStatusHandler : IQueryHandler<Query.GetPackageBy
             .CreateAsync(EventsQuery,
             request.pageIndex,
             request.pageSize);
-
+        foreach (var package in Events.items)
+        {
+            package.Image = await blobStorageRepository.GetImageToBase64(package.Image);
+        }
         var result = mapper.Map<PagedResult<Responses.PackageResponse>>(Events);
         return Result.Success(result);
     }
