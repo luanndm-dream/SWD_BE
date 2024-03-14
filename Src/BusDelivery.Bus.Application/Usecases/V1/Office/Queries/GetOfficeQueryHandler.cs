@@ -54,10 +54,10 @@ public sealed class GetOfficeQueryHandler : IQueryHandler<Query.GetOfficeQuery, 
             request.pageSize.Value);
 
         // Encode toBase64String
-        //foreach (var office in Events.items)
-        //{
-        //    office.Image = await blobStorageRepository.GetImageToBase64(office.Image);
-        //}
+        foreach (var office in Events.items)
+        {
+            office.Image = await blobStorageRepository.GetImageToBase64(office.Image);
+        }
 
         var result = mapper.Map<PagedResult<Responses.OfficeResponse>>(Events);
         return Result.Success(result);
