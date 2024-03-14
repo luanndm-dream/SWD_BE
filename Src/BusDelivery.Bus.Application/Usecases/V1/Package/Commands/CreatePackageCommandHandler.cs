@@ -34,7 +34,7 @@ public class CreatePackageCommandHandler : ICommandHandler<Command.CreatePackage
             Image = imageUrl,
             Note = request.note,
             Status = request.status,
-            CreateTime = request.createTime,
+            CreateTime = DateTime.Now,
         };
 
         try
