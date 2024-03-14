@@ -10,6 +10,7 @@ public class Command
         string Lat,
         string Lng,
         string Contact,
+        string OperationTime,
         IFormFile Image,
         bool IsActive) : ICommand<Responses.OfficeResponse>;
 
@@ -20,6 +21,7 @@ public class Command
         string Lat,
         string Lng,
         string Contact,
+        string OperationTime,
         IFormFile Image,
         bool IsActive) : ICommand<Responses.OfficeResponse>;
 
