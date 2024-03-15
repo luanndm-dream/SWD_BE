@@ -17,7 +17,7 @@ public class RouteController : ApiController
     public RouteController(ISender sender) : base(sender)
     {
     }
-    [HttpGet("GetAllRoute")]
+    [HttpGet("AllRoute")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.RouteResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.RouteResponse>>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Route(
@@ -35,7 +35,7 @@ public class RouteController : ApiController
             pageSize));
         return Ok(result);
     }
-    [HttpGet("GetRouteById/{routeId}")]
+    [HttpGet("RouteById/{routeId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.RouteResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetRoute([FromRoute] int routeId)
@@ -43,7 +43,7 @@ public class RouteController : ApiController
         var result = await sender.Send(new Query.GetRouteById(routeId));
         return Ok(result);
     }
-    [HttpPost("CreateRoute")]
+    [HttpPost("Route")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateRoute([FromForm] Command.CreateRouteCommandRequest request)
@@ -51,7 +51,7 @@ public class RouteController : ApiController
         var result = await sender.Send(request);
         return Ok(result);
     }
-    [HttpPut("UpdateRoute")]
+    [HttpPut("Route")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateStation([FromQuery] Command.UpdateRouteCommandRequest request)
@@ -60,7 +60,7 @@ public class RouteController : ApiController
         return Ok(result);
     }
 
-    [HttpDelete("DeleteRoute/{routeId}")]
+    [HttpDelete("Route/{routeId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Deleteroute(int id)
