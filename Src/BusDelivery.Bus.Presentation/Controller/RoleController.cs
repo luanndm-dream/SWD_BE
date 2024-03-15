@@ -16,7 +16,7 @@ public class RoleController : ApiController
     {
     }
 
-    [HttpGet("GetRoles")]
+    [HttpGet]
     [ProducesResponseType(typeof(Result<IReadOnlyCollection<Responses.RoleResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Roles()
@@ -25,7 +25,7 @@ public class RoleController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("GetRoles/{RoleId}")]
+    [HttpGet("{RoleId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.RoleResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Roles([FromRoute] int RoleId)
@@ -35,7 +35,7 @@ public class RoleController : ApiController
     }
 
 
-    [HttpPost("CreateRole")]
+    [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Roles([FromForm] Command.CreateRoleCommand request)

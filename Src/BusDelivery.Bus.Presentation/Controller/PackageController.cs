@@ -17,7 +17,7 @@ public class PackageController : ApiController
     {
     }
 
-    [HttpGet("GetPackages")]
+    [HttpGet]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Packages(
@@ -33,7 +33,7 @@ public class PackageController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("GetPackage/{packageId}")]
+    [HttpGet("{packageId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Packages([FromRoute] int packageId)
@@ -76,7 +76,7 @@ public class PackageController : ApiController
         return Ok(result);
     }
 
-    [HttpPost("CreatePackage")]
+    [HttpPost]
     [ProducesResponseType(typeof(Result<Responses.PackageResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Packages([FromForm] Command.CreatePackageCommand request)

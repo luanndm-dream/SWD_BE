@@ -18,28 +18,28 @@ public class UserController : ApiController
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpGet("GetUsers")]
+    [HttpGet]
     [ProducesResponseType(typeof(Result<IReadOnlyCollection<Responses.UserResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Users(
-        int? officeId = null,
-        string? searchTerm = null,
-        string? sortColumn = null,
-        string? sortOrder = null,
-        int pageIndex = 1,
-        int pageSize = 10)
+        int? OfficeId = null,
+        string? SearchTerm = null,
+        string? SortColumn = null,
+        string? SortOrder = null,
+        int PageIndex = 1,
+        int PageSize = 10)
     {
         var result = await sender.Send(new Query.GetUserQuery(
-            officeId,                                                 // Filter Role
-            searchTerm,                                             // Value to search
-            sortColumn,                                             // Column to sort
-            SortOrderExtension.ConvertStringToSortOrder(sortOrder), // Get Asc or Des
-            pageIndex,                                              // Page Value
-            pageSize));
+            OfficeId,                                                 // Filter Role
+            SearchTerm,                                             // Value to search
+            SortColumn,                                             // Column to sort
+            SortOrderExtension.ConvertStringToSortOrder(SortOrder), // Get Asc or Des
+            PageIndex,                                              // Page Value
+            PageSize));
         return Ok(result);
     }
 
-    [HttpGet("GetUsers/{UserId}")]
+    [HttpGet("{UserId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.UserResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Users([FromRoute] int UserId)
@@ -49,7 +49,7 @@ public class UserController : ApiController
     }
 
     //[Authorize(Roles = "Admin")]
-    [HttpPost("CreateUser")]
+    [HttpPost]
     [ProducesResponseType(typeof(Result<Responses.UserResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Users([FromForm] Command.CreateUserCommand request)

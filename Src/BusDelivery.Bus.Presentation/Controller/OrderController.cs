@@ -16,7 +16,7 @@ public class OrderController : ApiController
     public OrderController(ISender sender) : base(sender)
     {
     }
-    [HttpGet("GetOrders")]
+    [HttpGet]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.OrderResponses>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.OrderResponses>>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Orders(
@@ -35,7 +35,7 @@ public class OrderController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("GetOrders/{orderId}")]
+    [HttpGet("{orderId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.OrderResponses>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Orders([FromRoute] int orderId)
@@ -44,7 +44,7 @@ public class OrderController : ApiController
         return Ok(result);
     }
 
-    [HttpPost("CreateOrder")]
+    [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Orders([FromForm] Command.CreateOrderCommand request)
