@@ -17,7 +17,7 @@ public class CoordinateController : ApiController
     {
     }
 
-    [HttpGet("GetCoordinate")]
+    [HttpGet]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.CoordinateResponses>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.CoordinateResponses>>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Coordinates(
@@ -36,7 +36,7 @@ public class CoordinateController : ApiController
         return Ok(result);
     }
 
-    [HttpPost("CreateCoordinate")]
+    [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Coordinates([FromForm] Command.CreateCoordinateCommand request)

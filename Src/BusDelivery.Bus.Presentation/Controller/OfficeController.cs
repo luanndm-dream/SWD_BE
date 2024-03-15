@@ -18,28 +18,28 @@ public class OfficeController : ApiController
     {
     }
 
-    [HttpGet("GetOffices")]
+    [HttpGet]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Offices(
-        bool? status,
-        string? searchTerm = null,
-        string? sortColumn = null,
-        string? sortOrder = null,
-        int? pageIndex = 1,
-        int? pageSize = 10)
+        bool? Status,
+        string? SearchTerm = null,
+        string? SortColumn = null,
+        string? SortOrder = null,
+        int? PageIndex = 1,
+        int? PageSize = 10)
     {
         var result = await sender.Send(new Query.GetOfficeQuery(
-            status,
-            searchTerm,                                             // Value to search
-            sortColumn,                                             // Column to sort
-            SortOrderExtension.ConvertStringToSortOrder(sortOrder), // Get Asc or Des
-            pageIndex,                                              // Page Value
-            pageSize));                                             // PageSize
+            Status,
+            SearchTerm,                                             // Value to search
+            SortColumn,                                             // Column to sort
+            SortOrderExtension.ConvertStringToSortOrder(SortOrder), // Get Asc or Des
+            PageIndex,                                              // Page Value
+            PageSize));                                             // PageSize
         return Ok(result);
     }
 
-    [HttpGet("GetOffices/{officeId}")]
+    [HttpGet("{officeId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.OfficeResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Offices([FromRoute] int officeId)
@@ -49,7 +49,7 @@ public class OfficeController : ApiController
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpPost("CreateOffice")]
+    [HttpPost]
     [ProducesResponseType(typeof(Result<Responses.OfficeResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Offices([FromForm] Command.CreateOfficeCommand request)
