@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Globalization;
+using System.Linq.Expressions;
 using AutoMapper;
 using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
@@ -31,6 +32,28 @@ public sealed class GetPackageQueryHandler : IQueryHandler<Query.GetPackageQuery
         EventsQuery = packageRepository.FindAll();
         var keySelector = GetSortProperty(request);
 
+        if (request.status != null)
+        {
+            var statusPackage = request.status switch
+            {
+                1 => PackageStatus.Done,
+                0 => PackageStatus.Processing,
+                _ => PackageStatus.Cancel,
+            };
+
+            EventsQuery = EventsQuery.Where(x => x.Status == statusPackage);
+        }
+        if (request.idOffice != null)
+        {
+            EventsQuery = EventsQuery.Where(x => x.ToOfficeId == request.idOffice);
+        }
+        if (request.toTime != null && request.fromTime != null)
+        {
+            DateTime fromTime = DateTime.ParseExact(request.fromTime, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            DateTime toTime = DateTime.ParseExact(request.toTime, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+
+            EventsQuery = EventsQuery.Where(x => fromTime <= x.CreateTime && toTime >= x.CreateTime);
+        }
         EventsQuery = request.sortOrder == SortOrder.Descending
             ? EventsQuery.OrderByDescending(keySelector)
             : EventsQuery.OrderBy(keySelector);

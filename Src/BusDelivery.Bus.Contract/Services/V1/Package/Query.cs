@@ -6,6 +6,10 @@ namespace BusDelivery.Contract.Services.V1.Package;
 public class Query
 {
     public record GetPackageQuery(
+        int? idOffice,
+        int? status,
+        string? fromTime,
+        string? toTime,
         SortOrder? sortOrder,
         int pageIndex,
         int pageSize)
