@@ -21,7 +21,7 @@ public class WeatherController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("GetWeather/{OfficeId}")]
+    [HttpGet("{OfficeId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Weathers(int OfficeId)

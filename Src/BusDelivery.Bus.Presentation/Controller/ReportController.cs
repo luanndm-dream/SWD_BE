@@ -17,7 +17,7 @@ public class ReportController : ApiController
     public ReportController(ISender sender) : base(sender)
     {
     }
-    [HttpGet("GetAllReport")]
+    [HttpGet]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.ReportResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.ReportResponse>>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Report(
@@ -61,7 +61,7 @@ public class ReportController : ApiController
         return Ok(result);
     }
 
-    [HttpPost("CreateReport")]
+    [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateBus([FromForm] Command.CreateReportCommandRequest request)
@@ -69,7 +69,7 @@ public class ReportController : ApiController
         var result = await sender.Send(request);
         return Ok(result);
     }
-    [HttpPut("UpdateReport")]
+    [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateReport([FromForm] Command.UpdateReportCommandRequest request)
@@ -78,7 +78,7 @@ public class ReportController : ApiController
         return Ok(result);
     }
 
-    [HttpDelete("DeleteReport")]
+    [HttpDelete]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteReport([FromForm] Command.DeleteReportCommandRequest request)
