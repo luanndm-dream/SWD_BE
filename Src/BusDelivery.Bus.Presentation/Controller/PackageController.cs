@@ -42,7 +42,7 @@ public class PackageController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("GetPackagesByStatus/{status}")]
+    [HttpGet("{status}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPackagesByStatus([FromRoute] int status,
@@ -53,7 +53,7 @@ public class PackageController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("GetPackagesByIdOffice/{idOffice}")]
+    [HttpGet("{idOffice}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPackagesByIdOffice([FromRoute] int idOffice,
@@ -64,7 +64,7 @@ public class PackageController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("GetPackagesFromTimeToTime/{fromTime}/{toTime}")]
+    [HttpGet("{fromTime}/{toTime}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPackagesFromTimeToTime([FromRoute] string fromTime,
