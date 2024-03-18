@@ -31,7 +31,7 @@ public sealed class GetUserIdQueryHandler : IQueryHandler<Query.GetUserByIdQuery
         var role = await roleRepository.FindByIdAsync(userExist.RoleId);
 
         //
-        //userExist.Avatar = await blobStorageRepository.GetImageToBase64(userExist.Avatar);
+        userExist.Avatar = await blobStorageRepository.GetImageToBase64(userExist.Avatar);
 
         //Get NumberReport Of User
         var numOfReports = await reportRepository.CountByUserId(request.Id);

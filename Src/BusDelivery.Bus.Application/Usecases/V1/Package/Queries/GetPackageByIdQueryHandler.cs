@@ -29,7 +29,7 @@ public sealed class GetPackageByIdQueryHandler : IQueryHandler<Query.GetPackageB
         var result = await packageRepository.FindByIdAsync(request.packageId)
             ?? throw new PackageException.PackageIdNotFoundException(request.packageId);
 
-        //result.Image = await blobStorageRepository.GetImageToBase64(result.Image);
+        result.Image = await blobStorageRepository.GetImageToBase64(result.Image);
 
         var resultResponse = mapper.Map<Responses.PackageResponse>(result);
         return Result.Success(resultResponse);
