@@ -28,7 +28,7 @@ public sealed class GetOfficeByIdQueryHandler : IQueryHandler<Query.GetOfficeByI
         var result = await officeRepository.FindByIdAsync(request.officeId)
             ?? throw new OfficeException.OfficeIdNotFoundException(request.officeId);
         // Convert ToBase64String
-        //result.Image = await blobStorageRepository.GetImageToBase64(result.Image);
+        result.Image = await blobStorageRepository.GetImageToBase64(result.Image);
 
         var resultResponse = mapper.Map<Responses.OfficeResponse>(result);
         return Result.Success(resultResponse);
