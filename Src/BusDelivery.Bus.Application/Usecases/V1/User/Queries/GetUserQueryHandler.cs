@@ -50,14 +50,9 @@ public sealed class GetUserQueryHandler : IQueryHandler<Query.GetUserQuery, Page
         foreach (var user in result.items)
         {
             user.RoleDescription = roleRepository.FindByIdAsync(user.RoleId).GetAwaiter().GetResult().Description;
-            user.Avatar = await blobStorageRepository.GetImageToBase64(user.Avatar);
+            //user.Avatar = await blobStorageRepository.GetImageToBase64(user.Avatar);
         }
 
-        // Encode toBase64String
-        foreach (var user in Events.items)
-        {
-            user.Avatar = await blobStorageRepository.GetImageToBase64(user.Avatar);
-        }
         return Result.Success(result);
     }
 

@@ -50,7 +50,7 @@ public class WeatherRepository : RepositoryBase<Domain.Entities.Weather, int>
     public async Task UpsertWeather(int officeId, List<Forecast> listForecast)
     {
         var listWeather = context.Weather.AsTracking().Where(x => x.OfficeId == officeId).ToList();
-        if (listWeather == null)
+        if (listWeather.Count < 1)
         {
             foreach (var item in listForecast)
             {

@@ -36,10 +36,10 @@ public sealed class GetOrderQueryHandler : IQueryHandler<Query.GetOrderQuery, Pa
             request.pageIndex,
             request.pageSize);
 
-        foreach (var oder in Events.items)
-        {
-            oder.Image = await blobStorageRepository.GetImageToBase64(oder.Image);
-        }
+        //foreach (var oder in Events.items)
+        //{
+        //    oder.Image = await blobStorageRepository.GetImageToBase64(oder.Image);
+        //}
         var result = mapper.Map<PagedResult<Responses.OrderResponses>>(Events);
         return Result.Success(result);
     }

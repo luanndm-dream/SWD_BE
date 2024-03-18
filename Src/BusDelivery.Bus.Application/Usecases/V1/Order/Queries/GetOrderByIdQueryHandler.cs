@@ -23,7 +23,7 @@ public sealed class GetOrderByIdQueryHandler : IQueryHandler<Query.GetOrderByIdQ
         var result = await orderRepository.FindByIdAsync(request.orderId)
     ?? throw new OrderException.OrderIdNotFoundException(request.orderId);
 
-        result.Image = await blobStorageRepository.GetImageToBase64(result.Image);
+        //result.Image = await blobStorageRepository.GetImageToBase64(result.Image);
 
         var resultResponse = mapper.Map<Responses.OrderResponses>(result);
 
