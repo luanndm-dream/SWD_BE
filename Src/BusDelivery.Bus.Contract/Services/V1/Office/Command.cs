@@ -11,8 +11,7 @@ public class Command
         string Lng,
         string Contact,
         string OperationTime,
-        IFormFile Image,
-        bool IsActive) : ICommand<Responses.OfficeResponse>;
+        IFormFile Image) : ICommand<Responses.OfficeResponse>;
 
     public record UpdateOfficeCommand(
         int? Id,

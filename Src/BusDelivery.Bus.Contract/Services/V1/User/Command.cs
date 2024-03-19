@@ -14,7 +14,6 @@ public static class Command
         string PhoneNumber,
         string Identity,
         Gentle Gentle,
-        bool IsActive,
         IFormFile Avatar) : ICommand<Responses.UserResponse>;
 
     public record UpdateUserCommand(

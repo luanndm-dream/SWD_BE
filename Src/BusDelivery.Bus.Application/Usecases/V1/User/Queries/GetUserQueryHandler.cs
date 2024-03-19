@@ -53,11 +53,6 @@ public sealed class GetUserQueryHandler : IQueryHandler<Query.GetUserQuery, Page
             user.Avatar = await blobStorageRepository.GetImageToBase64(user.Avatar);
         }
 
-        // Encode toBase64String
-        foreach (var user in Events.items)
-        {
-            user.Avatar = await blobStorageRepository.GetImageToBase64(user.Avatar);
-        }
         return Result.Success(result);
     }
 

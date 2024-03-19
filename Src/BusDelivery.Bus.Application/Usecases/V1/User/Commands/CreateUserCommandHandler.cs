@@ -30,6 +30,10 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
     }
     public async Task<Result<Responses.UserResponse>> Handle(Command.CreateUserCommand request, CancellationToken cancellationToken)
     {
+        // Can not Create Admin
+        if (await roleRepository.IsAdmin(request.RoleId))
+            throw new UserException.UserBadRequestException("Can not Create Admin");
+
         // Check Email was Register
         var UserWithEmailExist = await userRepository.FindByEmailAsync(request.Email);
         if (UserWithEmailExist != null)
@@ -54,7 +58,6 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
         var avatarUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.Avatar, nameImage, "avatars")
             ?? throw new Exception("Upload File fail");
 
-        // Create UserEntity
         var user = new Domain.Entities.User
         {
             RoleId = request.RoleId,
