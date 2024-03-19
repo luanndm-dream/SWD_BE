@@ -38,7 +38,7 @@ public sealed class CreateOfficeCommandHandler : ICommandHandler<Command.CreateO
             Contact = request.Contact,
             OperationTime = request.OperationTime,
             Image = imageUrl,
-            IsActive = request.IsActive,
+            IsActive = true,
         };
 
         try
