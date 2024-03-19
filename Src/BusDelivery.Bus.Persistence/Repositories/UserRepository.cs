@@ -108,4 +108,10 @@ public class UserRepository : RepositoryBase<User, int>
         string firstPart = input.Substring(0, atIndex);
         return firstPart;
     }
+
+    public async Task<int> TotalUserInThisMonth()
+        => await context.User
+            .Where(x => x.CreateTime.Month == DateTime.UtcNow.Month)
+            .CountAsync();
+
 }
