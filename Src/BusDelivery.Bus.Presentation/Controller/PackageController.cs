@@ -17,15 +17,23 @@ public class PackageController : ApiController
     {
     }
 
-    [HttpGet("GetPackages")]
+    [HttpGet]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Packages(
+    int? idOffice,
+    int? status,
+    string? fromTime,
+    string? toTime,
     string? sortOrder = null,
     int pageIndex = 1,
     int pageSize = 10)
     {
-        var result = await sender.Send(new Query.GetPackageQuery(
+        var result = await sender.Send(new Query.GetPackageQuery
+            (idOffice,
+            status,
+            fromTime,
+            toTime,
             SortOrderExtension.ConvertStringToSortOrder(sortOrder),
             pageIndex,
             pageSize));
@@ -33,7 +41,7 @@ public class PackageController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("GetPackage/{packageId}")]
+    [HttpGet("{packageId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Packages([FromRoute] int packageId)
@@ -42,41 +50,7 @@ public class PackageController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("GetPackagesByStatus/{status}")]
-    [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetPackagesByStatus([FromRoute] int status,
-        int pageIndex = 1,
-        int pageSize = 10)
-    {
-        var result = await sender.Send(new Query.GetPackageByStatusQuery(status, pageIndex, pageSize));
-        return Ok(result);
-    }
-
-    [HttpGet("GetPackagesByIdOffice/{idOffice}")]
-    [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetPackagesByIdOffice([FromRoute] int idOffice,
-    int pageIndex = 1,
-    int pageSize = 10)
-    {
-        var result = await sender.Send(new Query.GetPackageByIdOffice(idOffice, pageIndex, pageSize));
-        return Ok(result);
-    }
-
-    [HttpGet("GetPackagesFromTimeToTime/{fromTime}/{toTime}")]
-    [ProducesResponseType(typeof(Result<PagedResult<Responses.PackageResponse>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetPackagesFromTimeToTime([FromRoute] string fromTime,
-        string toTime,
-    int pageIndex = 1,
-    int pageSize = 10)
-    {
-        var result = await sender.Send(new Query.GetPackageFromTo(fromTime, toTime, pageIndex, pageSize));
-        return Ok(result);
-    }
-
-    [HttpPost("CreatePackage")]
+    [HttpPost]
     [ProducesResponseType(typeof(Result<Responses.PackageResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Packages([FromForm] Command.CreatePackageCommand request)

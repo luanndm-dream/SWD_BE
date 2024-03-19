@@ -40,6 +40,7 @@ public sealed class GetPackageFromToHandler : IQueryHandler<Query.GetPackageFrom
         {
             package.Image = await blobStorageRepository.GetImageToBase64(package.Image);
         }
+
         var result = mapper.Map<PagedResult<Responses.PackageResponse>>(Events);
         return Result.Success(result);
     }

@@ -16,7 +16,7 @@ public class StationController : ApiController
     public StationController(ISender sender) : base(sender)
     {
     }
-    [HttpGet("AllStation")]
+    [HttpGet]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.GetStationResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Stations(
@@ -34,7 +34,7 @@ public class StationController : ApiController
             pageSize));                                             // PageSize
         return Ok(result);
     }
-    [HttpGet("StationById/{stationId}")]
+    [HttpGet("{stationId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.GetStationResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Station([FromRoute] int stationId)
@@ -42,7 +42,7 @@ public class StationController : ApiController
         var result = await sender.Send(new Query.GetStationById(stationId));
         return Ok(result);
     }
-    [HttpPost("Station")]
+    [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Station([FromForm] Command.CreateStationRequest request)
@@ -50,7 +50,7 @@ public class StationController : ApiController
         var result = await sender.Send(request);
         return Ok(result);
     }
-    [HttpPut("Station")]
+    [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Station([FromQuery] Command.UpdateStationRequest request)
@@ -59,7 +59,7 @@ public class StationController : ApiController
         return Ok(result);
     }
 
-    [HttpDelete("Station/{stationId}")]
+    [HttpDelete("{stationId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteOffices(int stationId)

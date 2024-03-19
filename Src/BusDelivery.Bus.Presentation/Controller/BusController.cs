@@ -16,7 +16,7 @@ public class BusController : ApiController
     public BusController(ISender sender) : base(sender)
     {
     }
-    [HttpGet("AllBus")]
+    [HttpGet]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.AllBusResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.AllBusResponse>>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Bus(
@@ -34,7 +34,7 @@ public class BusController : ApiController
             pageSize));
         return Ok(result);
     }
-    [HttpGet("BusById/{BusId}")]
+    [HttpGet("{BusId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.BusResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBus([FromRoute] int BusId)
@@ -42,7 +42,7 @@ public class BusController : ApiController
         var result = await sender.Send(new Query.GetBusById(BusId));
         return Ok(result);
     }
-    [HttpPost("Bus")]
+    [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateBus([FromForm] Command.CreateBusCommandRequest request)
@@ -50,7 +50,7 @@ public class BusController : ApiController
         var result = await sender.Send(request);
         return Ok(result);
     }
-    [HttpPut("Bus")]
+    [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateBus([FromForm] Command.UpdateBusCommandRequest request)
@@ -59,7 +59,7 @@ public class BusController : ApiController
         return Ok(result);
     }
 
-    [HttpDelete("Bus")]
+    [HttpDelete]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteBus([FromForm] Command.DeleteBusCommandRequest request)

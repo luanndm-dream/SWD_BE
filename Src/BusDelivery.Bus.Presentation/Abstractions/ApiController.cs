@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BusDelivery.Presentation.Abstractions;
 [ApiController]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("Api/V{version:apiVersion}/[controller]")]
 public abstract class ApiController : ControllerBase
 {
     protected readonly ISender sender;

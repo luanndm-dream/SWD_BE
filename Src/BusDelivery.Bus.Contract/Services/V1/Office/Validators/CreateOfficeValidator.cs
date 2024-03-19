@@ -10,6 +10,5 @@ public class CreateOfficeValidator : AbstractValidator<Command.CreateOfficeComma
         RuleFor(x => x.Lat).NotEmpty().WithMessage("Lat is required.");
         RuleFor(x => x.Lng).NotEmpty().WithMessage("Lng is required.");
         RuleFor(x => x.Image).NotEmpty().WithMessage("Image is required.");
-        RuleFor(x => x.IsActive).NotEmpty().WithMessage("Status is required");
     }
 }
