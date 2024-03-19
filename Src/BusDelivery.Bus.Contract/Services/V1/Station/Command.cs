@@ -14,6 +14,7 @@ public class Command
         public string name { get; set; } = null!;
         public string lat { get; set; } = null!;
         public string lng { get; set; } = null!;
+        public bool IsActive { get; set; }
     }
     public record UpdateStationRequest(int stationId) : ICommand<Responses.GetStationResponse>
     {
@@ -22,6 +23,7 @@ public class Command
         public string name { get; set; } = null!;
         public string lat { get; set; } = null!;
         public string lng { get; set; } = null!;
+        public bool IsActive { get; set; }
     }
 
     public record DeleteStationRequest(int stationId) : ICommand;

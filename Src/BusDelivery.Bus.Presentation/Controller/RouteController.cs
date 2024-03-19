@@ -63,9 +63,9 @@ public class RouteController : ApiController
     [HttpDelete("{routeId}")]
     [ProducesResponseType(typeof(Result), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Deleteroute(int id)
+    public async Task<IActionResult> Deleteroute(int routeId)
     {
-        var result = await sender.Send(new Command.DeleteRouteCommandRequest(id));
+        var result = await sender.Send(new Command.DeleteRouteCommandRequest(routeId));
         return Ok(result);
     }
 }
