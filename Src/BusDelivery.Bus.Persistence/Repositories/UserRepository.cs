@@ -43,7 +43,8 @@ public class UserRepository : RepositoryBase<User, int>
         return user;
     }
 
-
+    public async Task<bool> PhoneNumberIsExist(string phone)
+        => await context.User.FirstOrDefaultAsync(x => x.PhoneNumber == phone) != null;
     public bool VerifyPassword(string hashPassword, string inputPassword)
     {
         var elements = hashPassword.Split(Delimiter);
