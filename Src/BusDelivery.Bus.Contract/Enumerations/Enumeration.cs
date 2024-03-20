@@ -4,7 +4,8 @@ public enum PackageStatus
 {
     Done = 1,
     Processing = 0,
-    Cancel = -1
+    Cancel = -1,
+    Delete = 4
 }
 
 public enum Gentle
