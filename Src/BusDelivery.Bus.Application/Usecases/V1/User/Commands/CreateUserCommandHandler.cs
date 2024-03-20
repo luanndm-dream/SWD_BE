@@ -32,7 +32,7 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
     {
         // Can not Create Admin
         if (await roleRepository.IsAdmin(request.RoleId))
-            throw new UserException.UserBadRequestException("Can not Create Admin");
+            throw new UserException.UserBadRequestException("Can not create Admin");
 
         // Check Email was Register
         var UserWithEmailExist = await userRepository.FindByEmailAsync(request.Email);
@@ -42,6 +42,9 @@ public sealed class CreateUserCommandHandler : ICommandHandler<Command.CreateUse
         var userWithIdentityExist = await userRepository.FindByIdentityAsync(request.Identity);
         if (userWithIdentityExist != null)
             throw new UserException.UserBadRequestException("Identity was exist");
+
+        if (await userRepository.PhoneNumberIsExist(request.PhoneNumber))
+            throw new UserException.UserBadRequestException("PhoneNumber was exist");
 
         // Check RoleExist
         var roleExist = await roleRepository.FindByIdAsync(request.RoleId)
