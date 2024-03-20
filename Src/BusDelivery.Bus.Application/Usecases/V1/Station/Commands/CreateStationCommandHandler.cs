@@ -35,6 +35,8 @@ public sealed class CreateStationCommandHandler : ICommandHandler<Command.Create
             Name = request.name,
             Lat = request.lat,
             Lng = request.lng,
+            IsActive = true,
+
         };
         try
         {

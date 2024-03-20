@@ -33,7 +33,7 @@ public class CreateRouteCommandHandler : ICommandHandler<Command.CreateRouteComm
             Description = request.Description,
             StartPoint = request.StartPoint,
             EndPoint = request.EndPoint,
-            IsActive = request.IsActive,
+            IsActive = true,
             OperateTime = request.OperateTime
 
         };

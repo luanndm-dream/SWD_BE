@@ -55,15 +55,6 @@ public class StationController : ApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Station([FromQuery] Command.UpdateStationRequest request)
     {
-        //var updateStation = new Command.UpdateStationRequest(stationId)
-        //{
-        //    officeId = request.officeId,
-        //    name = request.name,
-        //    lat = request.lat,
-        //    lng = request.lng,
-
-        //};
-
         var result = await sender.Send(request);
         return Ok(result);
     }

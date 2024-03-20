@@ -19,7 +19,6 @@ public class Command
         public string color { get; set; } = null!;
         public string numberOfSeat { get; set; } = null!;
         public string operateTime { get; set; } = null!;   
-        public bool IsActive { get; set; }
     }
 
     public record UpdateBusCommandRequest(int id) : ICommand<Responses.BusResponse>

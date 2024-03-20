@@ -35,7 +35,7 @@ public class ReportController : ApiController
             pageSize));
         return Ok(result);
     }
-    [HttpGet("GetReportById/{reportId}")]
+    [HttpGet("ReportById/{reportId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.ReportResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetReportById([FromRoute] int reportId)
@@ -43,7 +43,7 @@ public class ReportController : ApiController
         var result = await sender.Send(new Query.GetReportById(reportId));
         return Ok(result);
     }
-    [HttpGet("GetReportByUserID/{userId}")]
+    [HttpGet("ReportByUserID/{userId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.ReportResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetReport([FromRoute] int userId)
@@ -52,7 +52,7 @@ public class ReportController : ApiController
         return Ok(result);
     }
 
-    [HttpGet("CountReportByUserID/{userId}")]
+    [HttpGet("NumberOfReport/{userId}")]
     [ProducesResponseType(typeof(Result<PagedResult<Responses.CountReport>>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CountReport([FromRoute] int userId)
