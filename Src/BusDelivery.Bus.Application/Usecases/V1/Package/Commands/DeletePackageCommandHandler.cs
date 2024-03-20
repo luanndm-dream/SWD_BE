@@ -21,7 +21,7 @@ public sealed class DeletePackageCommandHandler : ICommandHandler<Command.Delete
             ?? throw new PackageException.PackageIdNotFoundException(request.id);
         try
         {
-            existPackage.Status = PackageStatus.Cancel;
+            existPackage.Status = PackageStatus.Delete;
             packageRepository.Update(existPackage);
             return Result.Success(202);
         }
