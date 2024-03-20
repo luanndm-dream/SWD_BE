@@ -29,6 +29,7 @@ ReportRepository reportRepository)
 
     public async Task<Result<Responses.PackageResponse>> Handle(Query.GetPackageByIdQuery request, CancellationToken cancellationToken)
     {
+        IQueryable<Domain.Entities.Package> EventsQuery;
         var result = await packageRepository.FindByIdAsync(request.packageId)
             ?? throw new PackageException.PackageIdNotFoundException(request.packageId);
 
@@ -39,7 +40,6 @@ ReportRepository reportRepository)
             var report = reportRepository.GetReportById(result.Id, "package");
             resultResponse.Report = mapper.Map<Contract.Services.V1.Reports.Responses.ReportResponse>(report);
         }
-
-        return Result.Success(resultResponse);
+        return result.Status == PackageStatus.Delete ? throw new Exception("PackageId was not exist!") : Result.Success(resultResponse);
     }
 }

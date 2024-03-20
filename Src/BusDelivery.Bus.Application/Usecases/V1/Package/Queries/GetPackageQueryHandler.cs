@@ -38,7 +38,8 @@ public sealed class GetPackageQueryHandler : IQueryHandler<Query.GetPackageQuery
             {
                 1 => PackageStatus.Done,
                 0 => PackageStatus.Processing,
-                _ => PackageStatus.Cancel,
+                4 => PackageStatus.Delete,
+                -1 => PackageStatus.Cancel,
             };
 
             EventsQuery = EventsQuery.Where(x => x.Status == statusPackage);
@@ -54,6 +55,16 @@ public sealed class GetPackageQueryHandler : IQueryHandler<Query.GetPackageQuery
 
             EventsQuery = EventsQuery.Where(x => fromTime <= x.CreateTime && toTime >= x.CreateTime);
         }
+
+        if (request.status == 4)
+        {
+            EventsQuery = EventsQuery.Where(x => x.Status == PackageStatus.Delete);
+        }
+        else
+        {
+            EventsQuery = EventsQuery.Where((x) => x.Status != PackageStatus.Delete);
+        }
+
         EventsQuery = request.sortOrder == SortOrder.Descending
             ? EventsQuery.OrderByDescending(keySelector)
             : EventsQuery.OrderBy(keySelector);
