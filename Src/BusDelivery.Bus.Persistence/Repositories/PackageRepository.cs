@@ -82,5 +82,19 @@ public class PackageRepository : RepositoryBase<Package, int>
         }
 
         return result;
+
     }
+
+    public async Task<int> TotalOrderLastMonth()
+    {
+        var day = GetFirstDayOfPCurrentMonth();
+
+        var listPackageLastMonth = await context.Package.
+            Where(x => x.CreateTime < day)
+            .ToListAsync();
+        return listPackageLastMonth?.Sum(package => package.Quantity) ?? 0;
+    }
+
+    private DateTime GetFirstDayOfPCurrentMonth()
+        => new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 }
