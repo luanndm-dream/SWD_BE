@@ -10,27 +10,39 @@ public class PackageRepository : RepositoryBase<Package, int>
         this.context = context;
     }
 
-    public async Task<int> TotalOrderInThisMonth()
+    public async Task<int> TotalOrder()
+        => await context.Package.SumAsync(x => x.Quantity);
+
+
+    public async Task<float> TotalPriceThisMonth()
     {
         var listPackageInThisMonth = await context.Package.
-            Where(x => x.CreateTime.Month == DateTime.Now.Month)
+            Where(x => x.CreateTime.Month == DateTime.Now.Month
+            && x.CreateTime.Year == DateTime.Now.Year)
             .ToListAsync();
-        int total = 0;
-        if (listPackageInThisMonth != null)
-            foreach (var package in listPackageInThisMonth)
-                total += package.Quantity;
-        return total;
+        return listPackageInThisMonth?.Sum(x => x.TotalPrice) ?? 0;
     }
 
-    public async Task<float> RevenueInThisMonth()
+    public async Task<int> NewOrderInThisMonth()
     {
         var listPackageInThisMonth = await context.Package.
-            Where(x => x.CreateTime.Month == DateTime.Now.Month)
+            Where(x => x.CreateTime.Month == DateTime.Now.Month
+            && x.CreateTime.Year == DateTime.Now.Year)
             .ToListAsync();
-        float total = 0;
-        if (listPackageInThisMonth != null)
-            foreach (var package in listPackageInThisMonth)
-                total += package.TotalPrice;
-        return total;
+
+        return listPackageInThisMonth?.Sum(x => x.Quantity) ?? 0;
     }
+
+    public async Task<int> TotalOrderLastMonth()
+    {
+        var day = GetFirstDayOfPCurrentMonth();
+
+        var listPackageLastMonth = await context.Package.
+            Where(x => x.CreateTime < day)
+            .ToListAsync();
+        return listPackageLastMonth?.Sum(package => package.Quantity) ?? 0;
+    }
+
+    private DateTime GetFirstDayOfPCurrentMonth()
+        => new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 }
