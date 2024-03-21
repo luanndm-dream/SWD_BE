@@ -40,6 +40,7 @@ public sealed class GetPackageQueryHandler : IQueryHandler<Query.GetPackageQuery
                 0 => PackageStatus.Processing,
                 4 => PackageStatus.Delete,
                 -1 => PackageStatus.Cancel,
+                5 => PackageStatus.Confirmed,
             };
 
             EventsQuery = EventsQuery.Where(x => x.Status == statusPackage);
