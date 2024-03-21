@@ -20,4 +20,10 @@ public static class Responses
         bool IsActive,
         string Token,
         string ExpireOn);
+
+    public class OrderChart
+    {
+        public int Month { get; set; }
+        public int TotalOrder { get; set; }
+    }
 }

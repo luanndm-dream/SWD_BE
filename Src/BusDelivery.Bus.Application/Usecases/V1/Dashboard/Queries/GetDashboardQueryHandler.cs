@@ -40,6 +40,7 @@ public class GetDashboardQueryHandler : IQueryHandler<Query.GetDashboardQuery, R
             // totalPriceThisMonth
             var totalPriceThisMonth = await packageRepository.TotalPriceThisMonth();
 
+            var orderChart = await packageRepository.GetChart();
 
             var response = new Responses.DashboardResponses(
                 totalUser,
@@ -51,7 +52,9 @@ public class GetDashboardQueryHandler : IQueryHandler<Query.GetDashboardQuery, R
                 totalOrderLastMonth,
 
                 totalOffice,
-                totalPriceThisMonth
+                totalPriceThisMonth,
+
+                orderChart
                 );
 
             return Result.Success(response);

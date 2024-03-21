@@ -1,4 +1,6 @@
-﻿namespace BusDelivery.Contract.Services.V1.Dashboard;
+﻿using static BusDelivery.Contract.Services.V1.Authentication.Responses;
+
+namespace BusDelivery.Contract.Services.V1.Dashboard;
 public static class Responses
 {
     public record DashboardResponses(
@@ -9,6 +11,6 @@ public static class Responses
         int NewOrderInThisMonth,
         int TotalOrderLastMonth,
         int TotalOffice,
-        float TotalPriceInThisMonth
-        );
+        float TotalPriceInThisMonth,
+        IEnumerable<OrderChart> OrderChart);
 }
