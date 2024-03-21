@@ -1,9 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
 using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.Package;
 using BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 using BusDelivery.Persistence.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace BusDelivery.Application.Usecases.V1.Package.Commands;
 public class CreatePackageCommandHandler : ICommandHandler<Command.CreatePackageCommand, Responses.PackageResponse>
@@ -17,10 +19,27 @@ public class CreatePackageCommandHandler : ICommandHandler<Command.CreatePackage
         this.packageRepository = packageRepository;
         this.mapper = mapper;
     }
+    public static IFormFile ConvertToIFormFile(string base64String, string fileName)
+    {
+        // Giải mã chuỗi Base64 thành mảng byte
+        byte[] bytes = Convert.FromBase64String(base64String);
 
+        // Tạo một luồng bộ nhớ đệm từ mảng byte
+        using (MemoryStream memoryStream = new MemoryStream(bytes))
+        {
+            // Tạo một đối tượng MemoryStream từ luồng bộ nhớ đệm
+            MemoryStream stream = new MemoryStream(memoryStream.ToArray());
+            // Tạo một đối tượng IFormFile từ MemoryStream
+            IFormFile file = new FormFile(stream, 0, bytes.Length, "file", fileName);
+
+            return file;
+        }
+    }
     public async Task<Result<Responses.PackageResponse>> Handle(Command.CreatePackageCommand request, CancellationToken cancellationToken)
     {
-        var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(request.image, $"{request.fromOfficeId}-{DateTimeOffset.Now.ToUnixTimeMilliseconds()}", "packages")
+        var image = ConvertToIFormFile(request.image, request.totalPrice.ToString());
+
+        var imageUrl = await blobStorageRepository.SaveImageOnBlobStorage(image, $"{request.fromOfficeId}-{DateTimeOffset.Now.ToUnixTimeMilliseconds()}", "packages")
             ?? throw new Exception("Upload File fail");
         var package = new Domain.Entities.Package
         {
