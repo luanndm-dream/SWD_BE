@@ -20,28 +20,39 @@ public class GetDashboardQueryHandler : IQueryHandler<Query.GetDashboardQuery, R
     }
 
 
-
     public async Task<Result<Responses.DashboardResponses>> Handle(Query.GetDashboardQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            // GetTotalUser In ThisMonth
-            var totalUser = await userRepository.TotalUserInThisMonth();
+            // User
+            var totalUser = await userRepository.Count();
+            var newUserInThisMonth = await userRepository.NewUserInThisMonth();
+            var totalUserLastMonth = await userRepository.TotalUserLastMonth();
 
-            // GetTotalOrder In ThisMonth
-            var totalOrder = await packageRepository.TotalOrderInThisMonth();
+            // Order
+            var totalOrder = await packageRepository.TotalOrder();
+            var newOrderInThisMonth = await packageRepository.NewOrderInThisMonth();
+            var totalOrderLastMonth = await packageRepository.TotalOrderLastMonth();
 
             // GetTotalOffice
             var totalOffice = officeRepository.Count();
 
-            // GetRevenue
-            var revenue = await packageRepository.RevenueInThisMonth();
+            // totalPriceThisMonth
+            var totalPriceThisMonth = await packageRepository.TotalPriceThisMonth();
+
 
             var response = new Responses.DashboardResponses(
                 totalUser,
+                newUserInThisMonth,
+                totalUserLastMonth,
+
                 totalOrder,
+                newOrderInThisMonth,
+                totalOrderLastMonth,
+
                 totalOffice,
-                revenue);
+                totalPriceThisMonth
+                );
 
             return Result.Success(response);
         }

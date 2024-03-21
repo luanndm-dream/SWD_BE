@@ -110,9 +110,27 @@ public class UserRepository : RepositoryBase<User, int>
         return firstPart;
     }
 
-    public async Task<int> TotalUserInThisMonth()
-        => await context.User
-            .Where(x => x.CreateTime.Month == DateTime.UtcNow.Month)
+    public async Task<int> Count()
+        => await context.User.CountAsync();
+
+    public async Task<int> NewUserInThisMonth()
+        => await context.User.
+            Where(x => x.CreateTime.Month == DateTime.Now.Month
+            && x.CreateTime.Year == DateTime.Now.Year)
             .CountAsync();
+
+    public async Task<int> TotalUserLastMonth()
+    {
+        var day = GetFirstDayOfPCurrentMonth();
+
+        var numberUserLastMonth = await context.User.
+            Where(x => x.CreateTime < day)
+            .CountAsync();
+
+        return numberUserLastMonth;
+    }
+
+    private DateTime GetFirstDayOfPCurrentMonth()
+        => new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
 }
