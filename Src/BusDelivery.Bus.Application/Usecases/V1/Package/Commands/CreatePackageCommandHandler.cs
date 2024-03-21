@@ -1,8 +1,8 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using AutoMapper;
+﻿using AutoMapper;
 using BusDelivery.Contract.Abstractions.Message;
 using BusDelivery.Contract.Abstractions.Shared;
 using BusDelivery.Contract.Services.V1.Package;
+using BusDelivery.Domain.Exceptions;
 using BusDelivery.Infrastructure.BlobStorage.Repository.IRepository;
 using BusDelivery.Persistence.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -13,11 +13,17 @@ public class CreatePackageCommandHandler : ICommandHandler<Command.CreatePackage
     private readonly IBlobStorageRepository blobStorageRepository;
     private readonly PackageRepository packageRepository;
     private readonly IMapper mapper;
-    public CreatePackageCommandHandler(IBlobStorageRepository blobStorageRepository, PackageRepository packageRepository, IMapper mapper)
+    private readonly StationRepository stationRepository;
+    private readonly OfficeRepository officeRepository;
+    private readonly BusRepository busRepository;
+    public CreatePackageCommandHandler(IBlobStorageRepository blobStorageRepository, PackageRepository packageRepository, StationRepository stationRepository, OfficeRepository officeRepository, BusRepository busRepository, IMapper mapper)
     {
         this.blobStorageRepository = blobStorageRepository;
         this.packageRepository = packageRepository;
         this.mapper = mapper;
+        this.stationRepository = stationRepository;
+        this.officeRepository = officeRepository;
+        this.busRepository = busRepository;
     }
     public static IFormFile ConvertToIFormFile(string base64String, string fileName)
     {
@@ -55,6 +61,19 @@ public class CreatePackageCommandHandler : ICommandHandler<Command.CreatePackage
             Status = request.status,
             CreateTime = DateTime.Now,
         };
+
+        var result = await stationRepository.FindByIdAsync(request.stationId)
+            ?? throw new PackageException.StationIdNotFoundException(request.stationId);
+
+        var result1 = await officeRepository.FindByIdAsync(request.fromOfficeId)
+        ?? throw new PackageException.OfficeIdNotFoundException(request.fromOfficeId);
+
+        var result2 = await officeRepository.FindByIdAsync(request.toOfficeId)
+        ?? throw new PackageException.OfficeIdNotFoundException(request.toOfficeId);
+
+        var result3 = await busRepository.FindByIdAsync(request.busId)
+        ?? throw new PackageException.BusIdNotFoundException(request.busId);
+
 
         try
         {
