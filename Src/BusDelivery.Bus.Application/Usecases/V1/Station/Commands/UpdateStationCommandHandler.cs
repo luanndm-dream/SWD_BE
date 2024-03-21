@@ -33,6 +33,7 @@ public sealed class UpdateStationCommandHandler : ICommandHandler<Command.Update
             station.Name = request.name;
             station.Lat = request.lat;
             station.Lng = request.lng;
+            station.IsActive = request.IsActive;
         }
         catch (Exception )
         {
