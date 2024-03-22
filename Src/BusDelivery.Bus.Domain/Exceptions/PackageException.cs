@@ -20,6 +20,19 @@ public class PackageException
             : base($"The Office with the id {OfficeId} was not found.") { }
     }
 
+
+    public class BusIdNotFoundException : NotFoundException
+    {
+        public BusIdNotFoundException(int BusId)
+            : base($"The Bus with the id {BusId} was not found.") { }
+    }
+
+    public class StationIdNotFoundException : NotFoundException
+    {
+        public StationIdNotFoundException(int StationId)
+            : base($"The Station with the id {StationId} was not found.") { }
+    }
+
     public class DateNotFoundException : NotFoundException
     {
         public DateNotFoundException(string CreateTime)
