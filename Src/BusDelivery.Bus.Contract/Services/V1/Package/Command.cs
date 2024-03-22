@@ -26,7 +26,7 @@ public class Command
     int quantity,
     float totalWeight,
     float totalPrice,
-    IFormFile image,
+    string image,
     string note,
     PackageStatus status) : ICommand<Responses.PackageResponse>;
 
